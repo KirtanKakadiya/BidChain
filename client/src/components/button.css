@@ -1,0 +1,27 @@
+.primary-button {
+  background-color: #A259FF;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(162, 89, 255, 0.35);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.primary-button:hover {
+  box-shadow: 0 4px 20px rgba(162, 89, 255, 0.45);
+}
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+.button-icon {
+  display: inline-flex;
+}
