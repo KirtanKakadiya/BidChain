@@ -1,0 +1,2 @@
+echo "validating pre-push..."
+cd client && npx lint-staged
