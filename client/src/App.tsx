@@ -1,12 +1,16 @@
-import React from 'react';
-import './App.css';
-import { NavBar } from './components/navbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './pages/layout';
+import { HomePage } from './pages/HomePage';
 
 function App() {
   return (
-    <div className="App">
-      <NavBar />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 

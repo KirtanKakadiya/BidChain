@@ -1,8 +1,8 @@
 .navbar {
-  background-color: #2B2B2B;
+  background-color: #2b2b2b;
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 999;
 }
 
 .navbar-container {
@@ -25,10 +25,11 @@
   width: 28px;
   height: 28px;
   border-radius: 6px;
+  border: none;
 }
 
 .navbar-brand {
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 800;
   letter-spacing: 0.2px;
   font-size: 20px;
@@ -47,7 +48,7 @@
 }
 
 .navbar-links a {
-  color: #EDEDED;
+  color: #ededed;
   text-decoration: none;
   font-weight: 600;
   font-size: 16px;

@@ -1,6 +1,6 @@
 .primary-button {
-  background-color: #A259FF;
-  color: #FFFFFF;
+  background-color: #a259ff;
+  color: #ffffff;
   border: none;
   border-radius: 9999px;
   padding: 10px 20px;
@@ -9,13 +9,10 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(162, 89, 255, 0.35);
-  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 .primary-button:hover {
-  box-shadow: 0 4px 20px rgba(162, 89, 255, 0.45);
+  box-shadow: 0 4px 20px #9a54f4;
 }
 
 .primary-button:active {
