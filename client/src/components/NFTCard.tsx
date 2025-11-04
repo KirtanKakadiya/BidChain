@@ -18,10 +18,16 @@ type NFTCardProps = {
 // TODO
 // The bg color for the icon doesnt work, need to fix that bug
 // Also still need to add the info container
+// Fix font family for price, cant get space mono to work!!
+// Also add highest price to right of the price
 
 export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
     return (
-        <Card className="nft-card">
+        <Card
+            className="nft-card"
+            onClick={() => onClick?.(nft.id)}
+            sx={{ borderRadius: '20px', overflow: 'hidden' }}
+        >
             <CardMedia
                 component="img"
                 image={nft.imageUrl}
@@ -42,6 +48,15 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
                     />
                     <Typography variant="body2" className="nft-creator-name">
                         {nft.creatorName}
+                    </Typography>
+                </Box>
+
+                <Box className="nft-price">
+                    <Typography variant="body2" className="nft-price-label">
+                        Value
+                    </Typography>
+                    <Typography variant="body1" className="nft-price-value">
+                        {nft.price}
                     </Typography>
                 </Box>
             </CardContent>
