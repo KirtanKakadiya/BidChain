@@ -12,6 +12,8 @@
 
     padding: 24px 40px;
     gap: 16px;
+
+    border-top: 1px solid #2b2b2b;
 }
 
 .footer-logo {
