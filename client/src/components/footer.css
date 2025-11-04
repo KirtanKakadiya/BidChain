@@ -1,36 +1,36 @@
 .footer {
-  background-color: #3b3b3b;
-  color: #cccccc;
-  font-family: 'Work Sans', sans-serif;
-  font-weight: 600;
-  font-size: 0.5rem;
+    background-color: #3b3b3b;
+    color: #cccccc;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.5rem;
 
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 
-  padding: 24px 40px;
-  gap: 16px;
+    padding: 24px 40px;
+    gap: 16px;
 }
 
 .footer-logo {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 }
 
 .footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .footer-links p {
-  margin: 0;
-  color: #cccccc;
-  cursor: pointer;
+    margin: 0;
+    color: #cccccc;
+    cursor: pointer;
 }
 
 .footer-links p:hover {
-  color: #ffffff;
+    color: #ffffff;
 }

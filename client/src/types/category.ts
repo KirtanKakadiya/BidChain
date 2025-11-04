@@ -1,5 +1,5 @@
 export type Category = {
-  id?: string;
-  title: string;
-  icon?: React.ElementType;
+    id?: string;
+    title: string;
+    icon?: React.ElementType;
 };
