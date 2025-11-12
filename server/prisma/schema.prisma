@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(COLLECTOR)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bids      Bid[]    @relation("UserBids")
+  nfts      NFT[]    @relation("UserNFTs")
+}
+
+model NFT {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  imageUrl    String
+  creatorId   Int
+  createdAt   DateTime @default(now())
+  auction     Auction? @relation("NFTAuction")
+  creator     User     @relation("UserNFTs", fields: [creatorId], references: [id])
+}
+
+model Auction {
+  id           Int      @id @default(autoincrement())
+  nftId        Int      @unique
+  startPrice   Float
+  currentPrice Float    @default(0)
+  startTime    DateTime
+  endTime      DateTime
+  isActive     Boolean  @default(true)
+  nft          NFT      @relation("NFTAuction", fields: [nftId], references: [id])
+  bids         Bid[]
+}
+
+model Bid {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  createdAt DateTime @default(now())
+  bidderId  Int
+  auctionId Int
+  auction   Auction  @relation(fields: [auctionId], references: [id])
+  bidder    User     @relation("UserBids", fields: [bidderId], references: [id])
+}
+
+enum UserRole {
+  COLLECTOR
+  ARTIST
+  ADMIN
+}
