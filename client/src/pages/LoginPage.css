@@ -25,9 +25,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 520px; /* reduce width so image doesn't force scrolling */
-  max-height: calc(100vh - 120px); /* keep it within viewport */
+  max-width: 520px;
+  max-height: calc(100vh - 120px);
 }
+
 .login-art .nft-card {
   width: 100%;
   max-width: 520px;
@@ -98,7 +99,7 @@
 .login-art .nft-image {
   width: 100%;
   height: auto;
-  max-height: 68vh; /* cap height so page fits */
+  max-height: 68vh;
   object-fit: cover;
 }
 
@@ -114,7 +115,6 @@
   background-color: rgba(162,89,255,0.8);
 }
 
-/* Submit button */
 .login-form .MuiButton-contained {
   background-color: #a259ff;
 }

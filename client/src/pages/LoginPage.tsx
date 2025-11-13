@@ -1,6 +1,6 @@
 import React, { useState, JSX } from 'react';
 import { TextField, Button, Box, Typography, InputAdornment } from '@mui/material';
-import './LoginPage.css'; // import the CSS file
+import './LoginPage.css'; 
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -82,14 +82,15 @@ export function LoginPage(): JSX.Element {
         />
 
         <Button
-        component={Link}       // <-- turn it into a Link
-        to="/create-account"   // <-- route to navigate
-        variant="contained"
-        fullWidth
-        className="create-account"
+        component={Link}      
+          to="/create-account"
+          variant="contained"
+          fullWidth
+          className="create-account"
         >
         Create Account
         </Button>
+
         <Button type="submit" variant="contained" fullWidth className="login-button">
           Login
         </Button>

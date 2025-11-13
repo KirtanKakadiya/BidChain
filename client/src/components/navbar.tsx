@@ -39,7 +39,7 @@ export function NavBar(): JSX.Element {
                         <Link to="#">Connect a wallet</Link>
                     </nav>
 
-                   <Link to="/login">
+                    <Link to="/login">
                         <PrimaryButton text="Login" icon={PersonIcon} />
                     </Link>
                 </div>
