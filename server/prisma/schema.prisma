@@ -13,10 +13,10 @@ model User {
   email     String   @unique
   password  String
   role      UserRole @default(COLLECTOR)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   bids      Bid[]    @relation("UserBids")
   nfts      NFT[]    @relation("UserNFTs")
+  avatarPicture String?
+  bannerPicture String?
 }
 
 model NFT {

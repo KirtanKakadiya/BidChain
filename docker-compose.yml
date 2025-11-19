@@ -33,9 +33,9 @@ services:
     image: postgres
     restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
     env_file:
-      - "./server/.env"
+      - "./server/.env.docker"
     volumes:
       - pgdata-primary:/var/lib/postgresql/data
     environment:

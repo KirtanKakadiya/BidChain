@@ -1,0 +1,37 @@
+import { Bid } from './bidType';
+import { NFT } from './nftType';
+
+export const UserRole = {
+    COLLECTOR: 'COLLECTOR',
+    ARTIST: 'ARTIST',
+    ADMIN: 'ADMIN',
+} as const;
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+
+export interface User {
+    readonly id: number;
+    readonly role: UserRole;
+    readonly name: string;
+    readonly email: string;
+    readonly password: string;
+    readonly bids: Bid[];
+    readonly nfts: NFT[];
+    readonly avatarPicture: string | null;
+    readonly bannerPicture: string | null;
+}
+
+export interface CreateUserArgs {
+    name: string;
+    email: string;
+    password: string;
+    role?: UserRole;
+}
+
+export interface UpdateUserInput {
+    name?: string;
+    email?: string;
+    password?: string;
+    avatarPicture?: string;
+    bannerPicture?: string;
+}
