@@ -13,6 +13,7 @@
 
 # misc
 .env
+.env.docker
 .DS_Store
 .env.local
 .env.development.local

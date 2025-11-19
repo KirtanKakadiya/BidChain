@@ -1,21 +1,35 @@
-import express, { Request, Response, Application } from "express";
-import dotenv from "dotenv";
-import cors from "cors";
+import express, { Request, Response, Application } from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { gqlScehma } from './graphql/gqlScehma';
+import { createResolvers } from './resolvers/resolvers';
+import { createUserModel } from './models/userModel';
+import { createDbClient } from './db/dbClient';
 
 dotenv.config();
 
 const DEV_FALLBACK_PORT = 4000;
-const PORT = process.env.PORT || DEV_FALLBACK_PORT;
+const PORT = Number(process.env.PORT) || DEV_FALLBACK_PORT;
+const PG_DB_URL = `postgresql://postgres:${process.env.POSTGRES_PASSWORD}@db:5432/bidchain-db?schema=public`;
 
 const app: Application = express();
 
-// Enable CORS
-app.use(cors());
+const dbClient = createDbClient(PG_DB_URL);
+const userModel = createUserModel(dbClient);
 
-app.get("/", (_req: Request, res: Response) => {
-  res.redirect("/health");
-});
+async function main() {
+    const server: ApolloServer = new ApolloServer({
+        typeDefs: gqlScehma,
+        resolvers: createResolvers({ userModel }),
+    });
 
-app.listen(PORT, () => {
-  console.log(`💰 Server is running on http://localhost:${PORT}`);
-});
+    const { url } = await startStandaloneServer(server, {
+        listen: { port: PORT },
+    });
+
+    console.log(`🚀 Server ready at ${url}`);
+}
+
+main();
