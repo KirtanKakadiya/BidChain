@@ -59,3 +59,20 @@
 .navbar-links a:hover {
     opacity: 1;
 }
+
+.user-icon-button {
+    color: #a259ff !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 8px !important;
+    border: 2px solid #a259ff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 200ms ease !important;
+}
+
+.user-icon-button:hover {
+    background-color: rgba(162, 89, 255, 0.1) !important;
+    transform: scale(1.05) !important;
+}
