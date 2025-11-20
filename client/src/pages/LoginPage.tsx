@@ -83,7 +83,7 @@ export function LoginPage(): JSX.Element {
 
         <Button
         component={Link}      
-          to="/create-account"
+          to="/createAccount"
           variant="contained"
           fullWidth
           className="create-account"

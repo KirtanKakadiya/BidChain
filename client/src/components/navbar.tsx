@@ -1,6 +1,7 @@
-import React, { JSX } from 'react';
+import React, { JSX, useState } from 'react';
 import { PrimaryButton } from './button';
 import PersonIcon from '@mui/icons-material/Person';
+import { IconButton } from '@mui/material';
 import './navbar.css';
 import { Link } from 'react-router-dom';
 
@@ -17,6 +18,8 @@ const NAVBAR_ITEMS: readonly NavBarItemProps[] = [
 ];
 
 export function NavBar(): JSX.Element {
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual auth state
+
     return (
         <header className="navbar">
             <div className="navbar-container">
@@ -39,9 +42,17 @@ export function NavBar(): JSX.Element {
                         <Link to="#">Connect a wallet</Link>
                     </nav>
 
-                    <Link to="/login">
-                        <PrimaryButton text="Login" icon={PersonIcon} />
-                    </Link>
+                    {isLoggedIn ? (
+                        <Link to="/artist">
+                            <IconButton className="user-icon-button">
+                                <PersonIcon />
+                            </IconButton>
+                        </Link>
+                    ) : (
+                        <Link to="/login">
+                            <PrimaryButton text="Login" icon={PersonIcon} />
+                        </Link>
+                    )}
                 </div>
             </div>
         </header>
