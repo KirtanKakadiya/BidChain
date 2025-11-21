@@ -1,11 +1,21 @@
+import { Categories } from '@prisma/client';
 import { Auction } from './auctionType';
 
 export interface NFT {
-    id: number;
+    readonly id: number;
+    readonly title: string;
+    readonly description?: string | null;
+    readonly imageUrl: string;
+    readonly creatorId: number;
+    readonly createdAt: Date;
+    readonly auction?: Auction | null;
+    readonly tags: Categories[];
+}
+
+export interface CreateNFTArgs {
     title: string;
     description?: string | null;
     imageUrl: string;
     creatorId: number;
-    createdAt: Date;
-    auction?: Auction | null;
+    tags: Categories[];
 }
