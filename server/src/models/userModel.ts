@@ -1,8 +1,8 @@
 // src/models/userModel.ts
 import { PrismaClient } from '@prisma/client';
+import { DbClient } from '../db/dbClient';
 import type { CreateUserArgs, UpdateUserInput, User } from '../types/userTypes';
 
-export type DbClient = PrismaClient;
 
 export interface UserModel {
     readonly getUserById: (id: number) => Promise<User | undefined>;

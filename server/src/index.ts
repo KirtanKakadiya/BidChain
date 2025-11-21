@@ -7,6 +7,7 @@ import { gqlScehma } from './graphql/gqlScehma';
 import { createResolvers } from './resolvers/resolvers';
 import { createUserModel } from './models/userModel';
 import { createDbClient } from './db/dbClient';
+import { createNFTModel } from './models/nftModel';
 
 dotenv.config();
 
@@ -18,11 +19,12 @@ const app: Application = express();
 
 const dbClient = createDbClient(PG_DB_URL);
 const userModel = createUserModel(dbClient);
+const nftModel = createNFTModel(dbClient);
 
 async function main() {
     const server: ApolloServer = new ApolloServer({
         typeDefs: gqlScehma,
-        resolvers: createResolvers({ userModel }),
+        resolvers: createResolvers({ userModel, nftModel}),
     });
 
     const { url } = await startStandaloneServer(server, {

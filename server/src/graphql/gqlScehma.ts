@@ -5,6 +5,15 @@ export const gqlScehma = `#graphql
     ADMIN
   }
 
+  enum Categories{
+    ART
+    GAMING
+    MUSIC
+    PHOTOGRAPHY
+    VIDEO
+    SPORT
+  }
+
   type User {
     id: ID!
     name: String!
@@ -28,6 +37,8 @@ export const gqlScehma = `#graphql
     createdAt: String!
     auction: Auction
     creator: User!
+    tags: [Categories!]
+
   }
 
   type Auction {
@@ -79,6 +90,7 @@ export const gqlScehma = `#graphql
     description: String
     imageUrl: String!
     creatorId: Int!
+    tags: [Categories!]! 
   }
 
   input CreateAuctionInput {
@@ -122,6 +134,7 @@ export const gqlScehma = `#graphql
 
     #NFTS
     createNFT(data: CreateNFTInput!): NFT!
+    getNFTByCategories(data: [Categories!]): [NFT!]
 
     #Auctions
     createAuction(data: CreateAuctionInput!): Auction!
