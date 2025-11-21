@@ -1,9 +1,10 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX } from 'react';
 import { PrimaryButton } from './button';
 import PersonIcon from '@mui/icons-material/Person';
 import { IconButton } from '@mui/material';
 import './navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface NavBarItemProps {
     readonly text: string;
@@ -18,7 +19,16 @@ const NAVBAR_ITEMS: readonly NavBarItemProps[] = [
 ];
 
 export function NavBar(): JSX.Element {
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual auth state
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
+    const handleProfileClick = () => {
+        if (user?.role === 'ARTIST') {
+            navigate('/artist');
+        } else if (user?.role === 'COLLECTOR') {
+            navigate('/collector');
+        }
+    };
 
     return (
         <header className="navbar">
@@ -42,17 +52,9 @@ export function NavBar(): JSX.Element {
                         <Link to="#">Connect a wallet</Link>
                     </nav>
 
-                    {isLoggedIn ? (
-                        <Link to="/artist">
-                            <IconButton className="user-icon-button">
-                                <PersonIcon />
-                            </IconButton>
-                        </Link>
-                    ) : (
-                        <Link to="/login">
-                            <PrimaryButton text="Login" icon={PersonIcon} />
-                        </Link>
-                    )}
+                    <Link to="/login">
+                        <PrimaryButton text="Login" icon={PersonIcon} />
+                    </Link>
                 </div>
             </div>
         </header>

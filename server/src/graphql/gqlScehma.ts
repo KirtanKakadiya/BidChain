@@ -114,7 +114,7 @@ export const gqlScehma = `#graphql
   type Mutation {
 
     #auth
-    login(data: LoginInput!): Boolean!
+    login(data: LoginInput!): User!
     register(data: CreateUserInput!): User!
 
     #users

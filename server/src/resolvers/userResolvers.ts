@@ -15,7 +15,7 @@ export function createUserResolver({ userModel }: { userModel: UserModel }) {
     async function login(
         _parent: unknown,
         { data }: LoginArgs
-    ): Promise<boolean | GraphQLError> {
+    ): Promise<User | GraphQLError> {
         const { email, password } = data;
 
         const emailSearch = await userModel.getUserByEmail(email);
@@ -27,7 +27,7 @@ export function createUserResolver({ userModel }: { userModel: UserModel }) {
         }
 
         if (password == emailSearch.password) {
-            return true;
+            return emailSearch;
         }
 
         throw new GraphQLError('Password is Incorrect.', {
