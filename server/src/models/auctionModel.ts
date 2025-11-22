@@ -38,7 +38,7 @@ export function createAuctionModel(db: DbClient): AuctionModel {
                 startPrice: data.startPrice,
                 startTime: data.startTime,
                 endTime: data.endTime,
-                isActive: data.isActive,
+                isActive: data.isActive ?? true,
             },
             include: { nft: true },
         });

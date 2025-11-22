@@ -13,7 +13,7 @@ export interface CreateAuctionArgs {
     startPrice: number;
     startTime: Date;
     endTime: Date;
-    isActive: boolean;
+    isActive?: boolean;
 }
 
 export interface UpdateAuctionInput {
