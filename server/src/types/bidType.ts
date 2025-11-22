@@ -6,7 +6,7 @@ export interface Bid {
     auctionId: number;
 }
 
-export interface PlaceBidArgs {
+export interface CreateBidArgs {
     amount: number;
     bidderId: number;
     auctionId: number;
