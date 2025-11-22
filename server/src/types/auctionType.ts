@@ -7,3 +7,17 @@ export interface Auction {
     endTime: Date;
     isActive: boolean;
 }
+
+export interface CreateAuctionArgs {
+    nftId: number;
+    startPrice: number;
+    startTime: Date;
+    endTime: Date;
+    isActive: boolean;
+}
+
+export interface UpdateAuctionInput {
+    currentPrice?: number;
+    endTime?: Date;
+    isActive?: boolean;
+}
