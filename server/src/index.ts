@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { gqlSchema } from './graphql/gqlScehma';
+import { gqlSchema } from './graphql/gqlSchema';
 import { createResolvers } from './resolvers/resolvers';
 import { createUserModel } from './models/userModel';
 import { createDbClient } from './db/dbClient';
