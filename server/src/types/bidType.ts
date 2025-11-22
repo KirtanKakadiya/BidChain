@@ -5,3 +5,9 @@ export interface Bid {
     bidderId: number;
     auctionId: number;
 }
+
+export interface CreateBidArgs {
+    amount: number;
+    bidderId: number;
+    auctionId: number;
+}
