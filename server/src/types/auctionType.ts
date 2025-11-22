@@ -17,6 +17,7 @@ export interface CreateAuctionArgs {
 }
 
 export interface UpdateAuctionInput {
+    id: number;
     currentPrice?: number;
     endTime?: Date;
     isActive?: boolean;

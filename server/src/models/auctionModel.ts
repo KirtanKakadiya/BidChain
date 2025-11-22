@@ -48,6 +48,7 @@ export function createAuctionModel(db: DbClient): AuctionModel {
         return db.auction.update({
             where: { id },
             data: {
+                id: data.id,
                 currentPrice: data.currentPrice ?? undefined,
                 endTime: data.endTime ?? undefined,
                 isActive: data.isActive ?? undefined,
