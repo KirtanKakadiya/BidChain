@@ -100,6 +100,13 @@ export const gqlSchema = `#graphql
     endTime: String!
   }
 
+  input UpdateAuctionInput {
+    id: Int!
+    currentPrice: Float
+    endTime: String
+    isActive: Boolean
+  }
+
   input PlaceBidInput {
     auctionId: Int!
     bidderId: Int!
@@ -138,6 +145,7 @@ export const gqlSchema = `#graphql
 
     #Auctions
     createAuction(data: CreateAuctionInput!): Auction!
+    updateAuction(data: UpdateAuctionInput!): Auction!
 
     #Bids
     placeBid(data: PlaceBidInput!): Bid!
