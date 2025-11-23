@@ -1,12 +1,12 @@
 import { GraphQLError } from 'graphql';
 import { BidModel } from '../models/bidModel';
 import { HTTP_CODES } from '../httpCodes';
-import { Bid, CreateBidArgs } from '../types/bidType';
+import { Bid, PlaceBidArgs } from '../types/bidType';
 
-export function createBidResolver({ bidModel }: { bidModel: BidModel }) {
-    async function createBid(
+export function placeBidResolver({ bidModel }: { bidModel: BidModel }) {
+    async function placeBid(
         _parent: unknown,
-        { data }: { data: CreateBidArgs }
+        { data }: { data: PlaceBidArgs }
     ): Promise<Bid> {
         const { amount, bidderId, auctionId } = data;
 
@@ -17,7 +17,7 @@ export function createBidResolver({ bidModel }: { bidModel: BidModel }) {
         }
 
         try {
-            return await bidModel.createBid(data);
+            return await bidModel.placeBid(data);
         } catch (error: any) {
             console.error(error);
             throw new GraphQLError(`Failed to create bid. ${error}`, {
