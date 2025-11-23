@@ -19,7 +19,7 @@ export function createAuctionResolver({
         const { nftId, startPrice, startTime, endTime } = data;
 
         if (!nftId || !startPrice || !startTime || !endTime) {
-            throw new GraphQLError('Missing requiredNFT fields.', {
+            throw new GraphQLError('Missing required auction fields.', {
                 extensions: { code: HTTP_CODES.BAD_REQUEST },
             });
         }
