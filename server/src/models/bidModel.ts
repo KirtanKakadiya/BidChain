@@ -1,12 +1,12 @@
 import { DbClient } from '../db/dbClient';
-import type { Bid, CreateBidArgs } from '../types/bidType';
+import type { Bid, PlaceBidArgs } from '../types/bidType';
 
 export interface BidModel {
     readonly getBidById: (id: number) => Promise<Bid | undefined>;
-    readonly createBid: (data: CreateBidArgs) => Promise<Bid>;
+    readonly placeBid: (data: PlaceBidArgs) => Promise<Bid>;
 }
 
-export function createBidModel(db: DbClient): BidModel {
+export function placeBidModel(db: DbClient): BidModel {
     async function getBidById(id: number) {
         return (
             (await db.bid.findUnique({
@@ -16,7 +16,7 @@ export function createBidModel(db: DbClient): BidModel {
         );
     }
 
-    async function createBid(data: CreateBidArgs) {
+    async function placeBid(data: PlaceBidArgs) {
         return db.bid.create({
             data: {
                 amount: data.amount,
@@ -29,6 +29,6 @@ export function createBidModel(db: DbClient): BidModel {
 
     return Object.freeze({
         getBidById,
-        createBid,
+        placeBid,
     });
 }
