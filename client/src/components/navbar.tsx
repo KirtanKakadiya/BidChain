@@ -17,9 +17,12 @@ const NAVBAR_ITEMS: readonly NavBarItemProps[] = [
     { text: 'Connect a wallet', path: '#' },
 ];
 
-export function NavBar(): JSX.Element {
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual auth state
+type NavBarProps = {
+    isLoggedIn: boolean;
+    onSignOut: () => void;
+};
 
+export function NavBar({ isLoggedIn, onSignOut }: NavBarProps): JSX.Element {
     return (
         <header className="navbar">
             <div className="navbar-container">
@@ -43,11 +46,19 @@ export function NavBar(): JSX.Element {
                     </nav>
 
                     {isLoggedIn ? (
-                        <Link to="/artist">
-                            <IconButton className="user-icon-button">
-                                <PersonIcon />
-                            </IconButton>
-                        </Link>
+                        <>
+                            <Link to="/artist">
+                                <IconButton className="user-icon-button">
+                                    <PersonIcon />
+                                </IconButton>
+                            </Link>
+
+                            <PrimaryButton
+                                text="Sign out"
+                                ariaLabel="Sign out"
+                                onClick={onSignOut}
+                            />
+                        </>
                     ) : (
                         <Link to="/login">
                             <PrimaryButton text="Login" icon={PersonIcon} />
