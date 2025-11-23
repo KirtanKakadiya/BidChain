@@ -6,7 +6,7 @@ export interface BidModel {
     readonly placeBid: (data: PlaceBidArgs) => Promise<Bid>;
 }
 
-export function createBidModel(db: DbClient): BidModel {
+export function placeBidModel(db: DbClient): BidModel {
     async function getBidById(id: number) {
         return (
             (await db.bid.findUnique({
