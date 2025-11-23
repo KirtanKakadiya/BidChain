@@ -3,7 +3,7 @@ import type { Bid, CreateBidArgs } from '../types/bidType';
 
 export interface BidModel {
     readonly getBidById: (id: number) => Promise<Bid | undefined>;
-    readonly createBid: (data: CreateBidArgs) => Promise<Bid | undefined>;
+    readonly createBid: (data: CreateBidArgs) => Promise<Bid>;
 }
 
 export function createBidModel(db: DbClient): BidModel {
