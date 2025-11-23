@@ -34,46 +34,6 @@ export function createAuctionResolver({
         }
     }
 
-    async function getAuctionById(
-        _parent: unknown,
-        id: number
-    ): Promise<Auction> {
-        try {
-            const auctionSearch = await auctionModel.getAuctionById(id);
-            if (!auctionSearch) {
-                throw new GraphQLError('Auction not found.', {
-                    extensions: { code: HTTP_CODES.NOT_FOUND },
-                });
-            }
-            return auctionSearch;
-        } catch (error: any) {
-            console.error(error);
-            throw new GraphQLError(`Failed to fetch auction by id. ${error}`, {
-                extensions: { code: HTTP_CODES.SERVER_ERROR },
-            });
-        }
-    }
-
-    async function getAuctionByNftId(
-        _parent: unknown,
-        id: number
-    ): Promise<Auction> {
-        try {
-            const auctionSearch = await auctionModel.getAuctionByNftId(id);
-            if (!auctionSearch) {
-                throw new GraphQLError('Auction not found.', {
-                    extensions: { code: HTTP_CODES.NOT_FOUND },
-                });
-            }
-            return auctionSearch;
-        } catch (error: any) {
-            console.error(error);
-            throw new GraphQLError(`Failed to fetch auction by id. ${error}`, {
-                extensions: { code: HTTP_CODES.SERVER_ERROR },
-            });
-        }
-    }
-
     async function updateAuction(
         _parent: unknown,
         { data }: { data: UpdateAuctionInput }
@@ -94,7 +54,7 @@ export function createAuctionResolver({
                 });
             }
 
-            if (!currentPrice && !endTime && !isActive) {
+            if (!currentPrice && !endTime && isActive === undefined) {
                 throw new GraphQLError(
                     'At least one field must be provided to update.',
                     {
@@ -123,8 +83,6 @@ export function createAuctionResolver({
 
     return {
         createAuction,
-        getAuctionById,
-        getAuctionByNftId,
         updateAuction,
     };
 }
