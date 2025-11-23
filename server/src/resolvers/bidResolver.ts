@@ -3,7 +3,7 @@ import { BidModel } from '../models/bidModel';
 import { HTTP_CODES } from '../httpCodes';
 import { Bid, PlaceBidArgs } from '../types/bidType';
 
-export function placeBidResolver({ bidModel }: { bidModel: BidModel }) {
+export function createBidResolver({ bidModel }: { bidModel: BidModel }) {
     async function placeBid(
         _parent: unknown,
         { data }: { data: PlaceBidArgs }
@@ -25,4 +25,8 @@ export function placeBidResolver({ bidModel }: { bidModel: BidModel }) {
             });
         }
     }
+
+    return {
+        placeBid,
+    };
 }
