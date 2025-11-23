@@ -112,7 +112,7 @@ export const gqlSchema = `#graphql
     isActive: Boolean
   }
 
-  input CreateBidArgs {
+  input placeBidArgs {
     auctionId: Int!
     bidderId: Int!
     amount: Float!
@@ -156,6 +156,6 @@ export const gqlSchema = `#graphql
     updateAuction(data: UpdateAuctionInput!): Auction!
 
     #Bids
-    createBid(data: CreateBidArgs!): Bid!
+    placeBid(data: placeBidArgs!): Bid!
   }
 `;
