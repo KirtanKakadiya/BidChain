@@ -3,10 +3,12 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { gqlScehma } from './graphql/gqlScehma';
+import { gqlSchema } from './graphql/gqlSchema';
 import { createResolvers } from './resolvers/resolvers';
 import { createUserModel } from './models/userModel';
 import { createDbClient } from './db/dbClient';
+import { createNFTModel } from './models/nftModel';
+import { createAuctionModel } from './models/auctionModel';
 
 dotenv.config();
 
@@ -18,11 +20,13 @@ const app: Application = express();
 
 const dbClient = createDbClient(PG_DB_URL);
 const userModel = createUserModel(dbClient);
+const nftModel = createNFTModel(dbClient);
+const auctionModel = createAuctionModel(dbClient);
 
 async function main() {
     const server: ApolloServer = new ApolloServer({
-        typeDefs: gqlScehma,
-        resolvers: createResolvers({ userModel }),
+        typeDefs: gqlSchema,
+        resolvers: createResolvers({ userModel, nftModel }),
     });
 
     const { url } = await startStandaloneServer(server, {

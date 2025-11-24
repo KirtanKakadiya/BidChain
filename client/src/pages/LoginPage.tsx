@@ -9,7 +9,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export function LoginPage(): JSX.Element {
+type LoginPageProps = {
+  onLogin: () => void;
+};
+
+export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -74,6 +78,8 @@ export function LoginPage(): JSX.Element {
       setLoading(false);
     }
   };
+
+  onLogin();
 
   return (
     <Box className="login-page">

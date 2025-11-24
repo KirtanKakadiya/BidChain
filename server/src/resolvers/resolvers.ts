@@ -1,12 +1,24 @@
 import type { UserModel } from '../models/userModel';
 import { createUserResolver } from './userResolvers';
 import { createQueryResolvers } from './queryResolvers';
+import { createNFTResolver } from './nftResolvers';
+import { createAuctionResolver } from './auctionResolver';
+import { NFTModel } from '../models/nftModel';
+import { AuctionModel } from '../models/auctionModel';
 
-export function createResolvers(models: { userModel: UserModel }) {
+type Models = {
+    userModel: UserModel;
+    nftModel: NFTModel;
+    auctionModel: AuctionModel;
+};
+
+export function createResolvers(models: Models) {
     return {
         Query: createQueryResolvers(models),
         Mutation: {
             ...createUserResolver(models),
+            ...createNFTResolver(models),
+            ...createAuctionResolver(models),
         },
     };
 }

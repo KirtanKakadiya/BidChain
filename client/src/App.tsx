@@ -1,3 +1,4 @@
+import { useState } from "react";
 import React, { JSX, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './pages/layout';
@@ -17,14 +18,19 @@ function App(): JSX.Element {
         // Clear localStorage on app startup for testing
         localStorage.clear();
     }, []);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogin = () => setIsLoggedIn(true);
+    const handleSignOut = () => setIsLoggedIn(false);
+    
     return (
         <AuthProvider>
-            <Router>
+            <>
                 <Routes>
-                    <Route path="/" element={<Layout />}>
+                    <Route path="/" element={<Layout isLoggedIn={isLoggedIn} onSignOut={handleSignOut} />}>
                         <Route index element={<HomePage />} />
                         <Route path="/marketplace" element={<MarketplacePage />} />
-                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
                         <Route path="/createAccount" element={<CreateAccountPage />} />
                     <Route path="/artist" element={<ProtectedRoute requiredRole="ARTIST"><ArtistPage /></ProtectedRoute>} />
                     <Route path="/collector" element={<ProtectedRoute requiredRole="COLLECTOR"><CollectorPage /></ProtectedRoute>} />
@@ -32,7 +38,7 @@ function App(): JSX.Element {
                         <Route path="/createNft" element={<ProtectedRoute><CreateNFTPage /></ProtectedRoute>} />
                     </Route>
                 </Routes>
-            </Router>
+            </>
         </AuthProvider>
     );
 }
