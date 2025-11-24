@@ -7,7 +7,11 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link } from 'react-router-dom';
 
-export function LoginPage(): JSX.Element {
+type LoginPageProps = {
+  onLogin: () => void;
+};
+
+export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,6 +20,8 @@ export function LoginPage(): JSX.Element {
     console.log('Email:', email);
     console.log('Password:', password);
   };
+
+  onLogin();
 
   return (
     <Box className="login-page">
