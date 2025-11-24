@@ -1,4 +1,4 @@
-export const gqlScehma = `#graphql
+export const gqlSchema = `#graphql
   enum UserRole {
     COLLECTOR
     ARTIST
@@ -100,6 +100,13 @@ export const gqlScehma = `#graphql
     endTime: String!
   }
 
+  input UpdateAuctionInput {
+    id: Int!
+    currentPrice: Float
+    endTime: String
+    isActive: Boolean
+  }
+
   input PlaceBidInput {
     auctionId: Int!
     bidderId: Int!
@@ -138,6 +145,7 @@ export const gqlScehma = `#graphql
 
     #Auctions
     createAuction(data: CreateAuctionInput!): Auction!
+    updateAuction(data: UpdateAuctionInput!): Auction!
 
     #Bids
     placeBid(data: PlaceBidInput!): Bid!
