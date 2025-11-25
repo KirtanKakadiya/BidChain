@@ -8,10 +8,10 @@ type LayoutProps = {
   onSignOut: () => void;
 };
 
-export function Layout({ isLoggedIn, onSignOut }: LayoutProps): JSX.Element {
+export function Layout(): JSX.Element {
   return (
     <div>
-      <NavBar isLoggedIn={isLoggedIn} onSignOut={onSignOut} />
+      <NavBar />
       <Outlet />
       <Footer />
     </div>

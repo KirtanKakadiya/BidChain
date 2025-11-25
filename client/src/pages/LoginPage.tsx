@@ -1,19 +1,14 @@
 import React, { useState, JSX } from 'react';
 import { TextField, Button, Box, Typography, InputAdornment } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css'; 
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-type LoginPageProps = {
-  onLogin: () => void;
-};
-
-export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
+export function LoginPage(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,9 +29,7 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
     try {
       const response = await fetch('http://localhost:8080/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: `
             mutation LoginUser($data: LoginInput!) {
@@ -49,10 +42,7 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
             }
           `,
           variables: {
-            data: {
-              email,
-              password,
-            },
+            data: { email, password },
           },
         }),
       });
@@ -65,21 +55,16 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
         return;
       }
 
-      if (result.data) {
-        // Use auth context to login
-        const user = result.data.login;
-        login(user);
-        console.log('Login successful:', user);
-        navigate(user.role === 'ARTIST' ? '/artist' : '/collector');
-      }
+      const user = result.data.login;
+      login(user);
+
+      navigate(user.role === 'ARTIST' ? '/artist' : '/collector');
     } catch (err) {
       setError("Server error");
     } finally {
       setLoading(false);
     }
   };
-
-  onLogin();
 
   return (
     <Box className="login-page">
@@ -88,7 +73,6 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
           nft={{
             id: 'sample-1',
             name: 'Featured NFT',
-            // use sample image from the project public folder
             imageUrl: '/bored-ape.png',
             creatorAvatarUrl: '/avatar.png',
             creatorName: 'Creator',
@@ -107,12 +91,19 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
         <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
           Login
         </Typography>
+
         <Typography variant="body1" gutterBottom>
           Welcome! Enter your details and start creating, collecting and selling NFTs.
         </Typography>
 
         {error && (
-          <Box sx={{ color: '#ff6b6b', marginBottom: '16px', padding: '10px', backgroundColor: 'rgba(255, 107, 107, 0.1)', borderRadius: '4px' }}>
+          <Box sx={{
+            color: '#ff6b6b',
+            marginBottom: '16px',
+            padding: '10px',
+            backgroundColor: 'rgba(255, 107, 107, 0.1)',
+            borderRadius: '4px'
+          }}>
             {error}
           </Box>
         )}
@@ -133,6 +124,7 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
             },
           }}
         />
+
         <TextField
           label="Password"
           type="password"
@@ -152,16 +144,22 @@ export function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
         />
 
         <Button
-        component={Link}      
+          component={Link}
           to="/createAccount"
           variant="contained"
           fullWidth
           className="create-account"
         >
-        Create Account
+          Create Account
         </Button>
 
-        <Button type="submit" variant="contained" fullWidth className="login-button" disabled={loading}>
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          className="login-button"
+          disabled={loading}
+        >
           {loading ? 'Logging in...' : 'Login'}
         </Button>
       </Box>

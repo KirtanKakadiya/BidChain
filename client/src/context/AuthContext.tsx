@@ -1,83 +1,52 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+// src/context/AuthContext.tsx
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   id: string;
-  name: string;
-  email: string;
-  role: 'ARTIST' | 'COLLECTOR' | 'ADMIN';
-  avatarPicture?: string;
-  bannerPicture?: string;
+  role: "ARTIST" | "COLLECTOR";
+  username: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  isLoading: boolean;
+  isLoggedIn: boolean;
   login: (user: User) => void;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoggedIn = Boolean(user);
 
-  // Initialize user from localStorage on mount
+  // Load user on app start
   useEffect(() => {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-      try {
-        setUser(JSON.parse(userString));
-      } catch (e) {
-        console.error('Failed to parse user from localStorage:', e);
-        setUser(null);
-      }
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-    setIsLoading(false);
-  }, []);
-
-  // Listen for storage changes (logout in another tab)
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'user') {
-        if (e.newValue) {
-          try {
-            setUser(JSON.parse(e.newValue));
-          } catch (e) {
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const login = (userData: User) => {
+    localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('loggedIn');
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+export const useAuth = (): AuthContextType => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
+  return ctx;
+};

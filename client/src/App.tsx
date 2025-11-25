@@ -1,6 +1,5 @@
-import { useState } from "react";
-import React, { JSX, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { JSX } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Layout } from './pages/layout';
 import { HomePage } from './pages/HomePage';
 import { MarketplacePage } from './pages/MarketplacePage';
@@ -14,33 +13,33 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 
 function App(): JSX.Element {
-    useEffect(() => {
-        // Clear localStorage on app startup for testing
-        localStorage.clear();
-    }, []);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+return (
+  <AuthProvider>
+    <Routes>
+        <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/marketplace" element={<MarketplacePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/createAccount" element={<CreateAccountPage />} />
 
-    const handleLogin = () => setIsLoggedIn(true);
-    const handleSignOut = () => setIsLoggedIn(false);
-    
-    return (
-        <AuthProvider>
-            <>
-                <Routes>
-                    <Route path="/" element={<Layout isLoggedIn={isLoggedIn} onSignOut={handleSignOut} />}>
-                        <Route index element={<HomePage />} />
-                        <Route path="/marketplace" element={<MarketplacePage />} />
-                        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-                        <Route path="/createAccount" element={<CreateAccountPage />} />
-                    <Route path="/artist" element={<ProtectedRoute requiredRole="ARTIST"><ArtistPage /></ProtectedRoute>} />
-                    <Route path="/collector" element={<ProtectedRoute requiredRole="COLLECTOR"><CollectorPage /></ProtectedRoute>} />
-                        <Route path="/editprofile" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
-                        <Route path="/createNft" element={<ProtectedRoute><CreateNFTPage /></ProtectedRoute>} />
-                    </Route>
-                </Routes>
-            </>
-        </AuthProvider>
-    );
+        <Route path="/artist" element={
+        <ProtectedRoute requiredRole="ARTIST"> 
+            <ArtistPage />
+        </ProtectedRoute>
+        }/>
+
+        <Route path="/collector" element={
+        <ProtectedRoute requiredRole="COLLECTOR">
+            <CollectorPage />
+        </ProtectedRoute>
+        }/>
+
+        <Route path="/editprofile" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
+        <Route path="/createNft" element={<ProtectedRoute><CreateNFTPage /></ProtectedRoute>} />
+        </Route>
+    </Routes>
+    </AuthProvider>
+);
 }
 
 export default App;
