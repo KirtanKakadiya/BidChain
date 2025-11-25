@@ -3,13 +3,15 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   id: string;
+  name: string;
+  email: string;
   role: "ARTIST" | "COLLECTOR";
-  username: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  isLoading: boolean;
   login: (user: User) => void;
   logout: () => void;
 }
@@ -18,6 +20,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setLoading] = useState(true); // NEW
   const isLoggedIn = Boolean(user);
 
   // Load user on app start
@@ -26,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoading(false); // finished checking
   }, []);
 
   const login = (userData: User) => {
@@ -39,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
