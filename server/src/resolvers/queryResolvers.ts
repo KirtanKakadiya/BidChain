@@ -70,5 +70,5 @@ export function createQueryResolvers({
         }
     }
 
-    return { user, auction, auctionByNftId };
+    return { user, auction };
 }
