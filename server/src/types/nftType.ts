@@ -9,7 +9,7 @@ export interface NFT {
     readonly creatorId: number;
     readonly createdAt: Date;
     readonly auction?: Auction | null;
-    readonly tags: Categories[];
+    readonly tags?: Categories[];
 }
 
 export interface CreateNFTArgs {
@@ -17,5 +17,5 @@ export interface CreateNFTArgs {
     description?: string | null;
     imageUrl: string;
     creatorId: number;
-    tags: Categories[];
+    tags?: Categories[];
 }

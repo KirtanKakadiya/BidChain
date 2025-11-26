@@ -9,5 +9,4 @@ export const CATEGORIES: Category[] = [
     { id: 'music', title: 'Music', icon: MusicNoteIcon },
     { id: 'games', title: 'Gaming', icon: SportsEsportsIcon },
     { id: 'photography', title: 'Photography', icon: PhotoCameraIcon },
-    { id: 'photography', title: 'Photography', icon: PhotoCameraIcon },
 ];

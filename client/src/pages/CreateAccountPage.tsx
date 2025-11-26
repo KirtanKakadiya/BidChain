@@ -1,12 +1,13 @@
 import React, { useState, JSX } from 'react';
 import { TextField, Button, Box, Typography, InputAdornment, Select, MenuItem } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import { useAuth } from '../context/AuthContext';
 
 export function CreateAccountPage(): JSX.Element {
   const [username, setUsername] = useState('');
@@ -14,10 +15,92 @@ export function CreateAccountPage(): JSX.Element {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userType, setUserType] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleCreate = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Create account:', { username, email, password, confirmPassword, userType });
+    setError('');
+
+    // Validation
+    if (!username || !email || !password || !confirmPassword || !userType) {
+      setError('All fields are required');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:8080/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `
+            mutation RegisterUser($data: CreateUserInput!) {
+              register(data: $data) {
+                id
+                name
+                email
+                role
+              }
+            }
+          `,
+          variables: {
+            data: {
+              name: username,
+              email: email,
+              password: password,
+              role: userType.toUpperCase() === 'COLLECTOR' ? 'COLLECTOR' : 'ARTIST',
+              avatarPicture: '',
+              bannerPicture: '',
+            },
+          },
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.errors) {
+        setError(result.errors[0].message || 'Failed to create account');
+        setLoading(false);
+        return;
+      }
+
+      if (result.data?.register) {
+        console.log('Account created successfully:', result.data.register);
+        const user = result.data.register;
+        
+        // Use auth context to login
+        login(user);
+        
+        // Reset form
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setUserType('');
+        
+        // Redirect based on role
+        if (user.role === 'ARTIST') {
+          navigate('/artist');
+        } else if (user.role === 'COLLECTOR') {
+          navigate('/collector');
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,6 +127,12 @@ export function CreateAccountPage(): JSX.Element {
         <Typography variant="body1" gutterBottom>
           Welcome! Enter your details and start creating, collecting and selling NFTs.
         </Typography>
+
+        {error && (
+          <Box sx={{ color: '#ff6b6b', marginBottom: '16px', padding: '10px', backgroundColor: 'rgba(255, 107, 107, 0.1)', borderRadius: '4px' }}>
+            {error}
+          </Box>
+        )}
 
         <TextField
           label="Username"
@@ -141,14 +230,14 @@ export function CreateAccountPage(): JSX.Element {
           }}
         >
           <MenuItem value="" disabled>
-            Choose Buyer/Artist
+            Choose Collector/Artist
           </MenuItem>
-          <MenuItem value="buyer">Buyer</MenuItem>
+          <MenuItem value="collector">Collector</MenuItem>
           <MenuItem value="artist">Artist</MenuItem>
         </Select>
 
-        <Button type="submit" variant="contained" fullWidth>
-          Create Account
+        <Button type="submit" variant="contained" fullWidth disabled={loading}>
+          {loading ? 'Creating Account...' : 'Create Account'}
         </Button>
       </Box>
     </Box>
