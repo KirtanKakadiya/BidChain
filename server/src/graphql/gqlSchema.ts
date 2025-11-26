@@ -22,6 +22,8 @@ export const gqlSchema = `#graphql
     role: UserRole!
     createdAt: String!
     updatedAt: String!
+    walletBalance: Float!
+    walletAddress: String!
     avatarPicture: String!
     bannerPicture: String!
     bids: [Bid!]
@@ -138,6 +140,9 @@ export const gqlSchema = `#graphql
 
     #users
     updateUser(id: ID!, data: UpdateUserInput!): User!
+
+    #Wallet operations
+    addFunds(userId: Int!, amount: Float!): User!
 
     #NFTS
     createNFT(data: CreateNFTInput!): NFT!
