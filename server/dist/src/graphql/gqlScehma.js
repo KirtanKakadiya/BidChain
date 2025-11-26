@@ -1,4 +1,4 @@
-export const gqlScehma = `#graphql
+export const gqlSchema = `#graphql
   enum UserRole {
     COLLECTOR
     ARTIST

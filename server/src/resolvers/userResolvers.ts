@@ -74,7 +74,14 @@ export function createUserResolver({ userModel }: { userModel: UserModel }) {
         _parent: unknown,
         { data }: { data: UpdateUserInput }
     ): Promise<boolean> {
-        const { name, email, password, avatarPicture, bannerPicture } = data;
+        const {
+            name,
+            email,
+            password,
+            walletBalance,
+            avatarPicture,
+            bannerPicture,
+        } = data;
 
         if (!email) {
             throw new GraphQLError('Email not found.', {
@@ -105,9 +112,31 @@ export function createUserResolver({ userModel }: { userModel: UserModel }) {
         }
     }
 
+    async function addFunds(
+        _parent: unknown,
+        { userId, amount }: { userId: number; amount: number }
+    ): Promise<User> {
+        if (amount <= 0) {
+            throw new GraphQLError('Amount must be positive.', {
+                extensions: { code: HTTP_CODES.BAD_REQUEST },
+            });
+        }
+
+        const user = await userModel.getUserById(userId);
+        if (!user) {
+            throw new GraphQLError('User not found.', {
+                extensions: { code: HTTP_CODES.NOT_FOUND },
+            });
+        }
+        return await userModel.updateUser(userId, {
+            walletBalance: user.walletBalance + amount,
+        });
+    }
+
     return {
         login,
         register,
         updateUser,
+        addFunds,
     };
 }
