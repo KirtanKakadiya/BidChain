@@ -93,5 +93,5 @@ export function createQueryResolvers({
         }
     }
 
-    return { user, auction, auctionByNftId };
+    return { user, auction, auctionByNftId, bid };
 }
