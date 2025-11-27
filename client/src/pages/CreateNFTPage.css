@@ -1,250 +1,250 @@
 /* CreateNFTPage.css */
 
 .create-nft-page {
-  background-color: #1a1a1a;
-  min-height: 100vh;
-  padding-bottom: 40px;
+    background-color: #1a1a1a;
+    min-height: 100vh;
+    padding-bottom: 40px;
 }
 
 /* Banner Section */
 .create-nft-banner {
-  width: 100%;
-  height: 300px;
-  background: linear-gradient(135deg, #6b00ff 0%, #a259ff 50%, #6b00ff 100%);
-  background-size: cover;
-  background-position: center;
-  position: relative;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(135deg, #6b00ff 0%, #a259ff 50%, #6b00ff 100%);
+    background-size: cover;
+    background-position: center;
+    position: relative;
 }
 
 /* Content Section */
 .create-nft-content {
-  background-color: #2f2f2f;
-  margin: -50px 24px 0 24px;
-  padding: 40px;
-  border-radius: 8px;
-  position: relative;
-  z-index: 10;
+    background-color: #2f2f2f;
+    margin: -50px 24px 0 24px;
+    padding: 40px;
+    border-radius: 8px;
+    position: relative;
+    z-index: 10;
 }
 
 /* Title */
 .create-nft-title {
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 32px !important;
-  margin-bottom: 32px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 32px !important;
+    margin-bottom: 32px;
 }
 
 /* NFT Upload Section */
 .nft-upload-section {
-  margin-bottom: 40px;
+    margin-bottom: 40px;
 }
 
 .nft-upload-box {
-  display: block;
-  width: 100%;
-  height: 220px;
-  background-color: #1a1a1a;
-  border: 2px dashed #555;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 200ms ease;
-  position: relative;
+    display: block;
+    width: 100%;
+    height: 220px;
+    background-color: #1a1a1a;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+    position: relative;
 }
 
 .nft-upload-box:hover {
-  border-color: #a259ff;
-  background-color: rgba(162, 89, 255, 0.05);
+    border-color: #a259ff;
+    background-color: rgba(162, 89, 255, 0.05);
 }
 
 .upload-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .nft-image-preview {
-  width: 100%;
-  height: 100%;
-  border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
 }
 
 /* Form Fields */
 .form-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .form-label {
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 14px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .required {
-  color: #a259ff;
+    color: #a259ff;
 }
 
 .form-field-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
 }
 
 .form-field-wrapper.description {
-  align-items: flex-start;
+    align-items: flex-start;
 }
 
 .form-input {
-  flex: 1;
+    flex: 1;
 }
 
 .form-input-root {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #555 !important;
-  border-radius: 6px !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
 }
 
 .form-input-root:hover {
-  border-color: #a259ff !important;
+    border-color: #a259ff !important;
 }
 
 .form-input-root:focus-within {
-  border-color: #a259ff !important;
+    border-color: #a259ff !important;
 }
 
 .form-input-root input::placeholder,
 .form-input-root textarea::placeholder {
-  color: #888 !important;
-  opacity: 1;
+    color: #888 !important;
+    opacity: 1;
 }
 
 .form-edit-icon {
-  color: #a259ff !important;
-  width: 36px !important;
-  height: 36px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0 !important;
+    color: #a259ff !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
 }
 
 .form-edit-icon:hover {
-  background-color: rgba(162, 89, 255, 0.1) !important;
+    background-color: rgba(162, 89, 255, 0.1) !important;
 }
 
 /* Select Dropdown */
 .form-select {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: 1px solid #555 !important;
-  border-radius: 6px !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
 }
 
 .form-select:hover {
-  border-color: #a259ff !important;
+    border-color: #a259ff !important;
 }
 
 .form-select .MuiOutlinedInput-notchedOutline {
-  border: none !important;
+    border: none !important;
 }
 
 .form-select .MuiSvgIcon-root {
-  color: #888 !important;
+    color: #888 !important;
 }
 
 .form-select .MuiMenuItem-root {
-  background-color: #2f2f2f !important;
-  color: #ffffff !important;
+    background-color: #2f2f2f !important;
+    color: #ffffff !important;
 }
 
 .form-select .MuiMenuItem-root:hover {
-  background-color: #3f3f3f !important;
+    background-color: #3f3f3f !important;
 }
 
 .form-select .MuiMenuItem-root.Mui-selected {
-  background-color: #a259ff !important;
+    background-color: #a259ff !important;
 }
 
 /* Action Buttons */
 .form-actions {
-  display: flex;
-  gap: 16px;
-  justify-content: flex-end;
-  margin-top: 40px;
-  padding-top: 24px;
-  border-top: 1px solid #555;
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #555;
 }
 
 .create-button {
-  background-color: #a259ff !important;
-  color: #ffffff !important;
-  padding: 10px 28px !important;
-  border-radius: 999px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  transition: all 200ms ease !important;
+    background-color: #a259ff !important;
+    color: #ffffff !important;
+    padding: 10px 28px !important;
+    border-radius: 999px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    transition: all 200ms ease !important;
 }
 
 .create-button:hover {
-  background-color: #8f45e3 !important;
-  transform: translateY(-2px) !important;
+    background-color: #8f45e3 !important;
+    transform: translateY(-2px) !important;
 }
 
 .cancel-button {
-  background-color: #a259ff !important;
-  color: #ffffff !important;
-  padding: 10px 28px !important;
-  border-radius: 999px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  transition: all 200ms ease !important;
+    background-color: #a259ff !important;
+    color: #ffffff !important;
+    padding: 10px 28px !important;
+    border-radius: 999px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    transition: all 200ms ease !important;
 }
 
 .cancel-button:hover {
-  background-color: #8f45e3 !important;
-  transform: translateY(-2px) !important;
+    background-color: #8f45e3 !important;
+    transform: translateY(-2px) !important;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .create-nft-content {
-    margin: -50px 16px 0 16px;
-    padding: 24px;
-  }
+    .create-nft-content {
+        margin: -50px 16px 0 16px;
+        padding: 24px;
+    }
 
-  .create-nft-title {
-    font-size: 24px !important;
-    margin-bottom: 24px;
-  }
+    .create-nft-title {
+        font-size: 24px !important;
+        margin-bottom: 24px;
+    }
 
-  .form-actions {
-    flex-direction: column;
-  }
+    .form-actions {
+        flex-direction: column;
+    }
 
-  .create-button,
-  .cancel-button {
-    width: 100%;
-  }
+    .create-button,
+    .cancel-button {
+        width: 100%;
+    }
 }

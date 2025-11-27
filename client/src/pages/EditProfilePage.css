@@ -1,278 +1,278 @@
 /* EditProfilePage.css */
 
 .edit-profile-page {
-  background-color: #1a1a1a;
-  min-height: 100vh;
-  padding-bottom: 40px;
+    background-color: #1a1a1a;
+    min-height: 100vh;
+    padding-bottom: 40px;
 }
 
 /* Banner Section */
 .edit-profile-banner-container {
-  position: relative;
-  margin-bottom: 40px;
+    position: relative;
+    margin-bottom: 40px;
 }
 
 .edit-profile-banner {
-  width: 100%;
-  height: 300px;
-  background: linear-gradient(135deg, #6b00ff 0%, #a259ff 50%, #6b00ff 100%);
-  position: relative;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(135deg, #6b00ff 0%, #a259ff 50%, #6b00ff 100%);
+    position: relative;
 }
 
 /* Action Buttons Section */
 .edit-profile-actions {
-  display: flex;
-  gap: 12px;
-  padding: 0 24px;
-  margin: -30px 0 40px 0;
-  position: relative;
-  z-index: 5;
+    display: flex;
+    gap: 12px;
+    padding: 0 24px;
+    margin: -30px 0 40px 0;
+    position: relative;
+    z-index: 5;
 }
 
 .edit-profile-button {
-  background-color: #a259ff !important;
-  color: #ffffff !important;
-  padding: 10px 24px !important;
-  border-radius: 8px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  transition: all 200ms ease !important;
+    background-color: #a259ff !important;
+    color: #ffffff !important;
+    padding: 10px 24px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    transition: all 200ms ease !important;
 }
 
 .edit-profile-button:hover {
-  background-color: #8f45e3 !important;
-  transform: translateY(-2px) !important;
+    background-color: #8f45e3 !important;
+    transform: translateY(-2px) !important;
 }
 
 .edit-banner-button {
-  background-color: #a259ff !important;
-  color: #ffffff !important;
-  padding: 10px 24px !important;
-  border-radius: 8px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  transition: all 200ms ease !important;
+    background-color: #a259ff !important;
+    color: #ffffff !important;
+    padding: 10px 24px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    transition: all 200ms ease !important;
 }
 
 .edit-banner-button:hover {
-  background-color: #8f45e3 !important;
-  transform: translateY(-2px) !important;
+    background-color: #8f45e3 !important;
+    transform: translateY(-2px) !important;
 }
 
 .avatar-edit-button {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  color: #1a1a1a !important;
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 200ms ease !important;
-  flex-shrink: 0 !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: #1a1a1a !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 200ms ease !important;
+    flex-shrink: 0 !important;
 }
 
 .avatar-edit-button:hover {
-  background-color: #ffffff !important;
-  transform: scale(1.05) !important;
+    background-color: #ffffff !important;
+    transform: scale(1.05) !important;
 }
 
 /* Content Section */
 .edit-profile-content {
-  background-color: #2f2f2f;
-  margin: 0 40px;
-  padding: 40px;
-  border-radius: 12px;
-  position: relative;
-  margin-top: -60px;
+    background-color: #2f2f2f;
+    margin: 0 40px;
+    padding: 40px;
+    border-radius: 12px;
+    position: relative;
+    margin-top: -60px;
 }
 
 /* Avatar Section */
 .edit-profile-avatar-section {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
 }
 
 .edit-profile-avatar {
-  width: 120px !important;
-  height: 120px !important;
-  border: 4px solid #1a1a1a !important;
-  border-radius: 12px !important;
-  flex-shrink: 0;
+    width: 120px !important;
+    height: 120px !important;
+    border: 4px solid #1a1a1a !important;
+    border-radius: 12px !important;
+    flex-shrink: 0;
 }
 
 /* Form */
 .edit-profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .form-label {
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
 }
 
 .form-field-wrapper {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
 }
 
 .form-field-wrapper.biography {
-  align-items: flex-end;
+    align-items: flex-end;
 }
 
 .profile-input {
-  flex: 1;
+    flex: 1;
 }
 
 .profile-input-root {
-  background-color: #1a1a1a !important;
-  border-radius: 8px !important;
-  color: #ffffff !important;
+    background-color: #1a1a1a !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
 }
 
 .profile-input .MuiOutlinedInput-root {
-  color: #ffffff !important;
-  background-color: #1a1a1a !important;
-  border-radius: 8px !important;
+    color: #ffffff !important;
+    background-color: #1a1a1a !important;
+    border-radius: 8px !important;
 }
 
 .profile-input .MuiOutlinedInput-root fieldset {
-  border-color: #444 !important;
-  border-radius: 8px !important;
+    border-color: #444 !important;
+    border-radius: 8px !important;
 }
 
 .profile-input .MuiOutlinedInput-root:hover fieldset {
-  border-color: #a259ff !important;
+    border-color: #a259ff !important;
 }
 
 .profile-input .MuiOutlinedInput-root.Mui-focused fieldset {
-  border-color: #a259ff !important;
+    border-color: #a259ff !important;
 }
 
 .profile-input.Mui-disabled .MuiOutlinedInput-root {
-  background-color: #1a1a1a !important;
+    background-color: #1a1a1a !important;
 }
 
 .profile-input .MuiInputBase-input {
-  color: #ffffff !important;
+    color: #ffffff !important;
 }
 
 .profile-input .MuiInputBase-input.Mui-disabled {
-  color: #ccc !important;
-  -webkit-text-fill-color: #ccc !important;
+    color: #ccc !important;
+    -webkit-text-fill-color: #ccc !important;
 }
 
 .profile-input .MuiInputBase-input::placeholder {
-  color: #888 !important;
-  opacity: 1 !important;
+    color: #888 !important;
+    opacity: 1 !important;
 }
 
 /* Edit Icon Buttons */
 .field-edit-button {
-  color: #a259ff !important;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 200ms ease !important;
-  flex-shrink: 0;
+    color: #a259ff !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 200ms ease !important;
+    flex-shrink: 0;
 }
 
 .field-edit-button:hover {
-  background-color: rgba(162, 89, 255, 0.1) !important;
-  transform: scale(1.05) !important;
+    background-color: rgba(162, 89, 255, 0.1) !important;
+    transform: scale(1.05) !important;
 }
 
 .biography-button {
-  margin-top: auto;
+    margin-top: auto;
 }
 
 /* Save Button */
 .save-button {
-  background-color: #a259ff !important;
-  color: #ffffff !important;
-  border-radius: 999px !important;
-  padding: 12px 32px !important;
-  font-weight: 600 !important;
-  width: fit-content !important;
-  margin-top: 16px !important;
-  transition: all 200ms ease !important;
+    background-color: #a259ff !important;
+    color: #ffffff !important;
+    border-radius: 999px !important;
+    padding: 12px 32px !important;
+    font-weight: 600 !important;
+    width: fit-content !important;
+    margin-top: 16px !important;
+    transition: all 200ms ease !important;
 }
 
 .save-button:hover {
-  background-color: #8f45e3 !important;
-  transform: scale(1.02) !important;
+    background-color: #8f45e3 !important;
+    transform: scale(1.02) !important;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .edit-profile-content {
-    margin: 0 20px;
-    padding: 20px;
-    margin-top: -50px;
-  }
+    .edit-profile-content {
+        margin: 0 20px;
+        padding: 20px;
+        margin-top: -50px;
+    }
 
-  .edit-profile-form {
-    gap: 24px;
-  }
+    .edit-profile-form {
+        gap: 24px;
+    }
 
-  .form-field-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-  }
+    .form-field-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-  .form-field-wrapper.biography {
-    flex-direction: column;
-    align-items: stretch;
-  }
+    .form-field-wrapper.biography {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-  .field-edit-button,
-  .biography-button {
-    width: 100% !important;
-    align-self: flex-end !important;
-    margin-top: 8px !important;
-  }
+    .field-edit-button,
+    .biography-button {
+        width: 100% !important;
+        align-self: flex-end !important;
+        margin-top: 8px !important;
+    }
 }
 
 @media (max-width: 480px) {
-  .edit-profile-banner {
-    height: 200px;
-  }
+    .edit-profile-banner {
+        height: 200px;
+    }
 
-  .edit-profile-content {
-    margin: 0 16px;
-    padding: 16px;
-    border-radius: 8px;
-  }
+    .edit-profile-content {
+        margin: 0 16px;
+        padding: 16px;
+        border-radius: 8px;
+    }
 
-  .edit-profile-avatar {
-    width: 100px !important;
-    height: 100px !important;
-  }
+    .edit-profile-avatar {
+        width: 100px !important;
+        height: 100px !important;
+    }
 
-  .form-label {
-    font-size: 14px !important;
-  }
+    .form-label {
+        font-size: 14px !important;
+    }
 
-  .save-button {
-    width: 100% !important;
-  }
+    .save-button {
+        width: 100% !important;
+    }
 }

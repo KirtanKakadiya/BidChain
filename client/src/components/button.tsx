@@ -5,7 +5,7 @@ export interface ButtonProps {
     text: string;
     icon?: React.ElementType;
     ariaLabel?: string;
-    onClick?: () => void;  
+    onClick?: () => void;
 }
 
 export function PrimaryButton({ text, icon, ariaLabel, onClick }: ButtonProps) {

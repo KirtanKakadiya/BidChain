@@ -12,8 +12,8 @@ export function NavBar(): JSX.Element {
 
     const handleProfileClick = () => {
         if (!user) return;
-        if (user.role === "ARTIST") navigate("/artist");
-        if (user.role === "COLLECTOR") navigate("/collector");
+        if (user.role === 'ARTIST') navigate('/artist');
+        if (user.role === 'COLLECTOR') navigate('/collector');
     };
 
     return (
@@ -21,7 +21,11 @@ export function NavBar(): JSX.Element {
             <div className="navbar-container">
                 <div className="navbar-left">
                     <Link to="/">
-                        <img src="/bidchain-logo.svg" alt="BidChain logo" className="navbar-logo" />
+                        <img
+                            src="/bidchain-logo.svg"
+                            alt="BidChain logo"
+                            className="navbar-logo"
+                        />
                     </Link>
                     <span className="navbar-brand">BidChain</span>
                 </div>
@@ -34,7 +38,10 @@ export function NavBar(): JSX.Element {
 
                     {isLoggedIn ? (
                         <>
-                            <IconButton className="user-icon-button" onClick={handleProfileClick}>
+                            <IconButton
+                                className="user-icon-button"
+                                onClick={handleProfileClick}
+                            >
                                 <PersonIcon />
                             </IconButton>
 
