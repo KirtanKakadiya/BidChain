@@ -15,6 +15,9 @@ model User {
     role      UserRole @default(COLLECTOR)
     bids      Bid[]    @relation("UserBids")
     nfts      NFT[]    @relation("UserNFTs")
+    walletBalance Float @default(0)
+    walletAddress String @default(uuid())
+    bidsTotal     Float @default(0)
     avatarPicture String?
     bannerPicture String?
 }
