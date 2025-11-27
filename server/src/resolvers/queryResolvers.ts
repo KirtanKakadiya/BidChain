@@ -2,15 +2,19 @@ import { GraphQLError } from 'graphql';
 import type { User } from '../types/userTypes';
 import type { UserModel } from '../models/userModel';
 import type { AuctionModel } from '../models/auctionModel';
+import type { NFTModel } from '../models/nftModel';
 import type { Auction } from '../types/auctionType';
 import { HTTP_CODES } from '../httpCodes';
+import { NFT } from '../types/nftType';
 
 export function createQueryResolvers({
     userModel,
     auctionModel,
+    nftModel
 }: {
     userModel: UserModel;
     auctionModel: AuctionModel;
+    nftModel:NFTModel
 }) {
     async function user(
         _parent: unknown,
@@ -25,6 +29,18 @@ export function createQueryResolvers({
         }
 
         return userData;
+    }
+    
+    async function nfts(): Promise<NFT[]> {
+        try {
+            const nftList = await nftModel.getNFTs(); // You'll add this to NFTModel
+            return nftList ?? [];
+        } catch (error: any) {
+            console.error(error);
+            throw new GraphQLError(`Failed to fetch NFTs. ${error}`, {
+                extensions: { code: HTTP_CODES.SERVER_ERROR },
+            });
+        }
     }
 
     async function auction(
@@ -46,6 +62,8 @@ export function createQueryResolvers({
             });
         }
     }
+
+    
 
     async function auctionByNftId(
         _parent: unknown,
@@ -70,5 +88,5 @@ export function createQueryResolvers({
         }
     }
 
-    return { user, auction };
+    return { user, auction, nfts};
 }

@@ -26,7 +26,7 @@ const auctionModel = createAuctionModel(dbClient);
 async function main() {
     const server: ApolloServer = new ApolloServer({
         typeDefs: gqlSchema,
-        resolvers: createResolvers({ userModel, nftModel }),
+        resolvers: createResolvers({ userModel, nftModel, auctionModel}),
     });
 
     const { url } = await startStandaloneServer(server, {
