@@ -48,6 +48,7 @@ export function createUserModel(db: DbClient): UserModel {
                 email: data.email ?? undefined,
                 password: data.password ?? undefined,
                 walletBalance: data.walletBalance ?? undefined,
+                bidsTotal: data.bidsTotal ?? undefined,
                 avatarPicture: data.avatarPicture ?? undefined,
                 bannerPicture: data.bannerPicture ?? undefined,
             },
