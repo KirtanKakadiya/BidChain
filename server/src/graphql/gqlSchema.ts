@@ -24,6 +24,7 @@ export const gqlSchema = `#graphql
     updatedAt: String!
     walletBalance: Float!
     walletAddress: String!
+    bidsTotal: Float!
     avatarPicture: String!
     bannerPicture: String!
     bids: [Bid!]
@@ -81,6 +82,8 @@ export const gqlSchema = `#graphql
   input UpdateUserInput {
     name: String
     email: String
+    walletBalance: Float
+    bidsTotal: Float
     avatarPicture: String!
     bannerPicture: String!
     password: String

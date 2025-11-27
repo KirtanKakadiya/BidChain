@@ -17,6 +17,7 @@ model User {
     nfts      NFT[]    @relation("UserNFTs")
     walletBalance Float @default(0)
     walletAddress String @default(uuid())
+    bidsTotal     Float @default(0)
     avatarPicture String?
     bannerPicture String?
 }
