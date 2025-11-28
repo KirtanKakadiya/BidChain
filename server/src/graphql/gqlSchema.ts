@@ -133,7 +133,9 @@ export const gqlSchema = `#graphql
     nft(id: ID!): NFT
     auctions: [Auction!]
     auction(id: ID!): Auction
+    auctionByNftId(nftId: ID!): Auction
     bids: [Bid!]
+    bid(id: ID!): Bid
   }
 
   type Mutation {
