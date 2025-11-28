@@ -17,6 +17,9 @@ export interface User {
     readonly password: string;
     readonly bids: Bid[];
     readonly nfts: NFT[];
+    readonly walletBalance: number;
+    readonly walletAddress: string;
+    readonly bidsTotal: number;
     readonly avatarPicture: string | null;
     readonly bannerPicture: string | null;
 }
@@ -32,6 +35,8 @@ export interface UpdateUserInput {
     name?: string;
     email?: string;
     password?: string;
+    walletBalance?: number;
+    bidsTotal?: number;
     avatarPicture?: string;
     bannerPicture?: string;
 }

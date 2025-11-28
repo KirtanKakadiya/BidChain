@@ -9,6 +9,7 @@ import { createUserModel } from './models/userModel';
 import { createDbClient } from './db/dbClient';
 import { createNFTModel } from './models/nftModel';
 import { createAuctionModel } from './models/auctionModel';
+import { createBidModel } from './models/bidModel';
 
 dotenv.config();
 
@@ -22,11 +23,17 @@ const dbClient = createDbClient(PG_DB_URL);
 const userModel = createUserModel(dbClient);
 const nftModel = createNFTModel(dbClient);
 const auctionModel = createAuctionModel(dbClient);
+const bidModel = createBidModel(dbClient);
 
 async function main() {
     const server: ApolloServer = new ApolloServer({
         typeDefs: gqlSchema,
-        resolvers: createResolvers({ userModel, nftModel, auctionModel}),
+        resolvers: createResolvers({
+            userModel,
+            nftModel,
+            auctionModel,
+            bidModel,
+        }),
     });
 
     const { url } = await startStandaloneServer(server, {

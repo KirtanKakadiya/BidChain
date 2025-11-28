@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { gqlScehma } from './graphql/gqlScehma';
+import { gqlSchema } from './graphql/gqlSchema';
 import { createResolvers } from './resolvers/resolvers';
 import { createUserModel } from './models/UserModel';
 import { PrismaClient } from '@prisma/client';
@@ -13,7 +13,7 @@ const app = express();
 const dbClient = new PrismaClient();
 const userModel = createUserModel(dbClient);
 const server = new ApolloServer({
-    typeDefs: gqlScehma,
+    typeDefs: gqlSchema,
     resolvers: createResolvers({ userModel }),
 });
 const { url } = await startStandaloneServer(server, {

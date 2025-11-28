@@ -22,6 +22,9 @@ export const gqlSchema = `#graphql
     role: UserRole!
     createdAt: String!
     updatedAt: String!
+    walletBalance: Float!
+    walletAddress: String!
+    bidsTotal: Float!
     avatarPicture: String!
     bannerPicture: String!
     bids: [Bid!]
@@ -79,6 +82,8 @@ export const gqlSchema = `#graphql
   input UpdateUserInput {
     name: String
     email: String
+    walletBalance: Float
+    bidsTotal: Float
     avatarPicture: String!
     bannerPicture: String!
     password: String
@@ -107,7 +112,7 @@ export const gqlSchema = `#graphql
     isActive: Boolean
   }
 
-  input PlaceBidInput {
+  input placeBidArgs {
     auctionId: Int!
     bidderId: Int!
     amount: Float!
@@ -139,6 +144,9 @@ export const gqlSchema = `#graphql
     #users
     updateUser(id: ID!, data: UpdateUserInput!): User!
 
+    #Wallet operations
+    addFunds(userId: Int!, amount: Float!): User!
+
     #NFTS
     createNFT(data: CreateNFTInput!): NFT!
     getNFTByCategories(data: [Categories!]): [NFT!]
@@ -148,6 +156,6 @@ export const gqlSchema = `#graphql
     updateAuction(data: UpdateAuctionInput!): Auction!
 
     #Bids
-    placeBid(data: PlaceBidInput!): Bid!
+    placeBid(data: placeBidArgs!): Bid!
   }
 `;

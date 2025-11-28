@@ -1,8 +1,6 @@
 // src/models/userModel.ts
-import { PrismaClient } from '@prisma/client';
 import { DbClient } from '../db/dbClient';
 import type { CreateUserArgs, UpdateUserInput, User } from '../types/userTypes';
-
 
 export interface UserModel {
     readonly getUserById: (id: number) => Promise<User | undefined>;
@@ -49,6 +47,8 @@ export function createUserModel(db: DbClient): UserModel {
                 name: data.name ?? undefined,
                 email: data.email ?? undefined,
                 password: data.password ?? undefined,
+                walletBalance: data.walletBalance ?? undefined,
+                bidsTotal: data.bidsTotal ?? undefined,
                 avatarPicture: data.avatarPicture ?? undefined,
                 bannerPicture: data.bannerPicture ?? undefined,
             },

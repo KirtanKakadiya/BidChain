@@ -1,20 +1,22 @@
-import { GraphQLError } from 'graphql';
+import { graphql, GraphQLError } from 'graphql';
 import type { User } from '../types/userTypes';
 import type { UserModel } from '../models/userModel';
 import type { AuctionModel } from '../models/auctionModel';
 import type { NFTModel } from '../models/nftModel';
 import type { Auction } from '../types/auctionType';
+import { Bid } from '../types/bidType';
+import { BidModel } from '../models/bidModel';
 import { HTTP_CODES } from '../httpCodes';
 import { NFT } from '../types/nftType';
 
 export function createQueryResolvers({
     userModel,
     auctionModel,
-    nftModel
+    bidModel,
 }: {
     userModel: UserModel;
     auctionModel: AuctionModel;
-    nftModel:NFTModel
+    bidModel: BidModel;
 }) {
     async function user(
         _parent: unknown,
@@ -88,5 +90,24 @@ export function createQueryResolvers({
         }
     }
 
-    return { user, auction, nfts};
+    async function bid(_parent: unknown, { id }: { id: number }): Promise<Bid> {
+        try {
+            const bidSearch = await bidModel.getBidById(id);
+
+            if (!bidSearch) {
+                throw new GraphQLError('Bid not found.', {
+                    extensions: { code: HTTP_CODES.NOT_FOUND },
+                });
+            }
+
+            return bidSearch;
+        } catch (error: any) {
+            console.error(error);
+            throw new GraphQLError(`Failed to fetch bid by id. ${error}`, {
+                extensions: { code: HTTP_CODES.SERVER_ERROR },
+            });
+        }
+    }
+
+    return { user, auction, auctionByNftId, bid };
 }
