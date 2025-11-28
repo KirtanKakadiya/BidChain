@@ -13,10 +13,12 @@ export function createQueryResolvers({
     userModel,
     auctionModel,
     bidModel,
+    nftModel
 }: {
     userModel: UserModel;
     auctionModel: AuctionModel;
     bidModel: BidModel;
+    nftModel: NFTModel
 }) {
     async function user(
         _parent: unknown,
