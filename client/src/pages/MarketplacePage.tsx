@@ -1,38 +1,84 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 import './MarketplacePage.css';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import { useState } from 'react';
+import { getNFTs } from '../graphql/queries/nftQueries';
 
-const sampleNFTCard: NFT = {
-    id: '1',
-    name: 'Bored Ape',
-    imageUrl: '/bored-ape.png',
-    creatorName: 'Test Creator',
-    creatorAvatarUrl: '/avatar.png',
-    price: '1.83 ETH',
-};
+async function fetchNFTs(): Promise<NFT[]> {
+    
+    const response = await fetch('http://localhost:8080/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            query: getNFTs,
+        }),
+    });
 
-/** TODO
- * Add proper fetching from api's , remove sample nft data
- * Add filters for the cards (price, data added ....)
- * fix css make it more responsive...
- */
+    const json = await response.json();
+
+    if (!response.ok) {
+        throw new Error(`Network error: ${response.status}`);
+    }
+
+    if (json.errors && json.errors.length > 0) {
+        console.error('GraphQL errors:', json.errors);
+        throw new Error('GraphQL responded with errors');
+    }
+
+    if (!json.data || !json.data.nfts) {
+        console.warn('No nfts field in GraphQL response data');
+        return [];
+    }
+
+    const apiNfts = json.data.nfts as Array<{
+        id: number | string;
+        title: string;
+        imageUrl: string;
+        creator: { name: string; avatarPicture: string | null } | null;
+        auction: { currentPrice: number } | null;
+    }>;
+
+    return apiNfts.map((nft) => ({
+        id: String(nft.id),
+        name: nft.title,
+        imageUrl: nft.imageUrl,
+        creatorName: nft.creator?.name ?? 'Unknown Creator',
+        creatorAvatarUrl: nft.creator?.avatarPicture ?? '/avatar.png',
+        price: nft.auction
+            ? `${nft.auction.currentPrice.toFixed(2)} ETH`
+            : 'Not for sale',
+    }));
+
+}
+
 export function MarketplacePage(): JSX.Element {
     const [searchText, setSearchText] = useState('');
+    const [nfts, setNfts] = useState<NFT[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+        
+    useEffect(() => {
+            async function loadNFTs() {
+                try {
+                    setLoading(true);
+                    setError(null);
+                    const fetched = await fetchNFTs();
+                    setNfts(fetched);
+                } catch (e) {
+                    console.error(e);
+                    setError('Failed to load NFTs');
+                } finally {
+                    setLoading(false);
+                }
+            }
 
-    const generateNFTs = (count: number): NFT[] =>
-        Array.from({ length: count }, (_, i) => ({
-            ...sampleNFTCard,
-            id: String(i + 1),
-            name: `${sampleNFTCard.name} #${i + 1}`,
-            price: `${(1.83 + i * 0.05).toFixed(2)} ETH`,
-        }));
+            loadNFTs();
+        }, []);
 
-    const nfts = generateNFTs(12);
-    const filteredNFTs = nfts.filter((nft) =>
+        const filteredNFTs = nfts.filter((nft) =>
         nft.name.toLowerCase().includes(searchText.toLowerCase())
     );
 

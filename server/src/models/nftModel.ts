@@ -5,6 +5,7 @@ import { Categories } from '@prisma/client';
 export interface NFTModel {
     readonly getNFTById: (id: number) => Promise<NFT | undefined>;
     readonly getNFTByCreatorId: (id: number) => Promise<NFT[] | undefined>;
+    readonly getNFTs:() => Promise<NFT[]>;
     readonly createNFT: (data: CreateNFTArgs) => Promise<NFT>;
     readonly getNFTCategories: (
         tags: Categories[]
@@ -50,10 +51,20 @@ export function createNFTModel(db: DbClient): NFTModel {
         });
     }
 
+    async function getNFTs(): Promise<NFT[]>{
+        return db.nFT.findMany({
+        include: {
+            auction: true,
+            creator: true,
+        },
+    });
+    }
+
     return Object.freeze({
         getNFTById,
         getNFTByCreatorId,
         createNFT,
         getNFTCategories,
+        getNFTs
     });
 }
