@@ -11,33 +11,34 @@ export interface NFTModel {
 }
 
 export function createNFTModel(db: DbClient): NFTModel {
-    async function getNFTById(id: number) {
-        return (
-            (await db.nFT.findUnique({
-                where: { id },
-            })) ?? undefined
-        );
-    }
+  async function getNFTById(id: number) {
+    return (
+      (await db.nFT.findUnique({
+        where: { id },
+        include: { creator: true },
+      })) ?? undefined
+    );
+  }
 
-    async function getNFTByCreatorId(id: number) {
-        return (
-            (await db.nFT.findMany({
-                where: { creatorId: id },
-            })) ?? undefined
-        );
-    }
+  async function getNFTByCreatorId(id: number) {
+    return (
+      (await db.nFT.findMany({
+        where: { creatorId: id },
+      })) ?? undefined
+    );
+  }
 
-    async function createNFT(data: CreateNFTArgs) {
-        return await db.nFT.create({
-            data: {
-                title: data.title,
-                description: data.description,
-                imageUrl: data.imageUrl,
-                creatorId: data.creatorId,
-                tags: data.tags,
-            },
-        });
-    }
+  async function createNFT(data: CreateNFTArgs) {
+    return await db.nFT.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        imageUrl: data.imageUrl,
+        creatorId: data.creatorId,
+        tags: data.tags,
+      },
+    });
+  }
 
     async function getNFTCategories(tags: Categories[]): Promise<NFT[]> {
         return db.nFT.findMany({
@@ -65,4 +66,13 @@ export function createNFTModel(db: DbClient): NFTModel {
         getNFTCategories,
         getNFTs,
     });
+  }
+
+  return Object.freeze({
+    getNFTById,
+    getNFTByCreatorId,
+    createNFT,
+    getNFTCategories,
+    getNFTs,
+  });
 }

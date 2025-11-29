@@ -5,52 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import { useState } from 'react';
-import { getNFTs } from '../graphql/queries/nftQueries';
-
-async function fetchNFTs(): Promise<NFT[]> {
-    const response = await fetch('http://localhost:8080/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            query: getNFTs,
-        }),
-    });
-
-    const json = await response.json();
-
-    if (!response.ok) {
-        throw new Error(`Network error: ${response.status}`);
-    }
-
-    if (json.errors && json.errors.length > 0) {
-        console.error('GraphQL errors:', json.errors);
-        throw new Error('GraphQL responded with errors');
-    }
-
-    if (!json.data || !json.data.nfts) {
-        console.warn('No nfts field in GraphQL response data');
-        return [];
-    }
-
-    const apiNfts = json.data.nfts as Array<{
-        id: number | string;
-        title: string;
-        imageUrl: string;
-        creator: { name: string; avatarPicture: string | null } | null;
-        auction: { currentPrice: number } | null;
-    }>;
-
-    return apiNfts.map((nft) => ({
-        id: String(nft.id),
-        name: nft.title,
-        imageUrl: nft.imageUrl,
-        creatorName: nft.creator?.name ?? 'Unknown Creator',
-        creatorAvatarUrl: nft.creator?.avatarPicture ?? '/avatar.png',
-        price: nft.auction
-            ? `${nft.auction.currentPrice.toFixed(2)} ETH`
-            : 'Not for sale',
-    }));
-}
+import { nftQueries } from '../graphql/queries/nftQueries';
 
 export function MarketplacePage(): JSX.Element {
     const [searchText, setSearchText] = useState('');
@@ -60,16 +15,16 @@ export function MarketplacePage(): JSX.Element {
 
     useEffect(() => {
         async function loadNFTs() {
-            try {
                 setLoading(true);
                 setError(null);
-                const fetched = await fetchNFTs();
+                const fetched = await nftQueries.getAllNFTs();
                 setNfts(fetched);
             } catch (e) {
                 console.error(e);
                 setError('Failed to load NFTs');
             } finally {
                 setLoading(false);
+            try {
             }
         }
 

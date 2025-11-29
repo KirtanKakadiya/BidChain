@@ -130,7 +130,7 @@ export const gqlSchema = `#graphql
     users: [User!]
     user(email: String!): User
     nfts: [NFT!]
-    nft(id: ID!): NFT
+    nft(id: Int!): NFT
     auctions: [Auction!]
     auction(id: ID!): Auction
     auctionByNftId(nftId: Int!): Auction
