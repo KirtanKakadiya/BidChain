@@ -7,6 +7,7 @@ import {
     Typography,
     Box,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import type { NFT } from '../types/nft';
 import './NFTCard.css';
 
@@ -22,10 +23,20 @@ type NFTCardProps = {
 // Also add highest price to right of the price
 
 export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (onClick) {
+            onClick(nft.id);
+        } else {
+            navigate(`/nft/${nft.id}`);
+        }
+    };
+
     return (
         <Card
             className="nft-card"
-            onClick={() => onClick?.(nft.id)}
+            onClick={handleClick}
             sx={{ borderRadius: '20px', overflow: 'hidden' }}
         >
             <CardMedia
