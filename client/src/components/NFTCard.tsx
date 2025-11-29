@@ -19,7 +19,6 @@ interface NFTCardProps {
 // TODO
 // The bg color for the icon doesnt work, need to fix that bug
 // Also still need to add the info container
-// Fix font family for price, cant get space mono to work!!
 // Also add highest price to right of the price
 
 export function NFTCard({ nft, onClick }: Readonly<NFTCardProps>) {
@@ -51,7 +50,12 @@ export function NFTCard({ nft, onClick }: Readonly<NFTCardProps>) {
             />
 
             <CardContent className="nft-card-content">
-                <Typography variant="h5" className="nft-name">
+                <Typography
+                    variant="h5"
+                    className="nft-name"
+                    fontFamily="Work Sans"
+                    fontWeight="600"
+                >
                     {nft.name}
                 </Typography>
 
@@ -61,16 +65,28 @@ export function NFTCard({ nft, onClick }: Readonly<NFTCardProps>) {
                         alt={nft.creatorName}
                         className="nft-avatar"
                     />
-                    <Typography variant="body2" className="nft-creator-name">
+                    <Typography
+                        variant="body2"
+                        className="nft-creator-name"
+                        fontFamily="Space Mono"
+                    >
                         {nft.creatorName}
                     </Typography>
                 </Box>
 
                 <Box className="nft-price">
-                    <Typography variant="body2" className="nft-price-label">
+                    <Typography
+                        variant="body2"
+                        className="nft-price-label"
+                        fontFamily="Space Mono"
+                    >
                         Value
                     </Typography>
-                    <Typography variant="body1" className="nft-price-value">
+                    <Typography
+                        variant="body1"
+                        className="nft-price-value"
+                        fontFamily="Space Mono"
+                    >
                         {nft.price}
                     </Typography>
                 </Box>
