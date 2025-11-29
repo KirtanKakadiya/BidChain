@@ -3,6 +3,7 @@
     position: sticky;
     top: 0;
     z-index: 999;
+    font-family: 'Work Sans', sans-serif;
 }
 
 .navbar-container {
@@ -30,6 +31,7 @@
 
 .navbar-brand {
     color: #ffffff;
+    font-family: 'Space Mono', monospace;
     font-weight: 800;
     letter-spacing: 0.2px;
     font-size: 20px;
