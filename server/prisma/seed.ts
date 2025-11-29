@@ -4,26 +4,27 @@ const prisma = new PrismaClient();
 
 async function main() {
   const users = await prisma.user.createMany({
-  data: [
-    {
-      name: 'Collector One',
-      email: 'collector1@example.com',
-      password: 'password123',             
-    },
-    {
-      name: 'Artist One',
-      email: 'artist1@example.com',
-      password: 'password123',            
-    },
-    {
-      name: 'Artist Two',
-      email: 'artist2@example.com',
-      password: 'password123',            
-    },
-  ],
-  skipDuplicates: true,
-});
-
+    data: [
+      {
+        name: 'Collector One',
+        email: 'collector1@example.com',
+        password: 'password123',
+      },
+      {
+        name: 'Artist One',
+        email: 'artist1@example.com',
+        password: 'password123',
+        role: 'ARTIST',
+      },
+      {
+        name: 'Artist Two',
+        email: 'artist2@example.com',
+        password: 'password123',
+        role: 'ARTIST',
+      },
+    ],
+    skipDuplicates: true,
+  });
 
   console.log('✅ Users created:', users);
 
@@ -37,7 +38,8 @@ async function main() {
   const nft1 = await prisma.nFT.create({
     data: {
       title: 'Digital Dreams',
-      description: 'A surreal digital art piece exploring imagination and color.',
+      description:
+        'A surreal digital art piece exploring imagination and color.',
       imageUrl: 'SUPABASE_LINK',
       creatorId: artist.id,
     },
@@ -46,7 +48,8 @@ async function main() {
   const nft2 = await prisma.nFT.create({
     data: {
       title: 'Future Relic',
-      description: 'Abstract NFT depicting humanity’s interaction with technology.',
+      description:
+        'Abstract NFT depicting humanity’s interaction with technology.',
       imageUrl: 'SUPABASE_LINK',
       creatorId: artist.id,
     },
@@ -60,7 +63,7 @@ async function main() {
       startPrice: 1.5,
       currentPrice: 1.5,
       startTime: new Date(Date.now() - 1000 * 60 * 60 * 2), // started 2h ago
-      endTime: new Date(Date.now() + 1000 * 60 * 60 * 2),   // ends in 2h
+      endTime: new Date(Date.now() + 1000 * 60 * 60 * 2), // ends in 2h
       isActive: true,
     },
   });
