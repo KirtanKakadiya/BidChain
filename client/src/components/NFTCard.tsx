@@ -11,10 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import type { NFT } from '../types/nft';
 import './NFTCard.css';
 
-type NFTCardProps = {
+interface NFTCardProps {
     nft: NFT;
     onClick?: (id: string) => void;
-};
+}
 
 // TODO
 // The bg color for the icon doesnt work, need to fix that bug
@@ -22,7 +22,7 @@ type NFTCardProps = {
 // Fix font family for price, cant get space mono to work!!
 // Also add highest price to right of the price
 
-export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
+export function NFTCard({ nft, onClick }: Readonly<NFTCardProps>) {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -37,11 +37,15 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
         <Card
             className="nft-card"
             onClick={handleClick}
-            sx={{ borderRadius: '20px', overflow: 'hidden' }}
+            sx={{
+                borderRadius: '20px',
+                overflow: 'hidden',
+                backgroundColor: '#2b2b2b',
+            }}
         >
             <CardMedia
                 component="img"
-                image={nft.imageUrl}
+                image={nft.imageUrl || '/bored-ape.png'}
                 alt={nft.name}
                 className="nft-image"
             />
@@ -73,4 +77,4 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
             </CardContent>
         </Card>
     );
-};
+}
