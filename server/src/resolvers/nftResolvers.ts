@@ -4,7 +4,6 @@ import { HTTP_CODES } from '../httpCodes';
 import { CreateNFTArgs, NFT } from '../types/nftType';
 import { Categories } from '@prisma/client';
 
-
 type GetNFTByCategoriesArgs = {
     data?: Categories[] | null;
 };
@@ -12,7 +11,7 @@ type GetNFTByCategoriesArgs = {
 export function createNFTResolver({ nftModel }: { nftModel: NFTModel }) {
     async function createNFT(
         _parent: unknown,
-        { data }: {data:CreateNFTArgs}
+        { data }: { data: CreateNFTArgs }
     ): Promise<NFT> {
         const { title, imageUrl, creatorId, tags } = data;
 
@@ -25,7 +24,7 @@ export function createNFTResolver({ nftModel }: { nftModel: NFTModel }) {
         try {
             const created = await nftModel.createNFT(data);
             return created;
-        } catch (e:any) {
+        } catch (e: any) {
             console.error(e);
             throw new GraphQLError(`Failed to create NFT. ${e}`, {
                 extensions: { code: HTTP_CODES.SERVER_ERROR },

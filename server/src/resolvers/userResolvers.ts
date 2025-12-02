@@ -75,12 +75,10 @@ export function createUserResolver({
         return created;
     }
 
-    
     async function updateUser(
-       _parent: unknown, 
-       { id, data }: UpdateUserArgs
+        _parent: unknown,
+        { id, data }: UpdateUserArgs
     ): Promise<User> {
-
         const userID = Number(id);
 
         if (!userID) {
@@ -123,7 +121,7 @@ export function createUserResolver({
         }
         return await userModel.updateUser(userId, {
             walletBalance: user.walletBalance + amount,
-            id: userId
+            id: userId,
         });
     }
 
@@ -140,7 +138,7 @@ export function createUserResolver({
 
         return await userModel.updateUser(userId, {
             bidsTotal: user.bidsTotal + amount,
-            id: userId
+            id: userId,
         });
     }
 

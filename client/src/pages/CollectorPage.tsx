@@ -1,92 +1,58 @@
-import React, { useState, JSX } from 'react';
+import React, { useState, JSX, useEffect} from 'react';
 import { Box, Typography, Button, Avatar, Tabs, Tab } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import './CollectorPage.css';
+import { useAuth } from '../context/AuthContext';
+import { GRAPHQL_ENDPOINT } from '../config/env';
+
 
 export function CollectorPage(): JSX.Element {
-    const [activeTab, setActiveTab] = useState(0);
-
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-        setActiveTab(newValue);
-    };
-
-    // Sample NFT data for the grid
-    const sampleNFTs: NFT[] = [
-        {
-            id: '1',
-            name: 'Codeface',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '1.63 ETH',
-        },
-        {
-            id: '2',
-            name: 'Neonhawk',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '0.33 mETH',
-        },
-        {
-            id: '3',
-            name: 'ArtFowl',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '1.63 ETH',
-        },
-        {
-            id: '4',
-            name: 'HatHack',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '0.33 mETH',
-        },
-        {
-            id: '5',
-            name: 'CyberGrim',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '1.63 ETH',
-        },
-        {
-            id: '6',
-            name: 'AetherElf',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '0.33 mETH',
-        },
-        {
-            id: '7',
-            name: 'Solar Drift',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '1.63 ETH',
-        },
-        {
-            id: '8',
-            name: 'Auralyn',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '0.33 mETH',
-        },
-        {
-            id: '9',
-            name: 'Pixel Purr',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheBuyer',
-            price: '1.63 ETH',
-        },
-    ];
+        const { user } = useAuth(); // get current logged-in user
+        const [activeTab, setActiveTab] = useState(0);
+        const [userInfo, setUserInfo] = useState<any>(null);
+        const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+            setActiveTab(newValue);
+        };
+    
+        useEffect(() => {
+            async function fetchUser() {
+                const userEmail = user?.email ?? '0';
+                try {
+                    const response = await fetch(GRAPHQL_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: `
+                            query user($email: String!) {
+                                 user(email: $email) {
+                                    id
+                                    name
+                                    email
+                                    description
+                                    avatarPicture
+                                    bannerPicture
+                                }
+                            }
+                            `,
+                            variables: {
+                                email: userEmail,
+                            },
+                        }),
+                    });
+    
+                    const result = await response.json();
+                    setUserInfo(result.data.user);
+                } catch (error) {
+                    console.error('Failed to fetch user:', error);
+                }
+            }
+            if (user?.email) fetchUser();
+        }, [user]);   
+    
 
     return (
         <Box className="collector-page">
@@ -95,7 +61,7 @@ export function CollectorPage(): JSX.Element {
                 <Box
                     className="collector-banner"
                     sx={{
-                        backgroundImage: 'url(/bored-ape.png)',
+                        backgroundImage: `url(${userInfo?.bannerPicture})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
@@ -103,7 +69,7 @@ export function CollectorPage(): JSX.Element {
 
                 <Box className="collector-info-container">
                     <Avatar
-                        src="/avatar.png"
+                        src={userInfo?.avatarPicture}
                         alt="TheBuyer"
                         className="collector-avatar"
                         sx={{ width: 120, height: 120 }}
@@ -111,10 +77,10 @@ export function CollectorPage(): JSX.Element {
 
                     <Box className="collector-details">
                         <Typography variant="h3" className="collector-name">
-                            TheBuyer
+                            {userInfo?.name || 'Collector Name'}
                         </Typography>
 
-                        <Box className="collector-stats">
+                        {/* <Box className="collector-stats">
                             <Box className="stat">
                                 <Typography variant="h6" className="stat-value">
                                     250k+
@@ -148,12 +114,12 @@ export function CollectorPage(): JSX.Element {
                                     Followers
                                 </Typography>
                             </Box>
-                        </Box>
+                        </Box> */}
 
                         <Typography variant="body2" className="collector-bio">
                             <strong>Bio</strong>
                             <br />
-                            Buyer Bio
+                            {userInfo?.description}
                         </Typography>
                     </Box>
 
@@ -183,7 +149,7 @@ export function CollectorPage(): JSX.Element {
                 </Tabs>
             </Box>
 
-            {/* NFT Grid */}
+            {/* NFT Grid
             <Box className="collector-nfts">
                 <Box className="nft-grid">
                     {sampleNFTs.map((nft) => (
@@ -192,7 +158,7 @@ export function CollectorPage(): JSX.Element {
                         </Box>
                     ))}
                 </Box>
-            </Box>
+            </Box> */}
         </Box>
     );
 }

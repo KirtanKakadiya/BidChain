@@ -31,7 +31,6 @@ async function updateUserRequest(id: string, data: any) {
     });
 
     const json = await res.json();
-
     if (json.errors) {
         throw new Error(json.errors[0].message);
     }
@@ -43,7 +42,7 @@ async function updateUserRequest(id: string, data: any) {
 
 export function EditProfilePage(): JSX.Element {
     const { user, login } = useAuth();
-
+    const role = user?.role;
     const [username, setUsername] = useState(user?.name);
     const [email, setEmail] = useState(user?.email);
     const [biography, setBiography] = useState(user?.description ?? '');
@@ -141,10 +140,10 @@ export function EditProfilePage(): JSX.Element {
                         : undefined,
                 description:
                     biography !== user.description ? biography : undefined,
+                role: user.role
             };
-
             const updatedUser = await updateUserRequest(user.id, updatePayload);
-
+            updatedUser.role = role;
             login(updatedUser);
 
             setPendingAvatarFile(null);
