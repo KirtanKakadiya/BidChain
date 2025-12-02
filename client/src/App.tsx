@@ -11,10 +11,22 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { CreateNFTPage } from './pages/CreateNFTPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
 
 function App(): JSX.Element {
     return (
         <AuthProvider>
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<HomePage />} />

@@ -27,6 +27,7 @@ export const gqlSchema = `#graphql
     bidsTotal: Float!
     avatarPicture: String!
     bannerPicture: String!
+    description: String
     bids: [Bid!]
     nfts: [NFT!]
   }
@@ -84,8 +85,9 @@ export const gqlSchema = `#graphql
     email: String
     walletBalance: Float
     bidsTotal: Float
-    avatarPicture: String!
-    bannerPicture: String!
+    avatarPicture: String
+    bannerPicture: String
+    description: String
     password: String
     
   }

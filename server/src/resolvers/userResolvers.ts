@@ -12,6 +12,11 @@ type LoginArgs = {
     };
 };
 
+
+type UpdateUserArgs = {
+    id: string;
+    data: UpdateUserInput;
+}
 export function createUserResolver({
     userModel,
     auctionModel,
@@ -70,49 +75,29 @@ export function createUserResolver({
         return created;
     }
 
-    /**
-     * TODO
-     * add logic that if user selects to update photo or banner it updates in the supabase first
-     * then updates the postgres db
-     *
-     * also add logic to check if email already exists in the db, throw error if it already does
-     */
+    
     async function updateUser(
-        _parent: unknown,
-        { data }: { data: UpdateUserInput }
-    ): Promise<boolean> {
-        const {
-            name,
-            email,
-            password,
-            walletBalance,
-            bidsTotal,
-            avatarPicture,
-            bannerPicture,
-        } = data;
+       _parent: unknown, 
+       { id, data }: UpdateUserArgs
+    ): Promise<User> {
 
-        if (!email) {
-            throw new GraphQLError('Email not found.', {
-                extensions: { code: HTTP_CODES.NOT_FOUND },
-            });
-        }
+        const userID = Number(id);
 
-        const existing = await userModel.getUserByEmail(email);
-        if (!existing) {
+        if (!userID) {
             throw new GraphQLError('User not found.', {
                 extensions: { code: HTTP_CODES.NOT_FOUND },
             });
         }
 
         try {
-            const updated = await userModel.updateUser(existing.id, data);
+            const updated = await userModel.updateUser(userID, data);
             if (!updated) {
                 throw new GraphQLError('Failed to update user.', {
                     extensions: { code: HTTP_CODES.SERVER_ERROR },
                 });
             }
 
-            return true;
+            return updated;
         } catch (e) {
             throw new GraphQLError('Failed to update user.', {
                 extensions: { code: HTTP_CODES.SERVER_ERROR },
@@ -138,6 +123,7 @@ export function createUserResolver({
         }
         return await userModel.updateUser(userId, {
             walletBalance: user.walletBalance + amount,
+            id: userId
         });
     }
 
@@ -154,6 +140,7 @@ export function createUserResolver({
 
         return await userModel.updateUser(userId, {
             bidsTotal: user.bidsTotal + amount,
+            id: userId
         });
     }
 

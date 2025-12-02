@@ -32,6 +32,7 @@ export interface CreateUserArgs {
 }
 
 export interface UpdateUserInput {
+    id: number;
     name?: string;
     email?: string;
     password?: string;
@@ -39,4 +40,5 @@ export interface UpdateUserInput {
     bidsTotal?: number;
     avatarPicture?: string;
     bannerPicture?: string;
+    description?: string;
 }

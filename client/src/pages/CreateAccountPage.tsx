@@ -16,6 +16,8 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../context/AuthContext';
+import { GRAPHQL_ENDPOINT } from '../config/env';
+import { REGISTER_USER } from '../graphql/mutations/userMutation';
 
 export function CreateAccountPage(): JSX.Element {
     const [username, setUsername] = useState('');
@@ -46,22 +48,13 @@ export function CreateAccountPage(): JSX.Element {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8080/', {
+            const response = await fetch(GRAPHQL_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    query: `
-            mutation RegisterUser($data: CreateUserInput!) {
-              register(data: $data) {
-                id
-                name
-                email
-                role
-              }
-            }
-          `,
+                    query: REGISTER_USER,
                     variables: {
                         data: {
                             name: username,

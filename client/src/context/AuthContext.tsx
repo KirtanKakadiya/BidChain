@@ -5,6 +5,9 @@ interface User {
     id: string;
     name: string;
     email: string;
+    description: string;
+    avatarPicture?: string | null;
+    bannerPicture?: string | null;
     role: 'ARTIST' | 'COLLECTOR';
 }
 

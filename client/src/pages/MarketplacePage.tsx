@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { getNFTs } from '../graphql/queries/nftQueries';
 
 async function fetchNFTs(): Promise<NFT[]> {
-    
     const response = await fetch('http://localhost:8080/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,7 +50,6 @@ async function fetchNFTs(): Promise<NFT[]> {
             ? `${nft.auction.currentPrice.toFixed(2)} ETH`
             : 'Not for sale',
     }));
-
 }
 
 export function MarketplacePage(): JSX.Element {
@@ -59,26 +57,26 @@ export function MarketplacePage(): JSX.Element {
     const [nfts, setNfts] = useState<NFT[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-        
+
     useEffect(() => {
-            async function loadNFTs() {
-                try {
-                    setLoading(true);
-                    setError(null);
-                    const fetched = await fetchNFTs();
-                    setNfts(fetched);
-                } catch (e) {
-                    console.error(e);
-                    setError('Failed to load NFTs');
-                } finally {
-                    setLoading(false);
-                }
+        async function loadNFTs() {
+            try {
+                setLoading(true);
+                setError(null);
+                const fetched = await fetchNFTs();
+                setNfts(fetched);
+            } catch (e) {
+                console.error(e);
+                setError('Failed to load NFTs');
+            } finally {
+                setLoading(false);
             }
+        }
 
-            loadNFTs();
-        }, []);
+        loadNFTs();
+    }, []);
 
-        const filteredNFTs = nfts.filter((nft) =>
+    const filteredNFTs = nfts.filter((nft) =>
         nft.name.toLowerCase().includes(searchText.toLowerCase())
     );
 
