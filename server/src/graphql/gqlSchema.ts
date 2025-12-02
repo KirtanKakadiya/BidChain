@@ -25,8 +25,8 @@ export const gqlSchema = `#graphql
     walletBalance: Float!
     walletAddress: String!
     bidsTotal: Float!
-    avatarPicture: String!
-    bannerPicture: String!
+    avatarPicture: String
+    bannerPicture: String
     description: String
     bids: [Bid!]
     nfts: [NFT!]
@@ -89,7 +89,6 @@ export const gqlSchema = `#graphql
     bannerPicture: String
     description: String
     password: String
-    
   }
 
   input CreateNFTInput {

@@ -77,7 +77,7 @@ export function CollectorPage(): JSX.Element {
 
                     <Box className="collector-details">
                         <Typography variant="h3" className="collector-name">
-                            {userInfo?.name}
+                            {userInfo?.name || 'Collector Name'}
                         </Typography>
 
                         {/* <Box className="collector-stats">
