@@ -140,7 +140,6 @@ export function EditProfilePage(): JSX.Element {
                         : undefined,
                 description:
                     biography !== user.description ? biography : undefined,
-                role: user.role
             };
             const updatedUser = await updateUserRequest(user.id, updatePayload);
             updatedUser.role = role;
