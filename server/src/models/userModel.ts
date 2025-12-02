@@ -51,8 +51,7 @@ export function createUserModel(db: DbClient): UserModel {
                 bidsTotal: data.bidsTotal ?? undefined,
                 avatarPicture: data.avatarPicture ?? undefined,
                 bannerPicture: data.bannerPicture ?? undefined,
-                description: data.description ?? undefined
-                
+                description: data.description ?? undefined,
             },
             include: { bids: true, nfts: true },
         });

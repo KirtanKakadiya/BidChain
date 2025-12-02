@@ -129,7 +129,7 @@ export const gqlSchema = `#graphql
 
   type Query {
     users: [User!]
-    user(id: Int!): User
+    user(email: String!): User
     nfts: [NFT!]
     nft(id: ID!): NFT
     auctions: [Auction!]

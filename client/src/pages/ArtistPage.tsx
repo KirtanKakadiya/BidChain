@@ -1,69 +1,60 @@
-import React, { useState, JSX } from 'react';
+import React, { useState, JSX, useEffect } from 'react';
 import { Box, Typography, Button, Avatar, Tabs, Tab } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import AddIcon from '@mui/icons-material/Add';
 import './ArtistPage.css';
+import { useAuth } from '../context/AuthContext';
+import { GRAPHQL_ENDPOINT } from '../config/env';
+import { Email } from '@mui/icons-material';
 
 export function ArtistPage(): JSX.Element {
+    const { user } = useAuth(); // get current logged-in user
     const [activeTab, setActiveTab] = useState(0);
-
+    const [userInfo, setUserInfo] = useState<any>(null);
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setActiveTab(newValue);
     };
 
-    // Sample NFT data for the grid
-    const sampleNFTs: NFT[] = [
-        {
-            id: '1',
-            name: 'Codeface',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheArtist',
-            price: '1.63 ETH',
-        },
-        {
-            id: '2',
-            name: 'ArtFowl',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheArtist',
-            price: '1.63 ETH',
-        },
-        {
-            id: '3',
-            name: 'Neonhawk',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheArtist',
-            price: '1.63 ETH',
-        },
-        {
-            id: '4',
-            name: 'HatHack',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheArtist',
-            price: '1.63 ETH',
-        },
-        {
-            id: '5',
-            name: 'CyberGrim',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheArtist',
-            price: '1.63 ETH',
-        },
-        {
-            id: '6',
-            name: 'AetherElf',
-            imageUrl: '/bored-ape.png',
-            creatorAvatarUrl: '/avatar.png',
-            creatorName: 'TheArtist',
-            price: '1.63 ETH',
-        },
-    ];
+    useEffect(() => {
+        async function fetchUser() {
+            const userEmail = user?.email ?? '0';
+            try {
+                const response = await fetch(GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `
+                        query user($email: String!) {
+                             user(email: $email) {
+                                id
+                                name
+                                email
+                                description
+                                avatarPicture
+                                bannerPicture
+                            }
+                        }
+                        `,
+                        variables: {
+                            email: userEmail,
+                        },
+                    }),
+                });
+
+                const result = await response.json();
+                setUserInfo(result.data.user);
+            } catch (error) {
+                console.error('Failed to fetch user:', error);
+            }
+        }
+        if (user?.email) fetchUser();
+    }, [user]);   
+
+
 
     return (
         <Box className="artist-page">
@@ -72,7 +63,7 @@ export function ArtistPage(): JSX.Element {
                 <Box
                     className="artist-banner"
                     sx={{
-                        backgroundImage: 'url(/bored-ape.png)',
+                        backgroundImage: `url(${userInfo?.bannerPicture})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
@@ -80,7 +71,7 @@ export function ArtistPage(): JSX.Element {
 
                 <Box className="artist-info-container">
                     <Avatar
-                        src="/avatar.png"
+                        src={userInfo?.avatarPicture}
                         alt="TheArtist"
                         className="artist-avatar"
                         sx={{ width: 120, height: 120 }}
@@ -88,7 +79,7 @@ export function ArtistPage(): JSX.Element {
 
                     <Box className="artist-details">
                         <Typography variant="h3" className="artist-name">
-                            TheArtist
+                            {userInfo?.name || 'Artist Name'}
                         </Typography>
 
                         <Box className="artist-stats">
@@ -103,7 +94,7 @@ export function ArtistPage(): JSX.Element {
                                     NFTs Sold
                                 </Typography>
                             </Box>
-                            <Box className="stat">
+                            {/* <Box className="stat">
                                 <Typography variant="h6" className="stat-value">
                                     3000+
                                 </Typography>
@@ -113,13 +104,13 @@ export function ArtistPage(): JSX.Element {
                                 >
                                     Followers
                                 </Typography>
-                            </Box>
+                            </Box> */}
                         </Box>
 
                         <Typography variant="body2" className="artist-bio">
                             <strong>Bio</strong>
                             <br />
-                            The Internet's Friendliest Designer Kid.
+                            {userInfo?.description || ''}
                         </Typography>
                     </Box>
 
@@ -158,7 +149,7 @@ export function ArtistPage(): JSX.Element {
                 </Tabs>
             </Box>
 
-            {/* NFT Grid */}
+            {/* NFT Grid
             <Box className="artist-nfts">
                 <Box className="nft-grid">
                     {sampleNFTs.map((nft) => (
@@ -167,7 +158,7 @@ export function ArtistPage(): JSX.Element {
                         </Box>
                     ))}
                 </Box>
-            </Box>
+            </Box> */}
         </Box>
     );
 }
