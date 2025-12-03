@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '../data/supabaseClient';
 
 export function useUploadImage() {
-    const BUCKET = 'seng513-bidchain'; // your bucket name
+    const BUCKET = 'seng513-bidchain';
 
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,6 @@ export function useUploadImage() {
                 throw uploadError;
             }
 
-            // Get public URL
             const {
                 data: { publicUrl },
             } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
