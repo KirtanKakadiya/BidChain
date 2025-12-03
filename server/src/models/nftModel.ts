@@ -3,11 +3,11 @@ import { DbClient } from '../db/dbClient';
 import { Categories } from '@prisma/client';
 
 export interface NFTModel {
-    readonly getNFTById: (id: number) => Promise<NFT | undefined>;
-    readonly getNFTByCreatorId: (id: number) => Promise<NFT[] | undefined>;
-    readonly getNFTs: () => Promise<NFT[]>;
-    readonly createNFT: (data: CreateNFTArgs) => Promise<NFT>;
-    readonly getNFTCategories: (tags: Categories[]) => Promise<NFT[]>;
+  readonly getNFTById: (id: number) => Promise<NFT | undefined>;
+  readonly getNFTByCreatorId: (id: number) => Promise<NFT[] | undefined>;
+  readonly getNFTs: () => Promise<NFT[]>;
+  readonly createNFT: (data: CreateNFTArgs) => Promise<NFT>;
+  readonly getNFTCategories: (tags: Categories[]) => Promise<NFT[]>;
 }
 
 export function createNFTModel(db: DbClient): NFTModel {
@@ -47,31 +47,22 @@ export function createNFTModel(db: DbClient): NFTModel {
     });
   }
 
-    async function getNFTCategories(tags: Categories[]): Promise<NFT[]> {
-        return db.nFT.findMany({
-            where: {
-                tags: {
-                    hasSome: tags,
-                },
-            },
-        });
-    }
+  async function getNFTCategories(tags: Categories[]): Promise<NFT[]> {
+    return db.nFT.findMany({
+      where: {
+        tags: {
+          hasSome: tags,
+        },
+      },
+    });
+  }
 
-    async function getNFTs(): Promise<NFT[]> {
-        return db.nFT.findMany({
-            include: {
-                auction: true,
-                creator: true,
-            },
-        });
-    }
-
-    return Object.freeze({
-        getNFTById,
-        getNFTByCreatorId,
-        createNFT,
-        getNFTCategories,
-        getNFTs,
+  async function getNFTs(): Promise<NFT[]> {
+    return db.nFT.findMany({
+      include: {
+        auction: true,
+        creator: true,
+      },
     });
   }
 
