@@ -3,15 +3,17 @@ import {
   Box,
   Typography,
   Button,
-  Avatar,
   ThemeProvider,
   CircularProgress,
   Card,
   CardContent,
   CardActions,
   Chip,
+  Modal,
+  IconButton,
 } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+import { useParams } from 'react-router-dom';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import type { Auction } from '../types/auction';
@@ -20,7 +22,6 @@ import './NFTPage.css';
 import { ArtistLink } from '../components/artistLink';
 import { nftQueries } from '../graphql/queries/nftQueries';
 import { auctionQueries } from '../graphql/queries/auctionQueries';
-import { PrimaryButton } from '../components/button';
 
 export function NFTPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +30,7 @@ export function NFTPage(): JSX.Element {
   const [auction, setAuction] = useState<Auction | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadNFTPageData() {
@@ -37,13 +39,11 @@ export function NFTPage(): JSX.Element {
       try {
         setLoading(true);
 
-        // First fetch the NFT data to get creator ID
         console.log('Fetching NFT with id:', id);
         const nftData = await nftQueries.getNFTById(id);
         console.log('NFT data received:', nftData);
         setNft(nftData);
 
-        // Then fetch auction and other NFTs from the same creator in parallel
         console.log(
           'Fetching auction and creator NFTs for creator:',
           nftData.creator.id
@@ -110,31 +110,103 @@ export function NFTPage(): JSX.Element {
     );
   }
 
-  // Set global font for typography elements
   const theme = createTheme({
     typography: {
       fontFamily: '"Work Sans", "Space Mono", sans-serif',
     },
   });
 
-  // TODO Add logic here to update countdown timer
   const timeUnits = [
     { value: 59, label: 'Hours' },
     { value: 59, label: 'Minutes' },
     { value: 59, label: 'Seconds' },
   ];
 
+  const handleImageClick = () => {
+    setImageModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setImageModalOpen(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box className="nft-page" sx={{ fontFamily: 'Work Sans' }}>
         <Box
           className="nft-banner"
+          onClick={handleImageClick}
           sx={{
             backgroundImage: `url(${nft.imageUrl || '/nft-placeholder.png'})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            cursor: 'pointer',
+            position: 'relative',
+            '&:hover::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
           }}
-        ></Box>
+        />
+
+        {/* Image Modal */}
+        <Modal
+          open={imageModalOpen}
+          onClose={handleCloseModal}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'relative',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              outline: 'none',
+            }}
+          >
+            <IconButton
+              onClick={handleCloseModal}
+              sx={{
+                position: 'absolute',
+                top: -50,
+                right: 0,
+                color: 'white',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                },
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box
+              component="img"
+              src={nft.imageUrl || '/nft-placeholder.png'}
+              alt={nft.name}
+              sx={{
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain',
+                borderRadius: '8px',
+              }}
+            />
+          </Box>
+        </Modal>
+
         <Box className="info-and-bid-container">
           <Box className="info-container">
             <Typography variant="h3" className="nft-title" fontWeight="600">
@@ -225,7 +297,6 @@ export function NFTPage(): JSX.Element {
                     <Typography className="countdown-label">
                       Auction ends in:
                     </Typography>
-
                     <Box className="timer-container">
                       {timeUnits.map((unit, index) => (
                         <React.Fragment key={unit.label}>
@@ -234,7 +305,6 @@ export function NFTPage(): JSX.Element {
                           >
                             <Typography
                               className={`${unit.label.toLowerCase()}-number`}
-                              fontSize="32px"
                             >
                               {unit.value}
                             </Typography>
@@ -258,11 +328,9 @@ export function NFTPage(): JSX.Element {
                       ))}
                     </Box>
                   </Box>
-
                   <Typography className="current-bid">
                     Current Bid : {auction.currentPrice} ETH
                   </Typography>
-
                   <CardActions className="bid-input-container">
                     <Box className="input-box-container">
                       <input placeholder="Bid Amount" />
@@ -276,7 +344,6 @@ export function NFTPage(): JSX.Element {
           )}
         </Box>
 
-        {/* More from this artist section */}
         <Box className="more-nfts-container" sx={{ mt: 4 }}>
           <Typography
             variant="h4"
@@ -289,7 +356,6 @@ export function NFTPage(): JSX.Element {
           >
             More from {nft.creatorName}
           </Typography>
-
           {nftList.length > 0 ? (
             <Box
               sx={{
