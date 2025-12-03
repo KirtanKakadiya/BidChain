@@ -36,6 +36,7 @@ async function main() {
         cors: {
             origin: [CLIENT_ENDPOINT],
             methods: ['GET', 'POST'],
+      credentials: true,
         },
     });
 
