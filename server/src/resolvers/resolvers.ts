@@ -7,12 +7,14 @@ import { createBidResolver } from './bidResolver';
 import { NFTModel } from '../models/nftModel';
 import { AuctionModel } from '../models/auctionModel';
 import { BidModel } from '../models/bidModel';
+import type { Server as SocketIOServer } from 'socket.io';
 
 type Models = {
     userModel: UserModel;
     nftModel: NFTModel;
     auctionModel: AuctionModel;
     bidModel: BidModel;
+    io: SocketIOServer;
 };
 
 export function createResolvers(models: Models) {
