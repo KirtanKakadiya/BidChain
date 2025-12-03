@@ -21,8 +21,6 @@ export const nftQueries = {
         }
     `;
 
-    console.log('getNFTById query variables:', { id: Number.parseInt(id) });
-
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33,7 +31,6 @@ export const nftQueries = {
     });
 
     const json = await response.json();
-    console.log('getNFTById response:', json);
 
     if (!response.ok) {
       throw new Error(`Network error: ${response.status}`);

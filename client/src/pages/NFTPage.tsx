@@ -22,15 +22,30 @@ import './NFTPage.css';
 import { ArtistLink } from '../components/artistLink';
 import { nftQueries } from '../graphql/queries/nftQueries';
 import { auctionQueries } from '../graphql/queries/auctionQueries';
+import { useAuctionSocket } from '../hooks/useAuctionSocket';
+import { useCountdown } from '../hooks/useCountdown';
+import { useAuth } from '../context/AuthContext';
+import { bidMutations } from '../graphql/mutations/bidMutations';
 
 export function NFTPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const [nft, setNft] = useState<NFT | null>(null);
   const [nftList, setNftList] = useState<NFT[]>([]);
   const [auction, setAuction] = useState<Auction | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [bidAmount, setBidAmount] = useState('');
+  const [placingBid, setPlacingBid] = useState(false);
+
+  // Socket.IO for real-time updates - convert auction.id to number
+  const { currentPrice } = useAuctionSocket(
+    auction ? Number(auction.id) : null
+  );
+
+  // Countdown timer
+  const timeRemaining = useCountdown(auction?.endTime ?? null);
 
   useEffect(() => {
     async function loadNFTPageData() {
@@ -39,22 +54,13 @@ export function NFTPage(): JSX.Element {
       try {
         setLoading(true);
 
-        console.log('Fetching NFT with id:', id);
         const nftData = await nftQueries.getNFTById(id);
-        console.log('NFT data received:', nftData);
         setNft(nftData);
-
-        console.log(
-          'Fetching auction and creator NFTs for creator:',
-          nftData.creator.id
-        );
 
         try {
           const auctionData = await auctionQueries.getAuctionByNftId(id);
-          console.log('Auction data:', auctionData);
           setAuction(auctionData);
         } catch (auctionErr) {
-          console.error('Auction fetch error:', auctionErr);
           setAuction(null);
         }
 
@@ -62,20 +68,12 @@ export function NFTPage(): JSX.Element {
           const creatorNftList = await nftQueries.getNFTsByCreatorId(
             nftData.creator.id
           );
-          console.log('All creator NFTs:', creatorNftList);
           const filteredList = creatorNftList.filter((n) => n.id !== id);
-          console.log('Filtered NFT list (excluding current):', filteredList);
           setNftList(filteredList);
         } catch (nftErr) {
-          console.error('Creator NFTs fetch error:', nftErr);
           setNftList([]);
         }
       } catch (e) {
-        console.error('Full error:', e);
-        console.error('Error details:', {
-          message: e instanceof Error ? e.message : 'Unknown error',
-          stack: e instanceof Error ? e.stack : undefined,
-        });
         setError(
           e instanceof Error ? e.message : 'Failed to load NFT & Auction data'
         );
@@ -88,6 +86,49 @@ export function NFTPage(): JSX.Element {
       loadNFTPageData();
     }
   }, [id]);
+
+  // Update current price when socket emits new bid
+  useEffect(() => {
+    if (currentPrice !== null && auction) {
+      setAuction((prev) => (prev ? { ...prev, currentPrice } : null));
+    }
+  }, [currentPrice, auction?.id]);
+
+  const handlePlaceBid = async () => {
+    if (!auction || !user || !bidAmount) {
+      alert('Please enter a valid bid amount');
+      return;
+    }
+
+    const amount = parseFloat(bidAmount);
+
+    if (isNaN(amount) || amount <= auction.currentPrice) {
+      alert(
+        `Bid must be higher than current price of ${auction.currentPrice} ETH`
+      );
+      return;
+    }
+
+    try {
+      setPlacingBid(true);
+
+      await bidMutations.placeBid({
+        auctionId: Number(auction.id),
+        bidderId: Number(user.id),
+        amount,
+      });
+
+      setBidAmount('');
+    } catch (err) {
+      alert(
+        err instanceof Error
+          ? err.message
+          : 'Failed to place bid. Please try again.'
+      );
+    } finally {
+      setPlacingBid(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -117,9 +158,9 @@ export function NFTPage(): JSX.Element {
   });
 
   const timeUnits = [
-    { value: 59, label: 'Hours' },
-    { value: 59, label: 'Minutes' },
-    { value: 59, label: 'Seconds' },
+    { value: timeRemaining.hours, label: 'Hours' },
+    { value: timeRemaining.minutes, label: 'Minutes' },
+    { value: timeRemaining.seconds, label: 'Seconds' },
   ];
 
   const handleImageClick = () => {
@@ -295,48 +336,77 @@ export function NFTPage(): JSX.Element {
                 <CardContent className="card-content">
                   <Box className="countdown-container">
                     <Typography className="countdown-label">
-                      Auction ends in:
+                      {timeRemaining.isExpired
+                        ? 'Auction ended'
+                        : 'Auction ends in:'}
                     </Typography>
-                    <Box className="timer-container">
-                      {timeUnits.map((unit, index) => (
-                        <React.Fragment key={unit.label}>
-                          <Box
-                            className={`${unit.label.toLowerCase()}-container`}
-                          >
-                            <Typography
-                              className={`${unit.label.toLowerCase()}-number`}
+                    {!timeRemaining.isExpired && (
+                      <Box className="timer-container">
+                        {timeUnits.map((unit, index) => (
+                          <React.Fragment key={unit.label}>
+                            <Box
+                              className={`${unit.label.toLowerCase()}-container`}
                             >
-                              {unit.value}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                fontFamily: 'Space Mono',
-                                fontSize: '12px',
-                                color: '#ffffff',
-                                textTransform: 'capitalize',
-                              }}
-                            >
-                              {unit.label}
-                            </Typography>
-                          </Box>
-                          {index < timeUnits.length - 1 && (
-                            <Typography className="time-separator">
-                              :
-                            </Typography>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </Box>
+                              <Typography
+                                className={`${unit.label.toLowerCase()}-number`}
+                              >
+                                {String(unit.value).padStart(2, '0')}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Space Mono',
+                                  fontSize: '12px',
+                                  color: '#ffffff',
+                                  textTransform: 'capitalize',
+                                }}
+                              >
+                                {unit.label}
+                              </Typography>
+                            </Box>
+                            {index < timeUnits.length - 1 && (
+                              <Typography className="time-separator">
+                                :
+                              </Typography>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </Box>
+                    )}
                   </Box>
                   <Typography className="current-bid">
-                    Current Bid : {auction.currentPrice} ETH
+                    Current Bid : {auction.currentPrice.toFixed(2)} ETH
                   </Typography>
                   <CardActions className="bid-input-container">
                     <Box className="input-box-container">
-                      <input placeholder="Bid Amount" />
+                      <input
+                        placeholder="Bid Amount"
+                        type="number"
+                        step="0.01"
+                        min={auction.currentPrice + 0.01}
+                        value={bidAmount}
+                        onChange={(e) => setBidAmount(e.target.value)}
+                        disabled={timeRemaining.isExpired || !user}
+                      />
                       <Typography className="bid-currency">ETH</Typography>
                     </Box>
-                    <Button className="place-bid-button">Place Bid</Button>
+                    <Button
+                      className="place-bid-button"
+                      onClick={handlePlaceBid}
+                      disabled={
+                        timeRemaining.isExpired ||
+                        !user ||
+                        placingBid ||
+                        !bidAmount
+                      }
+                    >
+                      {placingBid
+                        ? 'Placing Bid...'
+                        : timeRemaining.isExpired
+                          ? 'Auction Ended'
+                          : !user
+                            ? 'Login to Bid'
+                            : 'Place Bid'}
+                    </Button>
                   </CardActions>
                 </CardContent>
               </Card>
