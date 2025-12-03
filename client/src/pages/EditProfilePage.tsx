@@ -18,7 +18,6 @@ import { useAuth } from '../context/AuthContext';
 import { GRAPHQL_ENDPOINT } from '../config/env';
 import { UPDATE_USER } from '../graphql/mutations/userMutation';
 
-// ---- GraphQL helper --------------------------------------------------------
 
 async function updateUserRequest(id: string, data: any) {
     const res = await fetch(GRAPHQL_ENDPOINT, {
@@ -37,8 +36,6 @@ async function updateUserRequest(id: string, data: any) {
 
     return json.data.updateUser;
 }
-
-// ---- Component -------------------------------------------------------------
 
 export function EditProfilePage(): JSX.Element {
     const { user, login } = useAuth();
@@ -71,13 +68,16 @@ export function EditProfilePage(): JSX.Element {
     const avatarInputRef = useRef<HTMLInputElement | null>(null);
     const bannerInputRef = useRef<HTMLInputElement | null>(null);
 
+    const bannerImage = bannerPreview || bannerUrl || '/banner-placeholder.png';
+
+
     async function handleAvatarChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
 
         resetError();
         setPendingAvatarFile(file);
-        setAvatarPreview(URL.createObjectURL(file)); // local preview
+        setAvatarPreview(URL.createObjectURL(file));
 
         e.target.value = '';
     }
@@ -108,7 +108,7 @@ export function EditProfilePage(): JSX.Element {
                 const uploadedAvatarUrl = await uploadImage(
                     pendingAvatarFile,
                     'avatar',
-                    user.id
+                    String(user.id)
                 );
                 console.log('Uploaded avatar URL:', uploadedAvatarUrl);
                 newAvatarUrl = uploadedAvatarUrl;
@@ -120,7 +120,7 @@ export function EditProfilePage(): JSX.Element {
                 const uploadedBannerUrl = await uploadImage(
                     pendingBannerFile,
                     'banner',
-                    user.id
+                    String(user.id)
                 );
                 console.log('Uploaded banner URL:', uploadedBannerUrl);
                 newBannerUrl = uploadedBannerUrl;
@@ -141,7 +141,7 @@ export function EditProfilePage(): JSX.Element {
                 description:
                     biography !== user.description ? biography : undefined,
             };
-            const updatedUser = await updateUserRequest(user.id, updatePayload);
+            const updatedUser = await updateUserRequest(String(user.id), updatePayload);
             updatedUser.role = role;
             login(updatedUser);
 
@@ -164,7 +164,6 @@ export function EditProfilePage(): JSX.Element {
 
     return (
         <Box className="edit-profile-page">
-            {/* Hidden file inputs for avatar & banner */}
             <input
                 type="file"
                 accept="image/*"
@@ -180,14 +179,11 @@ export function EditProfilePage(): JSX.Element {
                 onChange={handleBannerChange}
             />
 
-            {/* Banner Section */}
             <Box className="edit-profile-banner-container">
                 <Box
                     className="edit-profile-banner"
                     sx={{
-                        backgroundImage: `url(${
-                            bannerPreview || bannerUrl || '/bored-ape.png' // fallback
-                        })`,
+                        backgroundImage: `url(${bannerImage}`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         position: 'relative',
@@ -205,16 +201,14 @@ export function EditProfilePage(): JSX.Element {
                 </Box>
             </Box>
 
-            {/* Content Section */}
             <Box className="edit-profile-content">
-                {/* Avatar */}
                 <Box className="edit-profile-avatar-section">
                     <Box sx={{ position: 'relative' }}>
                         <Avatar
                             src={
                                 avatarPreview ||
                                 avatarUrl ||
-                                undefined /* fallback handled by Avatar */
+                                undefined
                             }
                             alt={username || ''}
                             className="edit-profile-avatar"
@@ -235,7 +229,6 @@ export function EditProfilePage(): JSX.Element {
                     </Box>
                 </Box>
 
-                {/* Upload / Save state + errors */}
                 <Box sx={{ mt: 1, mb: 2 }}>
                     {isBusy && (
                         <Box
@@ -264,7 +257,6 @@ export function EditProfilePage(): JSX.Element {
                     )}
                 </Box>
 
-                {/* Form Fields */}
                 <Box className="edit-profile-form">
                     {/* Username */}
                     <Box className="form-group">
@@ -294,7 +286,6 @@ export function EditProfilePage(): JSX.Element {
                         </Box>
                     </Box>
 
-                    {/* Email */}
                     <Box className="form-group">
                         <Typography variant="body1" className="form-label">
                             Email
@@ -323,7 +314,6 @@ export function EditProfilePage(): JSX.Element {
                         </Box>
                     </Box>
 
-                    {/* Biography */}
                     <Box className="form-group">
                         <Typography variant="body1" className="form-label">
                             Biography
@@ -353,7 +343,6 @@ export function EditProfilePage(): JSX.Element {
                         </Box>
                     </Box>
 
-                    {/* Save Button */}
                     {isEditing && (
                         <Button
                             variant="contained"
