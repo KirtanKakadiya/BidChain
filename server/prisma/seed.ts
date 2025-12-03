@@ -40,7 +40,7 @@ async function main() {
       title: 'Digital Dreams',
       description:
         'A surreal digital art piece exploring imagination and color.',
-      imageUrl: 'SUPABASE_LINK',
+      imageUrl: '/nft-placeholder.png', // Use local placeholder for development
       creatorId: artist.id,
     },
   });
@@ -49,8 +49,8 @@ async function main() {
     data: {
       title: 'Future Relic',
       description:
-        'Abstract NFT depicting humanity’s interaction with technology.',
-      imageUrl: 'SUPABASE_LINK',
+        "Abstract NFT depicting humanity's interaction with technology.",
+      imageUrl: '/nft-placeholder.png',
       creatorId: artist.id,
     },
   });

@@ -10,11 +10,11 @@ export function useUploadImage() {
     /**
      * Upload an image to Supabase.
      * @param file File to upload
-     * @param folder "avatar" | "banner"
+     * @param folder "avatar" | "banner" | "nft"
      */
     async function uploadImage(
         file: File,
-        folder: 'avatar' | 'banner',
+        folder: 'avatar' | 'banner' | 'nft',
         username: string
     ): Promise<string> {
         setUploading(true);

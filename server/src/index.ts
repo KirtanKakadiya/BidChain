@@ -75,11 +75,11 @@ async function main() {
         }),
     });
 
-    const { url } = await startStandaloneServer(server, {
-        listen: { port: PORT },
-    });
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: PORT },
+  });
 
-    console.log(`🚀 Server ready at ${url}`);
+  console.log(`🚀 Server ready at ${url}`);
 }
 
 main();

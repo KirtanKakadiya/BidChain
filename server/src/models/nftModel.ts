@@ -24,6 +24,10 @@ export function createNFTModel(db: DbClient): NFTModel {
     return (
       (await db.nFT.findMany({
         where: { creatorId: id },
+        include: {
+          creator: true,
+          auction: true, // Include auction for pricing
+        },
       })) ?? undefined
     );
   }
@@ -36,6 +40,9 @@ export function createNFTModel(db: DbClient): NFTModel {
         imageUrl: data.imageUrl,
         creatorId: data.creatorId,
         tags: data.tags,
+      },
+      include: {
+        creator: true, // Include the creator relation
       },
     });
   }

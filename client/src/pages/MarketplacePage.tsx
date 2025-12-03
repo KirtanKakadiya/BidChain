@@ -15,6 +15,7 @@ export function MarketplacePage(): JSX.Element {
 
     useEffect(() => {
         async function loadNFTs() {
+            try {
                 setLoading(true);
                 setError(null);
                 const fetched = await nftQueries.getAllNFTs();
@@ -24,7 +25,6 @@ export function MarketplacePage(): JSX.Element {
                 setError('Failed to load NFTs');
             } finally {
                 setLoading(false);
-            try {
             }
         }
 

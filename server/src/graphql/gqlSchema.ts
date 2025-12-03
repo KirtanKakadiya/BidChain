@@ -96,7 +96,7 @@ export const gqlSchema = `#graphql
     description: String
     imageUrl: String!
     creatorId: Int!
-    tags: [Categories!]! 
+    tags: [String!]! 
   }
 
   input CreateAuctionInput {
@@ -128,9 +128,10 @@ export const gqlSchema = `#graphql
 
   type Query {
     users: [User!]
-    user(email: String!): User
+    user(id: Int!): User
     nfts: [NFT!]
     nft(id: Int!): NFT
+    nftsByCreatorId(id: Int!): [NFT!]
     auctions: [Auction!]
     auction(id: ID!): Auction
     auctionByNftId(nftId: Int!): Auction
