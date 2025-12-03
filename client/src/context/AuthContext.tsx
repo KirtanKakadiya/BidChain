@@ -1,15 +1,6 @@
 // src/context/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
-interface User {
-    id: string;
-    name: string;
-    email: string;
-    description: string;
-    avatarPicture?: string | null;
-    bannerPicture?: string | null;
-    role: 'ARTIST' | 'COLLECTOR';
-}
+import { User } from '../types/user';
 
 interface AuthContextType {
     user: User | null;
