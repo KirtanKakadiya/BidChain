@@ -13,6 +13,7 @@ import { NFTPage } from './pages/NFTPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
+import { AddFundsPage } from './pages/AddFundsPage';
 
 function App(): JSX.Element {
     return (
@@ -72,6 +73,12 @@ function App(): JSX.Element {
                                 <CreateNFTPage />
                             </ProtectedRoute>
                         }
+                    />
+                    <Route 
+                      path='/addFunds'
+                      element={
+                          <AddFundsPage />
+                      }
                     />
                 </Route>
             </Routes>
