@@ -48,28 +48,34 @@ export function NFTPage(): JSX.Element {
           'Fetching auction and creator NFTs for creator:',
           nftData.creator.id
         );
-        const [auctionData, creatorNftList] = await Promise.all([
-          auctionQueries.getAuctionByNftId(id).catch((err) => {
-            console.error('Auction fetch error:', err);
-            return null;
-          }),
-          nftQueries.getNFTsByCreatorId(nftData.creator.id).catch((err) => {
-            console.error('Creator NFTs fetch error:', err);
-            return [];
-          }),
-        ]);
 
-        console.log('Auction data:', auctionData);
-        console.log('All creator NFTs:', creatorNftList);
+        try {
+          const auctionData = await auctionQueries.getAuctionByNftId(id);
+          console.log('Auction data:', auctionData);
+          setAuction(auctionData);
+        } catch (auctionErr) {
+          console.error('Auction fetch error:', auctionErr);
+          setAuction(null);
+        }
 
-        setAuction(auctionData);
-
-        // Filter out the current NFT from the list
-        const filteredList = creatorNftList.filter((n) => n.id !== id);
-        console.log('Filtered NFT list (excluding current):', filteredList);
-        setNftList(filteredList);
+        try {
+          const creatorNftList = await nftQueries.getNFTsByCreatorId(
+            nftData.creator.id
+          );
+          console.log('All creator NFTs:', creatorNftList);
+          const filteredList = creatorNftList.filter((n) => n.id !== id);
+          console.log('Filtered NFT list (excluding current):', filteredList);
+          setNftList(filteredList);
+        } catch (nftErr) {
+          console.error('Creator NFTs fetch error:', nftErr);
+          setNftList([]);
+        }
       } catch (e) {
         console.error('Full error:', e);
+        console.error('Error details:', {
+          message: e instanceof Error ? e.message : 'Unknown error',
+          stack: e instanceof Error ? e.stack : undefined,
+        });
         setError(
           e instanceof Error ? e.message : 'Failed to load NFT & Auction data'
         );
@@ -96,7 +102,7 @@ export function NFTPage(): JSX.Element {
     );
   }
 
-  if (error || !nft || !auction) {
+  if (error || !nft) {
     return (
       <Box textAlign="center" py={4}>
         <Typography color="error">{error || 'NFT not found'}</Typography>
@@ -203,82 +209,88 @@ export function NFTPage(): JSX.Element {
               )}
             </Box>
           </Box>
-          <Box className="bid-container">
-            <Card
-              className="bid-card"
-              sx={{
-                borderRadius: '20px',
-                overflow: 'hidden',
-                backgroundColor: '#3b3b3b',
-              }}
-            >
-              <CardContent className="card-content">
-                <Box className="countdown-container">
-                  <Typography className="countdown-label">
-                    Auction ends in:
+
+          {auction && (
+            <Box className="bid-container">
+              <Card
+                className="bid-card"
+                sx={{
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  backgroundColor: '#3b3b3b',
+                }}
+              >
+                <CardContent className="card-content">
+                  <Box className="countdown-container">
+                    <Typography className="countdown-label">
+                      Auction ends in:
+                    </Typography>
+
+                    <Box className="timer-container">
+                      {timeUnits.map((unit, index) => (
+                        <React.Fragment key={unit.label}>
+                          <Box
+                            className={`${unit.label.toLowerCase()}-container`}
+                          >
+                            <Typography
+                              className={`${unit.label.toLowerCase()}-number`}
+                              fontSize="32px"
+                            >
+                              {unit.value}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontFamily: 'Space Mono',
+                                fontSize: '12px',
+                                color: '#ffffff',
+                                textTransform: 'capitalize',
+                              }}
+                            >
+                              {unit.label}
+                            </Typography>
+                          </Box>
+                          {index < timeUnits.length - 1 && (
+                            <Typography className="time-separator">
+                              :
+                            </Typography>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </Box>
+                  </Box>
+
+                  <Typography className="current-bid">
+                    Current Bid : {auction.currentPrice} ETH
                   </Typography>
 
-                  <Box className="timer-container">
-                    {timeUnits.map((unit, index) => (
-                      <React.Fragment key={unit.label}>
-                        <Box
-                          className={`${unit.label.toLowerCase()}-container`}
-                        >
-                          <Typography
-                            className={`${unit.label.toLowerCase()}-number`}
-                            fontSize="32px"
-                          >
-                            {unit.value}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontFamily: 'Space Mono',
-                              fontSize: '12px',
-                              color: '#ffffff',
-                              textTransform: 'capitalize',
-                            }}
-                          >
-                            {unit.label}
-                          </Typography>
-                        </Box>
-                        {index < timeUnits.length - 1 && (
-                          <Typography className="time-separator">:</Typography>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </Box>
-                </Box>
-
-                <Typography className="current-bid">
-                  Current Bid : {auction.currentPrice} ETH
-                </Typography>
-
-                <CardActions className="bid-input-container">
-                  <Box className="input-box-container">
-                    <input placeholder="Bid Amount" />
-                    <Typography className="bid-currency">ETH</Typography>
-                  </Box>
-                  <Button className="place-bid-button">Place Bid</Button>
-                </CardActions>
-              </CardContent>
-            </Card>
-          </Box>
+                  <CardActions className="bid-input-container">
+                    <Box className="input-box-container">
+                      <input placeholder="Bid Amount" />
+                      <Typography className="bid-currency">ETH</Typography>
+                    </Box>
+                    <Button className="place-bid-button">Place Bid</Button>
+                  </CardActions>
+                </CardContent>
+              </Card>
+            </Box>
+          )}
         </Box>
 
         {/* More from this artist section */}
-        {nftList.length > 0 && (
-          <Box className="more-nfts-container" sx={{ mt: 4 }}>
-            <Typography
-              variant="h4"
-              sx={{
-                mb: 3,
-                fontWeight: 600,
-                fontSize: { xs: '24px', sm: '28px', md: '34px' },
-                color: '#ffffff',
-              }}
-            >
-              More from {nft.creatorName}
-            </Typography>
+        <Box className="more-nfts-container" sx={{ mt: 4 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              mb: 3,
+              fontWeight: 600,
+              fontSize: { xs: '24px', sm: '28px', md: '34px' },
+              color: '#ffffff',
+            }}
+          >
+            More from {nft.creatorName}
+          </Typography>
+
+          {nftList.length > 0 ? (
             <Box
               sx={{
                 display: 'grid',
@@ -294,8 +306,18 @@ export function NFTPage(): JSX.Element {
                 <NFTCard key={nftItem.id} nft={nftItem} />
               ))}
             </Box>
-          </Box>
-        )}
+          ) : (
+            <Typography
+              sx={{
+                color: '#858584',
+                textAlign: 'center',
+                py: 4,
+              }}
+            >
+              No other NFTs from this artist yet.
+            </Typography>
+          )}
+        </Box>
       </Box>
     </ThemeProvider>
   );

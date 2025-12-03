@@ -140,7 +140,6 @@ export const gqlSchema = `#graphql
   }
 
   type Mutation {
-
     #auth
     login(data: LoginInput!): User!
     register(data: CreateUserInput!): User!
@@ -154,6 +153,7 @@ export const gqlSchema = `#graphql
     #NFTS
     createNFT(data: CreateNFTInput!): NFT!
     getNFTByCategories(data: [Categories!]): [NFT!]
+    getNFTsByCreatorId(id: Int!): [NFT!]
 
     #Auctions
     createAuction(data: CreateAuctionInput!): Auction!

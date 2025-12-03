@@ -37,11 +37,46 @@ export function createQueryResolvers({
 
   async function nfts(): Promise<NFT[]> {
     try {
-      const nftList = await nftModel.getNFTs(); // You'll add this to NFTModel
+      const nftList = await nftModel.getNFTs();
       return nftList ?? [];
     } catch (error: any) {
       console.error(error);
       throw new GraphQLError(`Failed to fetch NFTs. ${error}`, {
+        extensions: { code: HTTP_CODES.SERVER_ERROR },
+      });
+    }
+  }
+
+  async function nft(_parent: unknown, { id }: { id: number }): Promise<NFT> {
+    try {
+      const nftData = await nftModel.getNFTById(id);
+      if (!nftData) {
+        throw new GraphQLError('NFT not found.', {
+          extensions: { code: HTTP_CODES.NOT_FOUND },
+        });
+      }
+      return nftData;
+    } catch (error: any) {
+      console.error(error);
+      throw new GraphQLError(`Failed to fetch NFT by id. ${error}`, {
+        extensions: { code: HTTP_CODES.SERVER_ERROR },
+      });
+    }
+  }
+
+  async function nftsByCreatorId(
+    _parent: unknown,
+    { id }: { id: number }
+  ): Promise<NFT[]> {
+    try {
+      const nftList = await nftModel.getNFTByCreatorId(id);
+      if (!nftList) {
+        return [];
+      }
+      return nftList;
+    } catch (error: any) {
+      console.error(error);
+      throw new GraphQLError(`Failed to fetch NFTs by creator id. ${error}`, {
         extensions: { code: HTTP_CODES.SERVER_ERROR },
       });
     }
@@ -106,22 +141,5 @@ export function createQueryResolvers({
     }
   }
 
-  async function nft(_parent: unknown, { id }: { id: number }): Promise<NFT> {
-    try {
-      const nftData = await nftModel.getNFTById(id);
-      if (!nftData) {
-        throw new GraphQLError('NFT not found.', {
-          extensions: { code: HTTP_CODES.NOT_FOUND },
-        });
-      }
-      return nftData;
-    } catch (error: any) {
-      console.error(error);
-      throw new GraphQLError(`Failed to fetch NFT by id. ${error}`, {
-        extensions: { code: HTTP_CODES.SERVER_ERROR },
-      });
-    }
-  }
-
-  return { user, nft, nfts, auction, auctionByNftId, bid };
+  return { user, nft, nfts, nftsByCreatorId, auction, auctionByNftId, bid };
 }
