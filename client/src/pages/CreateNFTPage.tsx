@@ -87,14 +87,14 @@ export function CreateNFTPage(): JSX.Element {
       setCreating(true);
 
       // Upload image to Supabase
-      const imageUrl = await uploadImage(imageFile, 'nft', user.id);
+      const imageUrl = await uploadImage(imageFile, 'nft', String(user.id));
 
       // Create NFT in database
       const newNFT = await nftMutations.createNFT({
         title: nftName,
         description,
         imageUrl,
-        creatorId: user.id,
+        creatorId: String(user.id),
         tags: tags,
       });
 

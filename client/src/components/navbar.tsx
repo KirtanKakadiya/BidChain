@@ -33,7 +33,7 @@ export function NavBar(): JSX.Element {
                 <div className="navbar-right">
                     <nav className="navbar-links">
                         <Link to="/marketplace">Marketplace</Link>
-                        <Link to="#">Connect a wallet</Link>
+                        <Link to="/addFunds">Add Funds</Link>
                     </nav>
 
                     {isLoggedIn ? (

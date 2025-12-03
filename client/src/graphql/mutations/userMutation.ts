@@ -21,3 +21,19 @@ export const REGISTER_USER = `
               }
             }
           `;
+
+export const ADD_FUNDS_MUTATION = `
+            mutation AddFunds($userId: Int!, $amount: Float!) {
+              addFunds(userId: $userId, amount: $amount) {
+                id
+                name
+                email
+                role
+                walletBalance
+                bidsTotal
+                avatarPicture
+                bannerPicture
+                description
+              }
+            }
+          `;

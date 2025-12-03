@@ -160,16 +160,6 @@ export function LoginPage(): JSX.Element {
                 />
 
                 <Button
-                    component={Link}
-                    to="/createAccount"
-                    variant="contained"
-                    fullWidth
-                    className="create-account"
-                >
-                    Create Account
-                </Button>
-
-                <Button
                     type="submit"
                     variant="contained"
                     fullWidth
@@ -177,6 +167,16 @@ export function LoginPage(): JSX.Element {
                     disabled={loading}
                 >
                     {loading ? 'Logging in...' : 'Login'}
+                </Button>
+
+                <Button
+                    component={Link}
+                    to="/createAccount"
+                    variant="contained"
+                    fullWidth
+                    className="create-account"
+                >
+                   Create Account
                 </Button>
             </Box>
         </Box>
