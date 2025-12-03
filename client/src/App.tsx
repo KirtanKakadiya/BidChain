@@ -9,6 +9,7 @@ import { ArtistPage } from './pages/ArtistPage';
 import { CollectorPage } from './pages/CollectorPage';
 import { EditProfilePage } from './pages/EditProfilePage';
 import { CreateNFTPage } from './pages/CreateNFTPage';
+import { NFTPage } from './pages/NFTPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
@@ -31,6 +32,7 @@ function App(): JSX.Element {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<HomePage />} />
                     <Route path="/marketplace" element={<MarketplacePage />} />
+                    <Route path="nft/:id" element={<NFTPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route
                         path="/createAccount"

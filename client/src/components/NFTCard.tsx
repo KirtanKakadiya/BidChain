@@ -7,36 +7,55 @@ import {
     Typography,
     Box,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import type { NFT } from '../types/nft';
 import './NFTCard.css';
 
-type NFTCardProps = {
+interface NFTCardProps {
     nft: NFT;
     onClick?: (id: string) => void;
-};
+}
 
 // TODO
 // The bg color for the icon doesnt work, need to fix that bug
 // Also still need to add the info container
-// Fix font family for price, cant get space mono to work!!
 // Also add highest price to right of the price
 
-export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
+export function NFTCard({ nft, onClick }: Readonly<NFTCardProps>) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (onClick) {
+            onClick(nft.id);
+        } else {
+            navigate(`/nft/${nft.id}`);
+        }
+    };
+
     return (
         <Card
             className="nft-card"
-            onClick={() => onClick?.(nft.id)}
-            sx={{ borderRadius: '20px', overflow: 'hidden' }}
+            onClick={handleClick}
+            sx={{
+                borderRadius: '20px',
+                overflow: 'hidden',
+                backgroundColor: '#2b2b2b',
+            }}
         >
             <CardMedia
                 component="img"
-                image={nft.imageUrl}
+                image={nft.imageUrl || '/bored-ape.png'}
                 alt={nft.name}
                 className="nft-image"
             />
 
             <CardContent className="nft-card-content">
-                <Typography variant="h5" className="nft-name">
+                <Typography
+                    variant="h5"
+                    className="nft-name"
+                    fontFamily="Work Sans"
+                    fontWeight="600"
+                >
                     {nft.name}
                 </Typography>
 
@@ -46,20 +65,32 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, onClick }) => {
                         alt={nft.creatorName}
                         className="nft-avatar"
                     />
-                    <Typography variant="body2" className="nft-creator-name">
+                    <Typography
+                        variant="body2"
+                        className="nft-creator-name"
+                        fontFamily="Space Mono"
+                    >
                         {nft.creatorName}
                     </Typography>
                 </Box>
 
                 <Box className="nft-price">
-                    <Typography variant="body2" className="nft-price-label">
+                    <Typography
+                        variant="body2"
+                        className="nft-price-label"
+                        fontFamily="Space Mono"
+                    >
                         Value
                     </Typography>
-                    <Typography variant="body1" className="nft-price-value">
+                    <Typography
+                        variant="body1"
+                        className="nft-price-value"
+                        fontFamily="Space Mono"
+                    >
                         {nft.price}
                     </Typography>
                 </Box>
             </CardContent>
         </Card>
     );
-};
+}

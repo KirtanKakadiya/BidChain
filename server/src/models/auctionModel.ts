@@ -1,9 +1,9 @@
 // src/models/auctionModel.ts
 import { DbClient } from '../db/dbClient';
 import type {
-    Auction,
-    CreateAuctionArgs,
-    UpdateAuctionInput,
+  Auction,
+  CreateAuctionArgs,
+  UpdateAuctionInput,
 } from '../types/auctionType';
 
 import type { Server as SocketIOServer } from 'socket.io';
@@ -19,48 +19,49 @@ export interface AuctionModel {
 }
 
 export function createAuctionModel(db: DbClient): AuctionModel {
-    async function getAuctionById(id: number) {
-        return (
-            (await db.auction.findUnique({
-                where: { id },
-                include: { nft: true },
-            })) ?? undefined
-        );
-    }
+  async function getAuctionById(id: number) {
+    return (
+      (await db.auction.findUnique({
+        where: { id },
+        include: { nft: true },
+      })) ?? undefined
+    );
+  }
 
-    async function getAuctionByNftId(id: number) {
-        return (
-            (await db.auction.findUnique({
-                where: { nftId: id },
-            })) ?? undefined
-        );
-    }
+  async function getAuctionByNftId(id: number) {
+    return (
+      (await db.auction.findUnique({
+        where: { nftId: id },
+      })) ?? undefined
+    );
+  }
 
-    async function createAuction(data: CreateAuctionArgs) {
-        return db.auction.create({
-            data: {
-                nftId: data.nftId,
-                startPrice: data.startPrice,
-                startTime: data.startTime,
-                endTime: data.endTime,
-                isActive: data.isActive ?? true,
-            },
-            include: { nft: true },
-        });
-    }
+  async function createAuction(data: CreateAuctionArgs) {
+    return db.auction.create({
+      data: {
+        nftId: data.nftId,
+        startPrice: data.startPrice,
+        currentPrice: data.startPrice, // Set currentPrice to startPrice by default
+        startTime: data.startTime,
+        endTime: data.endTime,
+        isActive: data.isActive ?? true,
+      },
+      include: { nft: true },
+    });
+  }
 
-    async function updateAuction(id: number, data: UpdateAuctionInput) {
-        return db.auction.update({
-            where: { id },
-            data: {
-                id: data.id,
-                currentPrice: data.currentPrice ?? undefined,
-                endTime: data.endTime ?? undefined,
-                isActive: data.isActive ?? undefined,
-            },
-            include: { nft: true },
-        });
-    }
+  async function updateAuction(id: number, data: UpdateAuctionInput) {
+    return db.auction.update({
+      where: { id },
+      data: {
+        id: data.id,
+        currentPrice: data.currentPrice ?? undefined,
+        endTime: data.endTime ?? undefined,
+        isActive: data.isActive ?? undefined,
+      },
+      include: { nft: true },
+    });
+  }
 
     async function getHighestBid(auctionId: number) {
         const highest = await db.bid.findFirst({

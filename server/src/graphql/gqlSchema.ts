@@ -96,7 +96,7 @@ export const gqlSchema = `#graphql
     description: String
     imageUrl: String!
     creatorId: Int!
-    tags: [Categories!]! 
+    tags: [String!]! 
   }
 
   input CreateAuctionInput {
@@ -128,16 +128,18 @@ export const gqlSchema = `#graphql
 
   type Query {
     users: [User!]
-    user(email: String!): User
+    user(id: Int!): User
     nfts: [NFT!]
-    nft(id: ID!): NFT
+    nft(id: Int!): NFT
+    nftsByCreatorId(id: Int!): [NFT!]
     auctions: [Auction!]
     auction(id: ID!): Auction
+    auctionByNftId(nftId: Int!): Auction
     bids: [Bid!]
+    bid(id: ID!): Bid
   }
 
   type Mutation {
-
     #auth
     login(data: LoginInput!): User!
     register(data: CreateUserInput!): User!
@@ -151,6 +153,7 @@ export const gqlSchema = `#graphql
     #NFTS
     createNFT(data: CreateNFTInput!): NFT!
     getNFTByCategories(data: [Categories!]): [NFT!]
+    getNFTsByCreatorId(id: Int!): [NFT!]
 
     #Auctions
     createAuction(data: CreateAuctionInput!): Auction!
