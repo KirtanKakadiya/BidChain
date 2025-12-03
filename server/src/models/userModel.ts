@@ -1,4 +1,5 @@
 // src/models/userModel.ts
+import { read } from 'fs';
 import { DbClient } from '../db/dbClient';
 import type { CreateUserArgs, UpdateUserInput, User } from '../types/userTypes';
 
@@ -7,6 +8,8 @@ export interface UserModel {
     readonly getUserByEmail: (email: string) => Promise<User | undefined>;
     readonly createUser: (data: CreateUserArgs) => Promise<User>;
     readonly updateUser: (id: number, data: UpdateUserInput) => Promise<User>;
+    readonly addFunds: (id: number, amount: number) => Promise<void>;
+    readonly deductFunds: (id: number, amount: number) => Promise<void>;
 }
 
 export function createUserModel(db: DbClient): UserModel {
@@ -57,10 +60,30 @@ export function createUserModel(db: DbClient): UserModel {
         });
     }
 
+    async function addFunds(id: number, amount: number): Promise<void> {
+        await db.user.update({
+            where: { id },
+            data: {
+                walletBalance: { increment: amount },
+            },
+        });
+    }
+
+    async function deductFunds(id: number, amount: number): Promise<void> {
+        await db.user.update({
+            where: { id },
+            data: {
+                walletBalance: { decrement: amount },
+            },
+        });
+    }
+
     return Object.freeze({
         getUserById,
         getUserByEmail,
         createUser,
         updateUser,
+        addFunds,
+        deductFunds,
     });
 }

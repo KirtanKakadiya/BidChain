@@ -1,28 +1,31 @@
+// src/resolvers/bidResolvers.ts
 import { GraphQLError } from 'graphql';
-import { BidModel } from '../models/bidModel';
+import type { BidModel } from '../models/bidModel';
+import type { AuctionModel } from '../models/auctionModel';
 import { HTTP_CODES } from '../httpCodes';
-import { Bid, PlaceBidArgs } from '../types/bidType';
+import type { Server as SocketIOServer } from 'socket.io';
+import type { PlaceBidArgs, Bid } from '../types/bidType';
 import { UserModel } from '../models/userModel';
-import { AuctionModel } from '../models/auctionModel';
-import { configDotenv } from 'dotenv';
 
 export function createBidResolver({
     bidModel,
     userModel,
     auctionModel,
+    io,
 }: {
     bidModel: BidModel;
     userModel: UserModel;
     auctionModel: AuctionModel;
+    io: SocketIOServer;
 }) {
     async function placeBid(
         _parent: unknown,
         { data }: { data: PlaceBidArgs }
     ): Promise<Bid> {
-        const { amount, bidderId, auctionId } = data;
+        const { amount, auctionId, bidderId } = data;
 
-        if (!amount || !bidderId || !auctionId) {
-            throw new GraphQLError('Missing required bid fields.', {
+        if (!amount || !auctionId || !bidderId) {
+            throw new GraphQLError('Missing bid fields.', {
                 extensions: { code: HTTP_CODES.BAD_REQUEST },
             });
         }
@@ -37,44 +40,43 @@ export function createBidResolver({
                 );
             }
 
-            // Check if user has enough balance to place bid
+            const highestBid = await auctionModel.getHighestBid(auctionId);
+
             if (user.walletBalance - user.bidsTotal < amount) {
                 throw new GraphQLError('Insufficient wallet balance.', {
                     extensions: { code: HTTP_CODES.BAD_REQUEST },
                 });
             }
 
-            // Attempt to retrieve auction by ID
             const auction = await auctionModel.getAuctionById(auctionId);
-            if (!auction) {
-                throw new GraphQLError(
-                    'Auction not found while attempting to place bid.',
-                    { extensions: { code: HTTP_CODES.NOT_FOUND } }
-                );
+            if (!auction || !auction.isActive) {
+                throw new GraphQLError('Auction not found or not active.', {
+                    extensions: { code: HTTP_CODES.BAD_REQUEST },
+                });
             }
 
-            // Verify bid is higher than current price
-            if (amount <= auction.currentPrice) {
+            if (data.amount <= highestBid!.amount) {
                 throw new GraphQLError(
-                    'Bid must be higher than current price.',
+                    'Bid amount is lower then current bid price',
                     {
-                        extensions: { code: HTTP_CODES.BAD_REQUEST },
+                        extensions: { code: HTTP_CODES },
                     }
                 );
             }
 
-            // Place bid and update the users bid total
-            const bid = await bidModel.placeBid(data);
-            userModel.updateUser(bidderId, {
-                bidsTotal: user.bidsTotal + amount,
-            });
+            const createdBid = await bidModel.placeBid(data);
 
-            // update auction's price
             await auctionModel.updateAuction(auctionId, {
+                id: auctionId,
                 currentPrice: amount,
             });
 
-            return bid;
+            io.to(`auction:${auctionId}`).emit('bid:placed', {
+                auctionId,
+                bid: createdBid,
+            });
+
+            return createdBid;
         } catch (error: any) {
             console.error(error);
             throw new GraphQLError(`Failed to create bid. ${error}`, {

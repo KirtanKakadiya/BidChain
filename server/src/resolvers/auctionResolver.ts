@@ -1,3 +1,4 @@
+// src/resolvers/auctionResolvers.ts
 import { GraphQLError } from 'graphql';
 import { AuctionModel } from '../models/auctionModel';
 import { HTTP_CODES } from '../httpCodes';
@@ -6,11 +7,18 @@ import {
     CreateAuctionArgs,
     UpdateAuctionInput,
 } from '../types/auctionType';
+import type { Server as SocketIOServer } from 'socket.io';
 
+/**
+ * TODO
+ * Add check to only create auction if start and endtime are after current time
+ */
 export function createAuctionResolver({
     auctionModel,
+    io,
 }: {
     auctionModel: AuctionModel;
+    io: SocketIOServer;
 }) {
     async function createAuction(
         _parent: unknown,
@@ -25,7 +33,11 @@ export function createAuctionResolver({
         }
 
         try {
-            return await auctionModel.createAuction(data);
+            const created = await auctionModel.createAuction(data);
+
+            io.emit('auction:created', created);
+
+            return created;
         } catch (error: any) {
             console.error(error);
             throw new GraphQLError(`Failed to create Auction. ${error}`, {
@@ -67,11 +79,9 @@ export function createAuctionResolver({
                 auctionSearch.id,
                 data
             );
-            if (!updated) {
-                throw new GraphQLError('Failed to update auction.', {
-                    extensions: { code: HTTP_CODES.SERVER_ERROR },
-                });
-            }
+
+            io.to(`auction:${updated.id}`).emit('auction:updated', updated);
+
             return updated;
         } catch (error: any) {
             console.error(error);
@@ -81,8 +91,16 @@ export function createAuctionResolver({
         }
     }
 
+    async function highestBid(
+        _parent: unknown,
+        { auctionId }: { auctionId: number }
+    ) {
+        return auctionModel.getHighestBid(auctionId);
+    }
+
     return {
         createAuction,
         updateAuction,
+        highestBid,
     };
 }

@@ -155,6 +155,7 @@ export const gqlSchema = `#graphql
     #Auctions
     createAuction(data: CreateAuctionInput!): Auction!
     updateAuction(data: UpdateAuctionInput!): Auction!
+    highestBid(auctionId: Int!): Float!
 
     #Bids
     placeBid(data: placeBidArgs!): Bid!
