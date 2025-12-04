@@ -23,6 +23,7 @@
 
 .search-bar {
     max-width: 1050px;
+    flex: 1;
 }
 
 .search-field .MuiOutlinedInput-root {
@@ -46,6 +47,36 @@
     align-items: start;
 }
 
+.wrap-search-filter{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.filter-menu {
+    width: 180px;
+}
+
+.form-control {
+  min-width: 220px;
+  width: auto;
+}
+
+.filter-menu .MuiInputBase-input {
+  color: #ffffff;
+}
+
+.filter-menu .MuiInputLabel-root {
+  color: #cccccc; 
+}
+.filter-menu .MuiMenuItem-root {
+  color: #ffffff;
+}
+
+.filter-menu .MuiPaper-root {
+  background-color: #2f2f2f;
+}
+
 @media (max-width: 960px) {
     .hero-marketplace {
         padding: 48px 16px 16px;
@@ -55,3 +86,10 @@
         gap: 20px;
     }
 }
+@media (max-width: 600px){
+    .form-control {
+        width: 100%;  /* take full width on mobile */
+        min-width: auto; /* allow shrinking */
+    }
+}
+

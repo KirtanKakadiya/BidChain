@@ -1,18 +1,20 @@
 import React, { JSX, useEffect } from 'react';
 import './MarketplacePage.css';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import { TextField, InputAdornment, IconButton, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
 import { useState } from 'react';
 import { nftQueries } from '../graphql/queries/nftQueries';
+import { CATEGORIES } from '../data/category';
+
 
 export function MarketplacePage(): JSX.Element {
     const [searchText, setSearchText] = useState('');
     const [nfts, setNfts] = useState<NFT[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [category, setCategory] = useState('');
     useEffect(() => {
         async function loadNFTs() {
             try {
@@ -31,8 +33,10 @@ export function MarketplacePage(): JSX.Element {
         loadNFTs();
     }, []);
 
-    const filteredNFTs = nfts.filter((nft) =>
-        nft.name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredNFTs = nfts.filter((nft) =>{
+        const matchesSearch = nft.name.toLowerCase().includes(searchText.toLowerCase());
+        const matchesCategory =category === '' || nft.tags?.some((tag) => tag.toUpperCase() === category.toUpperCase());
+        return matchesSearch && matchesCategory;}
     );
 
     return (
@@ -46,8 +50,8 @@ export function MarketplacePage(): JSX.Element {
                         Browse through more than 50k NFTs on the NFT
                         Marketplace.
                     </p>
-
-                    <div className="search-bar">
+                    <div className='wrap-search-filter'>
+                    <div className="search-bar" style={{ flexGrow: 1 }}>
                         <TextField
                             placeholder="Search your favourite NFTs"
                             variant="outlined"
@@ -76,6 +80,25 @@ export function MarketplacePage(): JSX.Element {
                                 ),
                             }}
                         />
+                    </div>
+                        <div className='filter-menu'>
+                            <FormControl fullWidth className="form-control">
+                            <InputLabel>Category</InputLabel>
+                            <Select
+                                label="Category"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                            >
+                                <MenuItem value="">All</MenuItem>
+
+                                {CATEGORIES.map((cat) => (
+                                    <MenuItem key={cat.title} value={cat.title}>
+                                        {cat.title}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        </div>
                     </div>
                 </div>
             </section>
