@@ -19,11 +19,6 @@ const sampleNFTCard = {
   },
 };
 
-//TODO
-// Still need to create all async functions for server side logic
-// Replace hard coded stats with real stats later !!!
-// Need to add links to all the categories as well, do after marketplace page is created
-
 export function HomePage(): JSX.Element {
   const navigate = useNavigate();
   const handleCategoryClick = (categoryTitle: string) => {
