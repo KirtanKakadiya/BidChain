@@ -6,10 +6,11 @@ import type { NFT } from '../types/nft';
 import './CollectorPage.css';
 import { useAuth } from '../context/AuthContext';
 import { GRAPHQL_ENDPOINT } from '../config/env';
+import { FETCH_USER } from '../graphql/queries/userQueries';
 
 
 export function CollectorPage(): JSX.Element {
-        const { user } = useAuth(); // get current logged-in user
+        const { user } = useAuth();
         const [activeTab, setActiveTab] = useState(0);
         const [userInfo, setUserInfo] = useState<any>(null);
         const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -18,7 +19,7 @@ export function CollectorPage(): JSX.Element {
     
         useEffect(() => {
             async function fetchUser() {
-                const userEmail = user?.email ?? '0';
+                console.log(user);
                 try {
                     const response = await fetch(GRAPHQL_ENDPOINT, {
                         method: 'POST',
@@ -26,25 +27,15 @@ export function CollectorPage(): JSX.Element {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            query: `
-                            query user($email: String!) {
-                                 user(email: $email) {
-                                    id
-                                    name
-                                    email
-                                    description
-                                    avatarPicture
-                                    bannerPicture
-                                }
-                            }
-                            `,
+                            query: FETCH_USER,
                             variables: {
-                                email: userEmail,
+                                id: Number(user?.id),
                             },
                         }),
                     });
     
                     const result = await response.json();
+                    console.log(result);
                     setUserInfo(result.data.user);
                 } catch (error) {
                     console.error('Failed to fetch user:', error);
