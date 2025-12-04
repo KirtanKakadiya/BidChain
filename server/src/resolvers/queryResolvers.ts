@@ -22,9 +22,9 @@ export function createQueryResolvers({
 }) {
   async function user(
     _parent: unknown,
-    { email }: { email: string }
+    { id }: { id: number }
   ): Promise<User> {
-    const userData = await userModel.getUserByEmail(email);
+    const userData = await userModel.getUserById(id);
 
     if (!userData) {
       throw new GraphQLError('User not found.', {
