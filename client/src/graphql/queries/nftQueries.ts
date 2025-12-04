@@ -114,6 +114,7 @@ export const nftQueries = {
         id: String(nft.creator?.id ?? '0'),
         name: nft.creator?.name ?? 'Unknown Creator',
       },
+      tags: nft.tags
     }));
   },
 
