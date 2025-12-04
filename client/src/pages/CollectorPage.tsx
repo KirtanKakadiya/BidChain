@@ -1,5 +1,5 @@
 import React, { useState, JSX, useEffect} from 'react';
-import { Box, Typography, Button, Avatar, Tabs, Tab } from '@mui/material';
+import { Box, Typography, Button, Avatar, Tabs, Tab, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
@@ -7,6 +7,9 @@ import './CollectorPage.css';
 import { useAuth } from '../context/AuthContext';
 import { GRAPHQL_ENDPOINT } from '../config/env';
 import { FETCH_USER } from '../graphql/queries/userQueries';
+import { useOwnedNfts } from '../hooks/useOwnedNfts';
+import { toast } from 'react-toastify';
+import { useBidNfts } from '../hooks/useWatchingNfts';
 
 
 export function CollectorPage(): JSX.Element {
@@ -38,12 +41,16 @@ export function CollectorPage(): JSX.Element {
                     console.log(result);
                     setUserInfo(result.data.user);
                 } catch (error) {
-                    console.error('Failed to fetch user:', error);
+                    toast.error(`Failed to fetch user: ${error}`);
                 }
             }
             if (user?.email) fetchUser();
         }, [user]);   
     
+    const { nfts: ownedNfts, loading: ownedLoading,error: ownedError,} = useOwnedNfts(Number(user?.id));
+    const { nfts: watchingNfts,loading: watchingLoading,error: watchingError,} = useBidNfts(Number(user?.id));
+
+
 
     return (
         <Box className="collector-page">
@@ -70,42 +77,6 @@ export function CollectorPage(): JSX.Element {
                         <Typography variant="h3" className="collector-name">
                             {userInfo?.name || 'Collector Name'}
                         </Typography>
-
-                        {/* <Box className="collector-stats">
-                            <Box className="stat">
-                                <Typography variant="h6" className="stat-value">
-                                    250k+
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className="stat-label"
-                                >
-                                    Volume
-                                </Typography>
-                            </Box>
-                            <Box className="stat">
-                                <Typography variant="h6" className="stat-value">
-                                    50+
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className="stat-label"
-                                >
-                                    NFTs Bought
-                                </Typography>
-                            </Box>
-                            <Box className="stat">
-                                <Typography variant="h6" className="stat-value">
-                                    3000+
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className="stat-label"
-                                >
-                                    Followers
-                                </Typography>
-                            </Box>
-                        </Box> */}
 
                         <Typography variant="body2" className="collector-bio">
                             <strong>Bio</strong>
@@ -136,20 +107,54 @@ export function CollectorPage(): JSX.Element {
                 >
                     <Tab label="Owned" />
                     <Tab label="Watching" />
-                    <Tab label="Collection" />
                 </Tabs>
             </Box>
 
-            {/* NFT Grid
             <Box className="collector-nfts">
-                <Box className="nft-grid">
-                    {sampleNFTs.map((nft) => (
+                {activeTab === 0 && (
+                <Box>
+                    {ownedLoading ? (
+                    <Box className="collector-loading">
+                        <CircularProgress />
+                    </Box>
+                    ) : ownedNfts.length === 0 ? (
+                    <Typography>
+                        You don’t own any NFTs yet.
+                    </Typography>
+                    ) : (
+                    <Box className="nft-grid">
+                        {ownedNfts.map((nft: NFT) => (
                         <Box key={nft.id} className="nft-grid-item">
                             <NFTCard nft={nft} />
                         </Box>
-                    ))}
+                        ))}
+                    </Box>
+                    )}
                 </Box>
-            </Box> */}
+                )}
+
+                {activeTab === 1 && (
+                <Box>
+                    {watchingLoading ? (
+                    <Box className="collector-loading">
+                        <CircularProgress />
+                    </Box>
+                    ) : watchingNfts.length === 0 ? (
+                    <Typography>
+                        You’re not watching any auctions yet. Place a bid to start watching.
+                    </Typography>
+                    ) : (
+                    <Box className="nft-grid">
+                        {watchingNfts.map((nft: NFT) => (
+                        <Box key={nft.id} className="nft-grid-item">
+                            <NFTCard nft={nft} />
+                        </Box>
+                        ))}
+                    </Box>
+                    )}
+                </Box>
+                )}
+            </Box>
         </Box>
     );
 }
