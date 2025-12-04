@@ -162,7 +162,7 @@ async function main() {
             const nft = await prisma.nFT.create({
                 data: {
                     title: nftImages[i].title,
-                    description: 'A unique NFT art piece created for BidChain.',
+                    description: nftImages[i].description,
                     imageUrl: nftImages[i].imageUrl,
                     creatorId: artist.id,
                     tags: nftImages[i].tags,
