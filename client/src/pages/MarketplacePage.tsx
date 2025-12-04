@@ -14,7 +14,9 @@ export function MarketplacePage(): JSX.Element {
     const [nfts, setNfts] = useState<NFT[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [category, setCategory] = useState('');
+    const searchParams = new URLSearchParams(location.search); // ✅ define here
+    const initialCategory = searchParams.get('category') || '';
+    const [category, setCategory] = useState(initialCategory);
     useEffect(() => {
         async function loadNFTs() {
             try {
