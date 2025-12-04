@@ -1,13 +1,13 @@
-import { graphql, GraphQLError } from 'graphql';
 import type { User } from '../types/userTypes';
 import type { UserModel } from '../models/userModel';
 import type { AuctionModel } from '../models/auctionModel';
 import type { NFTModel } from '../models/nftModel';
 import type { Auction } from '../types/auctionType';
-import { Bid } from '../types/bidType';
-import { BidModel } from '../models/bidModel';
+import type { Bid } from '../types/bidType';
+import type { BidModel } from '../models/bidModel';
 import { HTTP_CODES } from '../httpCodes';
-import { NFT } from '../types/nftType';
+import { GraphQLError } from 'graphql';
+import type { NFT } from '../types/nftType';
 
 export function createQueryResolvers({
   userModel,
@@ -82,6 +82,54 @@ export function createQueryResolvers({
     }
   }
 
+  async function ownedNfts(
+    _parent: unknown,
+    { userId }: { userId: number }
+  ): Promise<NFT[]> {
+    try {
+      const nfts = await userModel.getOwnedNFTs(userId);
+      return nfts;
+    } catch (error: any) {
+      console.error(error);
+      throw new GraphQLError(`Failed to fetch owned NFTs. ${error}`, {
+        extensions: { code: HTTP_CODES.SERVER_ERROR },
+      });
+    }
+  }
+
+  async function bidNfts(
+    _parent: unknown,
+    { userId }: { userId: number }
+  ): Promise<NFT[]> {
+    try {
+      const nfts = await userModel.getBidNfts(userId);
+      return nfts;
+    } catch (error: any) {
+      console.error(error);
+      throw new GraphQLError(
+        `Failed to fetch NFTs user has bid on. ${error}`,
+        {
+          extensions: { code: HTTP_CODES.SERVER_ERROR },
+        }
+      );
+    }
+  }
+
+  async function createdNfts(
+    _parent: unknown,
+    { creatorId }: { creatorId: number }
+  ): Promise<NFT[]> {
+    try {
+      const nfts = await userModel.getCreatedNFTs(creatorId);
+      return nfts;
+    } catch (error: any) {
+      console.error(error);
+      throw new GraphQLError(`Failed to fetch created NFTs. ${error}`, {
+        extensions: { code: HTTP_CODES.SERVER_ERROR },
+      });
+    }
+  }
+
   async function auction(
     _parent: unknown,
     { id }: { id: number }
@@ -141,5 +189,16 @@ export function createQueryResolvers({
     }
   }
 
-  return { user, nft, nfts, nftsByCreatorId, auction, auctionByNftId, bid };
+  return {
+    user,
+    nft,
+    nfts,
+    nftsByCreatorId,
+    ownedNfts,     
+    bidNfts,        
+    createdNfts,    
+    auction,
+    auctionByNftId,
+    bid,
+  };
 }
