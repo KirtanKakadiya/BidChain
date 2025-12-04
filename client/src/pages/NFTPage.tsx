@@ -26,6 +26,7 @@ import { useAuctionSocket } from '../hooks/useAuctionSocket';
 import { useCountdown } from '../hooks/useCountdown';
 import { useAuth } from '../context/AuthContext';
 import { bidMutations } from '../graphql/mutations/bidMutations';
+import { toast } from 'react-toastify';
 
 export function NFTPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -96,14 +97,14 @@ export function NFTPage(): JSX.Element {
 
   const handlePlaceBid = async () => {
     if (!auction || !user || !bidAmount) {
-      alert('Please enter a valid bid amount');
+      toast.error('Please enter a valid bid amount');
       return;
     }
 
     const amount = parseFloat(bidAmount);
 
     if (isNaN(amount) || amount <= auction.currentPrice) {
-      alert(
+      toast.error(
         `Bid must be higher than current price of ${auction.currentPrice} ETH`
       );
       return;
@@ -120,7 +121,7 @@ export function NFTPage(): JSX.Element {
 
       setBidAmount('');
     } catch (err) {
-      alert(
+      toast.error(
         err instanceof Error
           ? err.message
           : 'Failed to place bid. Please try again.'
