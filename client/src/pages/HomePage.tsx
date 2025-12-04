@@ -5,6 +5,7 @@ import { PrimaryButton } from '../components/button';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import { CATEGORIES } from '../data/category';
 import { CategoryCard } from '../components/CategoryCard';
+import { useNavigate } from 'react-router-dom';
 
 const sampleNFTCard = {
   id: '1',
@@ -19,8 +20,10 @@ const sampleNFTCard = {
 };
 
 export function HomePage(): JSX.Element {
-
-    
+  const navigate = useNavigate();
+  const handleCategoryClick = (categoryTitle: string) => {
+    navigate(`/marketplace?category=${encodeURIComponent(categoryTitle)}`);
+  };
   return (
     <main className="homepage">
       <section className="hero">
@@ -69,10 +72,16 @@ export function HomePage(): JSX.Element {
         </div>
 
         <div className="categories-grid">
-          {CATEGORIES.map((cat) => (
-            <CategoryCard key={cat.id} category={cat} />
-          ))}
+      {CATEGORIES.map((cat) => (
+        <div
+          key={cat.id}
+          onClick={() => handleCategoryClick(cat.title)}
+          style={{ cursor: 'pointer' }}
+        >
+          <CategoryCard category={cat} />
         </div>
+      ))}
+    </div>
       </section>
     </main>
   );
