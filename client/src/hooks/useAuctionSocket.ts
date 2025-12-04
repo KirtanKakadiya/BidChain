@@ -1,39 +1,51 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:4001';
+const SOCKET_URL = 'http://localhost:8081';
 
 export function useAuctionSocket(auctionId: number | null) {
-  const [socket, setSocket] = useState<Socket | null>(null);
   const [currentPrice, setCurrentPrice] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!auctionId) return;
+    if (auctionId == null) return;
 
-    const newSocket = io(SOCKET_URL, {
+    const socket: Socket = io(SOCKET_URL, {
       transports: ['websocket', 'polling'],
     });
 
-    setSocket(newSocket);
-
-    newSocket.on('connect', () => {
-      newSocket.emit('joinAuction', auctionId);
+    socket.on('connect', () => {
+      console.log('[socket] connected:', socket.id);
+      socket.emit('joinAuction', auctionId);
+      console.log('[socket] joined room', `auction:${auctionId}`);
     });
 
-    newSocket.on('auction:updated', (updatedAuction) => {
+    socket.on('auction:updated', (updatedAuction: any) => {
+      console.log('[socket] auction:updated received:', updatedAuction);
+      if (updatedAuction?.currentPrice != null) {
       setCurrentPrice(updatedAuction.currentPrice);
+      }
     });
 
-    newSocket.on('bid:placed', (data) => {
-      if (data.auctionId === auctionId && data.bid?.amount) {
+    socket.on('bid:placed', (data: any) => {
+      console.log('[socket] bid:placed received:', data);
+      if (data.auctionId === auctionId && data.bid?.amount != null) {
         setCurrentPrice(data.bid.amount);
       }
     });
 
+    socket.on('disconnect', () => {
+      console.log('[socket] disconnected');
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('[socket] connect_error', err);
+    });
+
     return () => {
-      newSocket.disconnect();
+      console.log('[socket] disconnecting for auction', auctionId);
+      socket.disconnect();
     };
   }, [auctionId]);
 
-  return { socket, currentPrice };
+  return { currentPrice };
 }

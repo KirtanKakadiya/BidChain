@@ -18,6 +18,7 @@ import { auctionMutations } from '../graphql/mutations/auctionMutations';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // Define the valid categories from your backend enum
 const VALID_CATEGORIES = [
@@ -79,7 +80,7 @@ export function CreateNFTPage(): JSX.Element {
       !auctionDuration
     ) {
       console.error('Missing required fields');
-      alert('Please provide all required fields');
+      toast.error('Please provide all required fields');
       return;
     }
 
@@ -126,7 +127,7 @@ export function CreateNFTPage(): JSX.Element {
       navigate(`/nft/${newNFT.id}`);
     } catch (err) {
       console.error('Failed to create NFT or Auction:', err);
-      alert('Failed to create NFT. Please try again.');
+      toast.error('Failed to create NFT. Please try again.');
     } finally {
       setCreating(false);
     }
