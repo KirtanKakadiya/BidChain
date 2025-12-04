@@ -8,6 +8,7 @@ import './ArtistPage.css';
 import { useAuth } from '../context/AuthContext';
 import { GRAPHQL_ENDPOINT } from '../config/env';
 import { Email } from '@mui/icons-material';
+import { FETCH_USER } from '../graphql/queries/userQueries';
 
 export function ArtistPage(): JSX.Element {
     const { user } = useAuth(); // get current logged-in user
@@ -19,7 +20,6 @@ export function ArtistPage(): JSX.Element {
 
     useEffect(() => {
         async function fetchUser() {
-            const userEmail = user?.email ?? '0';
             try {
                 const response = await fetch(GRAPHQL_ENDPOINT, {
                     method: 'POST',
@@ -27,24 +27,13 @@ export function ArtistPage(): JSX.Element {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        query: `
-                        query user($email: String!) {
-                             user(email: $email) {
-                                id
-                                name
-                                email
-                                description
-                                avatarPicture
-                                bannerPicture
-                            }
-                        }
-                        `,
+                        query: FETCH_USER,
                         variables: {
-                            email: userEmail,
+                            id: Number(user?.id),
                         },
                     }),
                 });
-
+                console.log(response);
                 const result = await response.json();
                 setUserInfo(result.data.user);
             } catch (error) {
