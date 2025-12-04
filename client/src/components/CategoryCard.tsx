@@ -15,10 +15,20 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
     const { title, icon: Icon } = category;
 
     return (
-        <Card className={`category-card ${className ?? ''}`}>
+        <Card 
+            className={`category-card ${className ?? ''}`}
+            sx={{
+                borderRadius: '20px',
+                overflow: 'hidden',
+                backgroundColor: '#2b2b2b'
+            }}>
             <Box className="category-top">
                 {Icon ? (
-                    <Icon sx={{ fontSize: 56, color: 'black' }} />
+                    <Icon 
+                    sx={{ 
+                        fontSize: 56, 
+                        color: '#ffffff'
+                    }} />
                 ) : (
                     <span>No Icon</span>
                 )}

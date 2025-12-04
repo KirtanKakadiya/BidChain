@@ -2,6 +2,7 @@
 import { read } from 'fs';
 import { DbClient } from '../db/dbClient';
 import type { CreateUserArgs, UpdateUserInput, User } from '../types/userTypes';
+import { NFT } from '../types/nftType';
 
 export interface UserModel {
     readonly getUserById: (id: number) => Promise<User | undefined>;
@@ -10,6 +11,9 @@ export interface UserModel {
     readonly updateUser: (id: number, data: UpdateUserInput) => Promise<User>;
     readonly addFunds: (id: number, amount: number) => Promise<void>;
     readonly deductFunds: (id: number, amount: number) => Promise<void>;
+    readonly getOwnedNFTs:(userId: number)=> Promise<NFT[]>;
+    readonly getCreatedNFTs:(userId: number)=> Promise<NFT[]>;
+    readonly getBidNfts:(userId: number)=> Promise<NFT[]>;
 }
 
 export function createUserModel(db: DbClient): UserModel {
@@ -78,6 +82,61 @@ export function createUserModel(db: DbClient): UserModel {
         });
     }
 
+    async function getOwnedNFTs(userId: number): Promise<NFT[]> {
+        console.log(userId);
+        return await db.nFT.findMany({
+            where: { ownerId: userId },
+            include: {
+                auction: true,
+                creator: true,
+                owner: true
+            },
+        });
+
+    }
+
+
+    async function getCreatedNFTs(userId: number): Promise<NFT[]> {
+        return await db.nFT.findMany({
+            where: { creatorId: userId },
+            include: {
+                auction: true,
+                creator: true,
+            },
+        });
+
+    }
+
+
+    async function getBidNfts(userId: number): Promise<NFT[]> {
+        const bids = await db.bid.findMany({
+            where: { bidderId: userId },
+            include: {
+                auction: {
+                    include: {
+                        nft: {
+                            include: {
+                                auction: true,
+                                creator: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        const nftMap = new Map<number, NFT>();
+
+        for (const bid of bids) {
+            const nft = bid.auction?.nft;
+            if (nft && !nftMap.has(nft.id)) {
+                nftMap.set(nft.id, nft as unknown as NFT);
+            }
+        }
+
+        return Array.from(nftMap.values());
+    }
+
     return Object.freeze({
         getUserById,
         getUserByEmail,
@@ -85,5 +144,8 @@ export function createUserModel(db: DbClient): UserModel {
         updateUser,
         addFunds,
         deductFunds,
+        getOwnedNFTs,
+        getCreatedNFTs,
+        getBidNfts
     });
 }

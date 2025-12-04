@@ -15,6 +15,7 @@ model User {
     role      UserRole @default(COLLECTOR)
     bids      Bid[]    @relation("UserBids")
     nfts      NFT[]    @relation("UserNFTs")
+    ownedNfts NFT[]    @relation("OwnedNFTs") 
     description String?
     walletBalance Float @default(0)
     walletAddress String @default(uuid())
@@ -29,6 +30,8 @@ model NFT {
     description String?
     imageUrl    String
     creatorId   Int
+    ownerId     Int?
+    owner       User?    @relation("OwnedNFTs", fields: [ownerId], references: [id])
     createdAt   DateTime @default(now())
     auction     Auction? @relation("NFTAuction")
     creator     User     @relation("UserNFTs", fields: [creatorId], references: [id])

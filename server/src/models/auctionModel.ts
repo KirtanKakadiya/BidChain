@@ -125,6 +125,13 @@ export function createAuctionModel(db: DbClient): AuctionModel {
                     },
                 });
 
+                await db.nFT.update({
+                    where: { id: auction.nftId },
+                    data: {
+                        ownerId: winnerId,
+                    },
+                });
+
                 console.log(
                     `Auction ${auction.id} closed. Winner: ${winnerId}. Final price: ${highestBid?.amount}`
                 );

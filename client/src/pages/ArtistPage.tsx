@@ -1,5 +1,5 @@
 import React, { useState, JSX, useEffect } from 'react';
-import { Box, Typography, Button, Avatar, Tabs, Tab } from '@mui/material';
+import { Box, Typography, Button, Avatar, Tabs, Tab, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
@@ -9,9 +9,12 @@ import { useAuth } from '../context/AuthContext';
 import { GRAPHQL_ENDPOINT } from '../config/env';
 import { Email } from '@mui/icons-material';
 import { FETCH_USER } from '../graphql/queries/userQueries';
+import { useOwnedNfts } from '../hooks/useOwnedNfts';
+import { useBidNfts } from '../hooks/useWatchingNfts';
+import { useCreatedNfts } from '../hooks/useCreatedNfts';
 
 export function ArtistPage(): JSX.Element {
-    const { user } = useAuth(); // get current logged-in user
+    const { user } = useAuth(); 
     const [activeTab, setActiveTab] = useState(0);
     const [userInfo, setUserInfo] = useState<any>(null);
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -42,6 +45,10 @@ export function ArtistPage(): JSX.Element {
         }
         if (user?.email) fetchUser();
     }, [user]);   
+
+    const { nfts: ownedNfts, loading: ownedLoading} = useOwnedNfts(Number(user?.id));
+    const { nfts: watchingNfts,loading: watchingLoading} = useBidNfts(Number(user?.id));
+    const { nfts: createdNfts,loading: createdLoading} = useCreatedNfts(Number(user?.id));
 
 
 
@@ -134,20 +141,79 @@ export function ArtistPage(): JSX.Element {
                 >
                     <Tab label="Created" />
                     <Tab label="Owned" />
-                    <Tab label="Collection" />
+                    <Tab label="Watching" />
                 </Tabs>
             </Box>
 
-            {/* NFT Grid
-            <Box className="artist-nfts">
-                <Box className="nft-grid">
-                    {sampleNFTs.map((nft) => (
+            <Box className="collector-nfts">
+                {activeTab === 0 && (
+                <Box>
+                    {createdLoading ? (
+                    <Box className="collector-loading">
+                        <CircularProgress />
+                    </Box>
+                    ) : createdNfts.length === 0 ? (
+                    <Typography>
+                        You havent created any NFTS yet.
+                    </Typography>
+                    ) : (
+                    <Box className="nft-grid">
+                        {createdNfts.map((nft: NFT) => (
                         <Box key={nft.id} className="nft-grid-item">
                             <NFTCard nft={nft} />
                         </Box>
-                    ))}
+                        ))}
+                    </Box>
+                    )}
                 </Box>
-            </Box> */}
+                )}
+
+                {activeTab === 1 && (
+                <Box>
+                    {ownedLoading ? (
+                    <Box className="collector-loading">
+                        <CircularProgress />
+                    </Box>
+                    ) : ownedNfts.length === 0 ? (
+                    <Typography>
+                        You don’t own any NFTs yet.
+                    </Typography>
+                    ) : (
+                    <Box className="nft-grid">
+                        {ownedNfts.map((nft: NFT) => (
+                        <Box key={nft.id} className="nft-grid-item">
+                            <NFTCard nft={nft} />
+                        </Box>
+                        ))}
+                    </Box>
+                    )}
+                </Box>
+                )}
+
+                {activeTab === 2 && (
+                <Box>
+                    {watchingLoading ? (
+                    <Box className="collector-loading">
+                        <CircularProgress />
+                    </Box>
+                    ) : watchingNfts.length === 0 ? (
+                    <Typography>
+                        You’re not watching any auctions yet. Place a bid to start watching.
+                    </Typography>
+                    ) : (
+                    <Box className="nft-grid">
+                        {watchingNfts.map((nft: NFT) => (
+                        <Box key={nft.id} className="nft-grid-item">
+                            <NFTCard nft={nft} />
+                        </Box>
+                        ))}
+                    </Box>
+                    )}
+                </Box>
+                )}
+            </Box>
+
+                                
         </Box>
     );
 }

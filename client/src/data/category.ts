@@ -3,7 +3,7 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import SportsIcon from '@mui/icons-material/Sports';
+import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import type { Category } from '../types/category';
 
 export const CATEGORIES: Category[] = [
@@ -12,5 +12,5 @@ export const CATEGORIES: Category[] = [
   { id: 'GAMING', title: 'Gaming', icon: SportsEsportsIcon },
   { id: 'PHOTOGRAPHY', title: 'Photography', icon: PhotoCameraIcon },
   { id: 'VIDEO', title: 'Video', icon: VideocamIcon },
-  { id: 'SPORT', title: 'Sport', icon: SportsIcon },
+  { id: 'SPORT', title: 'Sport', icon: SportsBasketballIcon },
 ];
