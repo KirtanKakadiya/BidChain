@@ -38,9 +38,11 @@ export const gqlSchema = `#graphql
     description: String
     imageUrl: String!
     creatorId: Int!
+    ownerId: Int!
     createdAt: String!
     auction: Auction
     creator: User!
+    owner: User!
     tags: [Categories!]
 
   }
@@ -137,6 +139,9 @@ export const gqlSchema = `#graphql
     auctionByNftId(nftId: Int!): Auction
     bids: [Bid!]
     bid(id: ID!): Bid
+    ownedNfts(userId: Int!): [NFT!]
+    bidNfts(userId: Int!): [NFT!]
+    createdNfts(creatorId: Int!): [NFT!]
   }
 
   type Mutation {
