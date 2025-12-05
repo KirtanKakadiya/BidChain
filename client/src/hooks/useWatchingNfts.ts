@@ -30,7 +30,8 @@ function mapApiNftToCardNft(apiNft: InputNFT): NFT {
     creator: {
         id:"",
         name: ""
-    }
+    },
+    isActive: false
   };
 }
 
@@ -64,7 +65,7 @@ export function useBidNfts(userId: number | null) {
     } catch (err: any) {
       toast.error('Failed to fetch bid NFTs:', err);
       setError(err.message || 'Failed to fetch bid NFTs');
-    } finally {
+    } finally { 
       setLoading(false);
     }
   }
