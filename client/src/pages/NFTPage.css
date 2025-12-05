@@ -50,14 +50,9 @@
   align-self: flex-start;
 }
 
-.bid-card {
-  background-color: #3b3b3b !important;
-}
-
 .card-content {
   background-color: #3b3b3b;
   color: #ffff;
-  padding: 30px !important;
 }
 
 .countdown-container {
@@ -120,7 +115,6 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0 !important;
 }
 
 .input-box-container {
@@ -153,22 +147,6 @@
   font-weight: 400;
   color: #858584;
   margin-left: 8px;
-}
-
-.place-bid-button {
-  background-color: #a259ff !important;
-  color: #ffffff !important;
-  border-radius: 20px !important;
-  padding: 16px 50px !important;
-  font-family: 'Work Sans', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  text-transform: none !important;
-  width: 100%;
-}
-
-.place-bid-button:hover {
-  background-color: #8a3fff !important;
 }
 
 .more-nfts-container {
@@ -258,10 +236,6 @@
     margin: 12px 0;
   }
 
-  .card-content {
-    padding: 20px !important;
-  }
-
   .countdown-container {
     display: flex;
     flex-direction: column;
@@ -304,11 +278,6 @@
 
   .bid-currency {
     font-size: 14px;
-  }
-
-  .place-bid-button {
-    padding: 14px 40px !important;
-    font-size: 14px !important;
   }
 
   .more-nfts-container {

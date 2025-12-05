@@ -21,3 +21,28 @@
     justify-content: center;
     text-align: center;
 }
+
+
+@media (max-width: 768px) {
+    .addfunds-container {
+        padding: 32px 12px;
+    }
+
+    .addfunds-card {
+        padding: 24px 16px;
+        border-radius: 16px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@media (max-width: 480px) {
+    .addfunds-container {
+        padding: 24px 10px;
+    }
+
+    .addfunds-card {
+        padding: 20px 14px;
+        border-radius: 14px;
+    }
+}
+
