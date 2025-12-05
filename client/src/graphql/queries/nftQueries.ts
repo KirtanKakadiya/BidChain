@@ -17,6 +17,10 @@ export const nftQueries = {
                     name
                     avatarPicture
                 }
+                auction {
+                  currentPrice
+                  isActive
+                }
             }
         }
     `;
@@ -55,6 +59,9 @@ export const nftQueries = {
       creatorAvatarUrl: nftData.creator?.avatarPicture ?? '/avatar.png',
       description: nftData.description,
       tags: nftData.tags || [],
+      price: nftData.auction
+        ? `${nftData.auction.currentPrice.toFixed(2)} ETH`
+        : 'Not for sale',
       creator: {
         id: String(nftData.creator.id),
         name: nftData.creator.name,
