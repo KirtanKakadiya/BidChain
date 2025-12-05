@@ -77,32 +77,7 @@ export function ArtistPage(): JSX.Element {
                         <Typography variant="h3" className="artist-name">
                             {userInfo?.name || 'Artist Name'}
                         </Typography>
-
-                        <Box className="artist-stats">
-                            <Box className="stat">
-                                <Typography variant="h6" className="stat-value">
-                                    50+
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className="stat-label"
-                                >
-                                    NFTs Sold
-                                </Typography>
-                            </Box>
-                            {/* <Box className="stat">
-                                <Typography variant="h6" className="stat-value">
-                                    3000+
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className="stat-label"
-                                >
-                                    Followers
-                                </Typography>
-                            </Box> */}
-                        </Box>
-
+                        
                         <Typography variant="body2" className="artist-bio">
                             <strong>Bio</strong>
                             <br />
