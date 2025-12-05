@@ -5,6 +5,10 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
+.category-card:hover {
+    box-shadow: 0 4px 20px #9a54f4;
+}
+
 .category-top {
     height: 180px;
     display: flex;
