@@ -16,11 +16,6 @@ interface NFTCardProps {
     onClick?: (id: string) => void;
 }
 
-// TODO
-// The bg color for the icon doesnt work, need to fix that bug
-// Also still need to add the info container
-// Also add highest price to right of the price
-
 export function NFTCard({ nft, onClick }: Readonly<NFTCardProps>) {
     const navigate = useNavigate();
 

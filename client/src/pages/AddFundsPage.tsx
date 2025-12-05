@@ -94,7 +94,7 @@ export function AddFundsPage(): JSX.Element {
             updatedUser.role = user.role;
             login(updatedUser);
 
-            toast.success(`Added ${reqAmount.toFixed(2)} BC to wallet.`);
+            toast.success(`Added ${reqAmount.toFixed(2)} ETH to wallet.`);
             setAmount('');
         } catch (err: any) {
             console.error('Add funds error:', err);
@@ -145,7 +145,7 @@ export function AddFundsPage(): JSX.Element {
                         color: '#fff',
                     }}
                 >
-                    {currentBalance.toFixed(2)} BC
+                    {currentBalance.toFixed(2)} ETH
                 </Typography>
 
                 <form onSubmit={handleSubmit}>

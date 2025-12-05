@@ -1,4 +1,4 @@
-import React, { JSX, useRef } from 'react';
+import React, { JSX, useEffect, useRef, useState } from 'react';
 import './HomePage.css';
 import { NFTCard } from '../components/NFTCard';
 import { PrimaryButton } from '../components/button';
@@ -8,6 +8,9 @@ import { CategoryCard } from '../components/CategoryCard';
 import { useNavigate } from 'react-router-dom';
 import { InformationCard } from '../components/InformationCard';
 import { Information_Card_Data } from '../data/information';
+import { nftQueries } from '../graphql/queries/nftQueries';
+import { NFT } from '../types/nft';
+import { toast } from 'react-toastify';
 
 const sampleNFTCard = {
   id: '1',
@@ -28,10 +31,27 @@ export function HomePage(): JSX.Element {
   const handleCategoryClick = (categoryTitle: string) => {
     navigate(`/marketplace?category=${encodeURIComponent(categoryTitle)}`);
   };
+  const [nft, setNFT] = useState<NFT>();
 
   const scrollToInfoSection = () => {
     infoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+  useEffect(() => {
+    async function loadNFT(){
+        try{
+          const fetched = await nftQueries.getNFTById("1");
+          setNFT(fetched);
+        }
+        catch{
+          toast.error("Coudnt Load HomePage NFT.");
+        }
+    }
+
+    loadNFT();
+  }, [])
+  
+
+  
 
   return (
     <main className="homepage">
@@ -70,7 +90,7 @@ export function HomePage(): JSX.Element {
         </div>
         <div className="hero-right">
           <div className="image-container">
-            <NFTCard nft={sampleNFTCard} />
+            {nft && <NFTCard key= {nft.id} nft={nft} />}
           </div>
         </div>
       </section>
