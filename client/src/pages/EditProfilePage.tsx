@@ -223,7 +223,25 @@ export function EditProfilePage(): JSX.Element {
                         className="edit-banner-button"
                         startIcon={<EditIcon />}
                         onClick={() => bannerInputRef.current?.click()}
-                        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                        sx={{
+                            position: "absolute",
+                            bottom: 16,
+                            right: 16,
+
+                            backgroundColor: "#a259ff",
+                            color: "#ffffff",
+                            padding: "10px 24px",
+                            borderRadius: "8px",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                            textTransform: "none",
+                            transition: "all 200ms ease",
+
+                            "&:hover": {
+                            backgroundColor: "#8f45e3",
+                            transform: "translateY(-2px)",
+                            }
+                        }}
                     >
                         Edit Banner
                     </Button>
@@ -241,17 +259,45 @@ export function EditProfilePage(): JSX.Element {
                             }
                             alt={username || ''}
                             className="edit-profile-avatar"
-                            sx={{ width: 120, height: 120 }}
+                            sx={{
+                                width: 120,
+                                height: 120,
+                                border: "4px solid #1a1a1a",
+                                borderRadius: "12px",
+                                flexShrink: 0,
+                                "@media (max-width: 480px)": {
+                                    width: "100px",
+                                    height: "100px",
+                                }
+                            }}
                         />
                         <IconButton
                             className="avatar-edit-button"
                             onClick={() => avatarInputRef.current?.click()}
                             sx={{
-                                position: 'absolute',
+                                position: "absolute",
                                 bottom: 0,
                                 right: 0,
-                                backgroundColor: '#2f2f2f',
-                            }}
+
+                                backgroundColor: "rgba(255,255,255,0.9)",
+                                color: "#1a1a1a",
+
+                                width: "44px",
+                                height: "44px",
+                                borderRadius: "8px",
+
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+
+                                flexShrink: 0,
+                                transition: "all 200ms ease",
+
+                                "&:hover": {
+                                backgroundColor: "#ffffff",
+                                transform: "scale(1.05)",
+                                    },
+                            }}  
                         >
                             <EditIcon />
                         </IconButton>
@@ -289,7 +335,18 @@ export function EditProfilePage(): JSX.Element {
                 <Box className="edit-profile-form">
                     {/* Username */}
                     <Box className="form-group">
-                        <Typography variant="body1" className="form-label">
+                        <Typography 
+                            variant="body1"
+                            className="form-label"
+                            sx = {{
+                                color:"#ffffff",
+                                fontWeight:600,
+                                fontSize:"16px",
+                                "@media (max-width: 480px)": {
+                                    fontSize:"14px"
+                                }
+                            }}
+                        >
                             Username
                         </Typography>
                         <Box className="form-field-wrapper">
@@ -300,15 +357,62 @@ export function EditProfilePage(): JSX.Element {
                                 variant="outlined"
                                 fullWidth
                                 className="profile-input"
-                                slotProps={{
-                                    input: {
-                                        className: 'profile-input-root',
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+                                    backgroundColor: "#1a1a1a",
+                                    borderRadius: "8px",
+                                    color: "#ffffff",
+                                    "& fieldset": {
+                                        borderColor: "#444",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#a259ff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#a259ff",
+                                    },
+                                    "&.Mui-disabled": {
+                                        backgroundColor: "#1a1a1a",
+                                    },
+                                    },
+                                    "& .MuiInputBase-input": {
+                                    color: "#ffffff",
+                                    padding: "12px 16px",
+                                    },
+                                    "& .MuiInputBase-input.Mui-disabled": {
+                                    color: "#ccc",
+                                    WebkitTextFillColor: "#ccc",
+                                    },
+                                    "& .MuiInputBase-input::placeholder": {
+                                    color: "#888",
+                                    opacity: 1,
                                     },
                                 }}
                             />
                             <IconButton
                                 className="field-edit-button"
                                 onClick={() => setIsEditing(!isEditing)}
+                                sx={{
+                                    color: "#a259ff",
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "8px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    transition: "all 200ms ease",
+                                    flexShrink: 0,
+                                    "&:hover": {
+                                        backgroundColor: "rgba(162, 89, 255, 0.1)",
+                                        transform: "scale(1.05)",
+                                    },
+                                    "@media (max-width: 768px)": {
+                                        width: "100%",
+                                        alignSelf: "flex-end",
+                                        marginTop: "8px",
+                                    }
+                                }}
+
                             >
                                 <EditIcon />
                             </IconButton>
@@ -316,7 +420,18 @@ export function EditProfilePage(): JSX.Element {
                     </Box>
 
                     <Box className="form-group">
-                        <Typography variant="body1" className="form-label">
+                        <Typography 
+                            variant="body1" 
+                            className="form-label"
+                            sx = {{
+                                color:"#ffffff",
+                                fontWeight:600,
+                                fontSize:"16px",
+                                "@media (max-width: 480px)": {
+                                    fontSize:"14px"
+                                }
+                            }}
+                        >
                             Email
                         </Typography>
                         <Box className="form-field-wrapper">
@@ -328,15 +443,61 @@ export function EditProfilePage(): JSX.Element {
                                 fullWidth
                                 type="email"
                                 className="profile-input"
-                                slotProps={{
-                                    input: {
-                                        className: 'profile-input-root',
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+                                    backgroundColor: "#1a1a1a",
+                                    borderRadius: "8px",
+                                    color: "#ffffff",
+                                    "& fieldset": {
+                                        borderColor: "#444",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#a259ff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#a259ff",
+                                    },
+                                    "&.Mui-disabled": {
+                                        backgroundColor: "#1a1a1a",
+                                    },
+                                    },
+                                    "& .MuiInputBase-input": {
+                                    color: "#ffffff",
+                                    padding: "12px 16px",
+                                    },
+                                    "& .MuiInputBase-input.Mui-disabled": {
+                                    color: "#ccc",
+                                    WebkitTextFillColor: "#ccc",
+                                    },
+                                    "& .MuiInputBase-input::placeholder": {
+                                    color: "#888",
+                                    opacity: 1,
                                     },
                                 }}
                             />
                             <IconButton
                                 className="field-edit-button"
                                 onClick={() => setIsEditing(!isEditing)}
+                                sx={{
+                                    color: "#a259ff",
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "8px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    transition: "all 200ms ease",
+                                    flexShrink: 0,
+                                    "&:hover": {
+                                        backgroundColor: "rgba(162, 89, 255, 0.1)",
+                                        transform: "scale(1.05)",
+                                    },
+                                    "@media (max-width: 768px)": {
+                                        width: "100%",
+                                        alignSelf: "flex-end",
+                                        marginTop: "8px",
+                                    }
+                                }}
                             >
                                 <EditIcon />
                             </IconButton>
@@ -344,7 +505,18 @@ export function EditProfilePage(): JSX.Element {
                     </Box>
 
                     <Box className="form-group">
-                        <Typography variant="body1" className="form-label">
+                        <Typography 
+                            variant="body1" 
+                            className="form-label"
+                            sx = {{
+                                color:"#ffffff",
+                                fontWeight:600,
+                                fontSize:"16px",
+                                "@media (max-width: 480px)": {
+                                    fontSize:"14px"
+                                }
+                            }}
+                        >
                             Biography
                         </Typography>
                         <Box className="form-field-wrapper biography">
@@ -357,15 +529,63 @@ export function EditProfilePage(): JSX.Element {
                                 multiline
                                 rows={4}
                                 className="profile-input"
-                                slotProps={{
-                                    input: {
-                                        className: 'profile-input-root',
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+                                    backgroundColor: "#1a1a1a",
+                                    borderRadius: "8px",
+                                    color: "#ffffff",
+                                    "& fieldset": {
+                                        borderColor: "#444",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#a259ff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#a259ff",
+                                    },
+                                    "&.Mui-disabled": {
+                                        backgroundColor: "#1a1a1a",
+                                    },
+                                    },
+                                    "& .MuiInputBase-input": {
+                                    color: "#ffffff",
+                                    padding: "12px 16px",
+                                    },
+                                    "& .MuiInputBase-input.Mui-disabled": {
+                                    color: "#ccc",
+                                    WebkitTextFillColor: "#ccc",
+                                    },
+                                    "& .MuiInputBase-input::placeholder": {
+                                    color: "#888",
+                                    opacity: 1,
                                     },
                                 }}
+                                
                             />
                             <IconButton
                                 className="field-edit-button biography-button"
                                 onClick={() => setIsEditing(!isEditing)}
+                                sx={{
+                                    color: "#a259ff",
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "8px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    transition: "all 200ms ease",
+                                    flexShrink: 0,
+                                    "&:hover": {
+                                        backgroundColor: "rgba(162, 89, 255, 0.1)",
+                                        transform: "scale(1.05)",
+                                    },
+                                    "@media (max-width: 768px)": {
+                                        width: "100%",
+                                        alignSelf: "flex-end",
+                                        marginTop: "8px",
+                                    }
+                                }}
+                                
                             >
                                 <EditIcon />
                             </IconButton>
@@ -379,6 +599,25 @@ export function EditProfilePage(): JSX.Element {
                             className="save-button"
                             onClick={handleSave}
                             disabled={isBusy}
+                            sx={{
+                                backgroundColor: "#a259ff",
+                                color: "#ffffff",
+                                borderRadius: "999px",
+                                padding: "12px 32px",
+                                fontWeight: 600,
+                                width: "fit-content",
+                                marginTop: "16px",
+                                transition: "all 200ms ease",
+
+                                "&:hover": {
+                                    backgroundColor: "#8f45e3",
+                                    transform: "scale(1.02)",
+                                },
+                                "@media (max-width: 480px)": {
+                                    width: "100%",
+                                }
+                            }}
+
                         >
                             Save
                         </Button>

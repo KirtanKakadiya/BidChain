@@ -124,3 +124,79 @@
 .login-form .MuiButton-contained:hover {
     background-color: #8f45e3;
 }
+
+
+@media (max-width: 1024px) {
+    .login-page {
+        padding: 32px 24px;
+        gap: 24px;
+    }
+
+    .login-form {
+        max-width: 380px;
+        padding: 32px 24px;
+    }
+
+    .login-art .nft-card {
+        max-height: calc(100vh - 200px);
+    }
+}
+
+@media (max-width: 768px) {
+    .login-page {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        padding: 24px 16px;
+    }
+
+    .login-form {
+        width: 100%;
+        max-width: 500px;
+        padding: 24px 20px;
+    }
+
+    .login-art {
+        order: -1; 
+        max-width: 100%;
+        max-height: 280px;
+    }
+
+    .login-art .nft-card {
+        max-width: 100%;
+        max-height: 260px;
+    }
+
+    .login-art .nft-image {
+        max-height: 260px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-page {
+        padding: 16px 12px;
+        gap: 16px;
+    }
+
+    .login-form {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .login-form .MuiOutlinedInput-root .MuiOutlinedInput-input {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .login-form h1.MuiTypography-root {
+        font-size: 20px;
+    }
+
+    .login-art {
+        max-height: 200px;
+    }
+
+    .login-art .nft-image {
+        max-height: 220px;
+    }
+}

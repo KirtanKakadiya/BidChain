@@ -334,7 +334,15 @@ export function NFTPage(): JSX.Element {
                   backgroundColor: '#3b3b3b',
                 }}
               >
-                <CardContent className="card-content">
+                <CardContent 
+                  className="card-content"
+                  sx={{
+                    padding:"30px",
+                    "@media (max-width: 480px)": {
+                      padding: "20px",
+                    }
+                  }}
+                >
                   <Box className="countdown-container">
                     <Typography className="countdown-label">
                       {timeRemaining.isExpired
@@ -377,7 +385,12 @@ export function NFTPage(): JSX.Element {
                   <Typography className="current-bid">
                     Current Bid : {auction.currentPrice.toFixed(2)} ETH
                   </Typography>
-                  <CardActions className="bid-input-container">
+                  <CardActions 
+                    className="bid-input-container"
+                    sx={{
+                      padding:0
+                    }}
+                  >
                     <Box className="input-box-container">
                       <input
                         placeholder="Bid Amount"
@@ -392,6 +405,25 @@ export function NFTPage(): JSX.Element {
                     </Box>
                     <Button
                       className="place-bid-button"
+                      sx={{
+                        backgroundColor: "#a259ff",
+                        color: "#ffffff",
+                        borderRadius: "20px",
+                        padding: "16px 50px",
+                        fontFamily: "'Work Sans', sans-serif",
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        textTransform: "none",
+                        width: "100%",
+
+                        "&:hover": {
+                          backgroundColor: "#8a3fff",
+                        },
+                        "@media (max-width: 480px)": {
+                          padding: "14px 40px",
+                          fontSize: "14px"
+                        }
+                      }}
                       onClick={handlePlaceBid}
                       disabled={
                         timeRemaining.isExpired ||

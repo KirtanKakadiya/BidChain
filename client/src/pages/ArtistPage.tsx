@@ -70,7 +70,13 @@ export function ArtistPage(): JSX.Element {
                         src={userInfo?.avatarPicture}
                         alt="TheArtist"
                         className="artist-avatar"
-                        sx={{ width: 120, height: 120 }}
+                        sx={{ 
+                            width: 120, 
+                            height: 120 ,
+                            border: "4px solid #1a1a1a",
+                            borderRadius: "12px",
+                            flexShrink:0
+                        }}
                     />
 
                     <Box className="artist-details">
@@ -92,6 +98,14 @@ export function ArtistPage(): JSX.Element {
                             variant="contained"
                             startIcon={<AddIcon />}
                             className="plus-button"
+                            sx={{
+                                backgroundColor:" #a259ff",
+                                color: "#ffffff",
+                                borderRadius: "999px",
+                                padding: "10px 16px",
+                                minWidth: "auto",
+                                ":hover": " #8f45e3"
+                            }}  
                         >
                             Create
                         </Button>
@@ -100,6 +114,14 @@ export function ArtistPage(): JSX.Element {
                             to="/editprofile"
                             variant="contained"
                             className="edit-button"
+                            sx={{
+                                backgroundColor:" #a259ff",
+                                color: "#ffffff",
+                                borderRadius: "999px",
+                                padding: "10px 20px",
+                                fontWeight: "500",
+                                ":hover": " #8f45e3"
+                            }}  
                         >
                             Edit Profile
                         </Button>
@@ -107,12 +129,35 @@ export function ArtistPage(): JSX.Element {
                 </Box>
             </Box>
 
-            {/* Tabs Section */}
             <Box className="artist-tabs-container">
                 <Tabs
                     value={activeTab}
                     onChange={handleTabChange}
                     className="artist-tabs"
+                    sx={{
+                        minHeight: "auto",
+                        color:"#aaa",
+                        fontWeight:500,
+                        padding: "16px 24px",
+                        textTransform: "capitalize",
+                        "& .MuiTab-root": {
+                        color: "#aaa",
+                        fontWeight: 500,
+                        padding: "16px 24px",
+                        textTransform: "capitalize",
+                        minHeight: "auto",
+                        },
+                        "& .MuiTab-root.Mui-selected": {
+                            color: "#ffffff",
+                        },
+                        "& .MuiTabs-indicator": {
+                            backgroundColor: "#a259ff",
+                            height: 3,
+                        },
+                        "@media (max-width: 480px)": {
+                            height: "75px",
+                        },
+                    }}
                 >
                     <Tab label="Created" />
                     <Tab label="Owned" />

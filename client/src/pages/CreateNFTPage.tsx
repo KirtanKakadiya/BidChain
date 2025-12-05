@@ -157,7 +157,16 @@ export function CreateNFTPage(): JSX.Element {
 
       {/* Content Section */}
       <Box className="create-nft-content">
-        <Typography variant="h2" className="create-nft-title">
+        <Typography 
+          variant="h2" 
+          className="create-nft-title"
+          sx ={{
+            "@media (max-width: 768px)": {
+            fontSize: "24px",
+            marginBottom: "24px",
+          },
+          }}
+        >
           List Your NFT
         </Typography>
 
@@ -171,6 +180,9 @@ export function CreateNFTPage(): JSX.Element {
                   backgroundImage: `url(${imagePreview})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
+                  fontSize: "32px",
+                  fontWeight:700,
+                  marginBottom:"32px"
                 }}
               />
             ) : (
@@ -203,11 +215,32 @@ export function CreateNFTPage(): JSX.Element {
                 variant="outlined"
                 fullWidth
                 className="form-input"
-                slotProps={{
-                  input: {
-                    className: 'form-input-root',
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#1a1a1a",
+                    color: "#ffffff",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    padding: "0", 
+                    "& fieldset": {
+                      borderColor: "#555",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#a259ff",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#a259ff",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "12px 16px",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "#888",
+                    opacity: 1,
                   },
                 }}
+
               />
             </Box>
           </Box>
@@ -226,9 +259,22 @@ export function CreateNFTPage(): JSX.Element {
                 fullWidth
                 type="number"
                 className="form-input"
-                slotProps={{
-                  input: {
-                    className: 'form-input-root',
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#1a1a1a",
+                    color: "#ffffff",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    "& fieldset": { borderColor: "#555" },
+                    "&:hover fieldset": { borderColor: "#a259ff" },
+                    "&.Mui-focused fieldset": { borderColor: "#a259ff" },
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "12px 16px",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "#888",
+                    opacity: 1,
                   },
                 }}
               />
@@ -244,6 +290,37 @@ export function CreateNFTPage(): JSX.Element {
               value={auctionDuration}
               onChange={(e) => setAuctionDuration(e.target.value)}
               className="form-select"
+              sx ={{
+                backgroundColor: "#1a1a1a",
+                color: "#ffffff",
+                borderRadius: "6px",
+                padding: "12px 16px",
+                fontSize: "14px",
+                border: "1px solid #555",
+
+                "&:hover": {
+                  borderColor: "#a259ff",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: "#888",
+                },
+                "& .MuiMenuItem-root": {
+                  backgroundColor: "#2f2f2f",
+                  color: "#ffffff",
+                  fontSize: "14px",
+
+                  "&:hover": {
+                    backgroundColor: "#3f3f3f",
+                  },
+
+                  "&.Mui-selected": {
+                    backgroundColor: "#a259ff",
+                  },
+                },
+              }}
             >
               <MenuItem value="1 day">1 day</MenuItem>
               <MenuItem value="3 days">3 days</MenuItem>
@@ -252,7 +329,6 @@ export function CreateNFTPage(): JSX.Element {
             </Select>
           </Box>
 
-          {/* Categories */}
           <Box className="form-group">
             <Typography variant="body1" className="form-label">
               Categories<span className="required">*</span>
@@ -304,7 +380,6 @@ export function CreateNFTPage(): JSX.Element {
             </Box>
           </Box>
 
-          {/* Description */}
           <Box className="form-group">
             <Typography variant="body1" className="form-label">
               Description
@@ -319,11 +394,24 @@ export function CreateNFTPage(): JSX.Element {
                 multiline
                 rows={4}
                 className="form-input"
-                slotProps={{
-                  input: {
-                    className: 'form-input-root',
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#1a1a1a",
+                    color: "#ffffff",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    "& fieldset": { borderColor: "#555" },
+                    "&:hover fieldset": { borderColor: "#a259ff" },
+                    "&.Mui-focused fieldset": { borderColor: "#a259ff" },
                   },
-                }}
+                  "& .MuiInputBase-input": {
+                    padding: "12px 16px",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "#888",
+                    opacity: 1,
+                  },
+                }}  
               />
             </Box>
           </Box>
@@ -337,6 +425,25 @@ export function CreateNFTPage(): JSX.Element {
             className="create-button"
             onClick={handleCreate}
             disabled={uploading || creating}
+            sx ={{
+              backgroundColor: "#a259ff",
+              color: "#ffffff",
+              padding: "10px 28px",
+              borderRadius: "999px",
+              fontSize: "14px",
+              fontWeight: 500,
+              textTransform: "none",
+              transition: "all 200ms ease",
+              "&:hover": {
+                backgroundColor: "#8f45e3",
+                transform: "translateY(-2px)",
+              },
+              "&.Mui-disabled": {
+                backgroundColor: "#a259ff55",
+                color: "#ffffffaa",
+                transform: "none",
+              }
+            }}
           >
             {uploading || creating ? 'Creating...' : 'Create'}
           </Button>
@@ -344,6 +451,25 @@ export function CreateNFTPage(): JSX.Element {
             variant="contained"
             className="cancel-button"
             onClick={handleCancel}
+            sx = {{
+              backgroundColor: "#a259ff",
+              color: "#ffffff",
+              padding: "10px 28px",
+              borderRadius: "999px",
+              fontSize: "14px",
+              fontWeight: 500,
+              textTransform: "none",
+              transition: "all 200ms ease",
+              "&:hover": {
+                backgroundColor: "#8f45e3",
+                transform: "translateY(-2px)",
+              },
+              "&.Mui-disabled": {
+                backgroundColor: "#a259ff55",
+                color: "#ffffffaa",
+                transform: "none",
+              },
+            }}
           >
             Cancel
           </Button>
