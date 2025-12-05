@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import React, { JSX, useRef } from 'react';
 import './HomePage.css';
 import { NFTCard } from '../components/NFTCard';
 import { PrimaryButton } from '../components/button';
@@ -6,6 +6,8 @@ import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import { CATEGORIES } from '../data/category';
 import { CategoryCard } from '../components/CategoryCard';
 import { useNavigate } from 'react-router-dom';
+import { InformationCard } from '../components/InformationCard';
+import { Information_Card_Data } from '../data/information';
 
 const sampleNFTCard = {
   id: '1',
@@ -21,9 +23,15 @@ const sampleNFTCard = {
 
 export function HomePage(): JSX.Element {
   const navigate = useNavigate();
+  const infoSectionRef = useRef<HTMLDivElement|null>(null);
   const handleCategoryClick = (categoryTitle: string) => {
     navigate(`/marketplace?category=${encodeURIComponent(categoryTitle)}`);
   };
+
+  const scrollToInfoSection = () => {
+    infoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <main className="homepage">
       <section className="hero">
@@ -41,7 +49,7 @@ export function HomePage(): JSX.Element {
           </p>
 
           <div className="get-started-btn">
-            <PrimaryButton text="Get Started" icon={RocketLaunchIcon} />
+            <PrimaryButton text="Get Started" icon={RocketLaunchIcon} onClick={scrollToInfoSection} />
           </div>
 
           <div className="stats">
@@ -83,6 +91,19 @@ export function HomePage(): JSX.Element {
       ))}
     </div>
       </section>
+
+      <section className="info-section" ref={infoSectionRef}>
+        <div className="info-heading">
+          <h2>How It Works</h2>
+          <p className="info-sub">Find out how to get started.</p>
+        </div>
+
+        <div className="info-grid">
+          {Information_Card_Data.map((data) => (
+            <InformationCard key={data.id} data={data} />
+          ))}
+        </div>
+    </section>
     </main>
   );
 }
