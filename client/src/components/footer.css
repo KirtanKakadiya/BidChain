@@ -27,10 +27,11 @@
     gap: 8px;
 }
 
-.footer-links p {
+.footer-links a {
     margin: 0;
     color: #cccccc;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .footer-links p:hover {

@@ -1,5 +1,6 @@
 import React, { JSX } from 'react';
 import './footer.css';
+import { Link } from 'react-router-dom';
 
 export function Footer(): JSX.Element {
     return (
@@ -13,8 +14,8 @@ export function Footer(): JSX.Element {
             </div>
 
             <div className="footer-links">
-                <p>Marketplace</p>
-                <p>Connect a wallet</p>
+                <Link to="/marketplace">Marketplace</Link>
+                <Link to="/addFunds">Add Funds</Link>
             </div>
         </footer>
     );
