@@ -28,7 +28,8 @@ function mapApiNftToCardNft(apiNft: InputNFT): NFT {
     creator: {
         id:"",
         name: ""
-    }
+    },
+    isActive: false
   };
 }
 

@@ -1,6 +1,6 @@
 import React, { JSX, useEffect } from 'react';
 import './MarketplacePage.css';
-import { TextField, InputAdornment, IconButton, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import { TextField, InputAdornment, IconButton, MenuItem, FormControl, InputLabel, Select, Switch, FormControlLabel } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
@@ -14,15 +14,18 @@ export function MarketplacePage(): JSX.Element {
     const [nfts, setNfts] = useState<NFT[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const searchParams = new URLSearchParams(location.search); // ✅ define here
+    const searchParams = new URLSearchParams(location.search); 
     const initialCategory = searchParams.get('category') || '';
     const [category, setCategory] = useState(initialCategory);
+    const [isAlive, setIsAlive] = useState(true);
+
     useEffect(() => {
         async function loadNFTs() {
             try {
                 setLoading(true);
                 setError(null);
                 const fetched = await nftQueries.getAllNFTs();
+                console.log(fetched);   
                 setNfts(fetched);
             } catch (e) {
                 console.error(e);
@@ -38,7 +41,9 @@ export function MarketplacePage(): JSX.Element {
     const filteredNFTs = nfts.filter((nft) =>{
         const matchesSearch = nft.name.toLowerCase().includes(searchText.toLowerCase());
         const matchesCategory =category === '' || nft.tags?.some((tag) => tag.toUpperCase() === category.toUpperCase());
-        return matchesSearch && matchesCategory;}
+        const mathchesIsLive = !isAlive || nft.isActive;
+        return matchesSearch && matchesCategory && mathchesIsLive;
+    }
     );
 
     return (
@@ -103,6 +108,17 @@ export function MarketplacePage(): JSX.Element {
                         </div>
                     </div>
                 </div>
+                <FormControlLabel
+                    control={
+                    <Switch
+                        checked={isAlive}
+                        onChange={(e) => setIsAlive(e.target.checked)}
+                        color="primary"
+                    />
+                    }
+                    label="Live auctions only"
+                    sx={{ color: '#fff', marginLeft: 2 }}
+                />
             </section>
             <section className="nft-items">
                 {filteredNFTs.map((nft) => (

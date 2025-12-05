@@ -19,6 +19,7 @@ const sampleNFTCard = {
     id: '1',
     name: 'Animakid',
   },
+  isActive:false
 };
 
 export function HomePage(): JSX.Element {

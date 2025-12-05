@@ -46,6 +46,7 @@ export const nftQueries = {
     }
 
     const nftData = json.data.nft;
+    
     return {
       id: String(nftData.id),
       name: nftData.title,
@@ -58,6 +59,7 @@ export const nftQueries = {
         id: String(nftData.creator.id),
         name: nftData.creator.name,
       },
+      isActive:!!(nftData.auction && nftData.auction.isActive)
     };
   },
 
@@ -76,6 +78,7 @@ export const nftQueries = {
               }
               auction {
                 currentPrice
+                isActive
               }
             }
           }
@@ -100,7 +103,7 @@ export const nftQueries = {
     if (!json.data?.nfts) {
       return [];
     }
-
+    
     return json.data.nfts.map((nft: any) => ({
       id: String(nft.id),
       name: nft.title,
@@ -114,7 +117,8 @@ export const nftQueries = {
         id: String(nft.creator?.id ?? '0'),
         name: nft.creator?.name ?? 'Unknown Creator',
       },
-      tags: nft.tags
+      tags: nft.tags,
+      isActive:!!(nft.auction && nft.auction.isActive)
     }));
   },
 

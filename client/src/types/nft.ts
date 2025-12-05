@@ -11,4 +11,5 @@ export interface NFT {
     id: string;
     name: string;
   };
+  isActive:boolean;
 }
