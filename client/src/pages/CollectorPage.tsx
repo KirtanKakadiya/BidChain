@@ -1,5 +1,5 @@
 import React, { useState, JSX, useEffect} from 'react';
-import { Box, Typography, Button, Avatar, Tabs, Tab, CircularProgress } from '@mui/material';
+import { Box, Typography, Button, Avatar, Tabs, Tab, CircularProgress, colors } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { NFTCard } from '../components/NFTCard';
 import type { NFT } from '../types/nft';
@@ -118,7 +118,7 @@ export function CollectorPage(): JSX.Element {
                         <CircularProgress />
                     </Box>
                     ) : ownedNfts.length === 0 ? (
-                    <Typography>
+                    <Typography sx={{color:"#fff"}}>
                         You don’t own any NFTs yet.
                     </Typography>
                     ) : (
@@ -140,7 +140,7 @@ export function CollectorPage(): JSX.Element {
                         <CircularProgress />
                     </Box>
                     ) : watchingNfts.length === 0 ? (
-                    <Typography>
+                    <Typography sx={{color:"#fff"}}>
                         You’re not watching any auctions yet. Place a bid to start watching.
                     </Typography>
                     ) : (

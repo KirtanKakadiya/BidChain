@@ -77,7 +77,7 @@ export function ArtistPage(): JSX.Element {
                         <Typography variant="h3" className="artist-name">
                             {userInfo?.name || 'Artist Name'}
                         </Typography>
-                        
+
                         <Typography variant="body2" className="artist-bio">
                             <strong>Bio</strong>
                             <br />
@@ -128,7 +128,7 @@ export function ArtistPage(): JSX.Element {
                         <CircularProgress />
                     </Box>
                     ) : createdNfts.length === 0 ? (
-                    <Typography>
+                    <Typography sx={{color:"#fff"}}>
                         You havent created any NFTS yet.
                     </Typography>
                     ) : (
@@ -150,7 +150,7 @@ export function ArtistPage(): JSX.Element {
                         <CircularProgress />
                     </Box>
                     ) : ownedNfts.length === 0 ? (
-                    <Typography>
+                    <Typography sx={{color:"#fff"}}>
                         You don’t own any NFTs yet.
                     </Typography>
                     ) : (
@@ -172,7 +172,7 @@ export function ArtistPage(): JSX.Element {
                         <CircularProgress />
                     </Box>
                     ) : watchingNfts.length === 0 ? (
-                    <Typography>
+                    <Typography sx={{color:"#fff"}}>
                         You’re not watching any auctions yet. Place a bid to start watching.
                     </Typography>
                     ) : (
