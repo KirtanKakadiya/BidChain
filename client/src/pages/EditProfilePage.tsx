@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent, JSX } from 'react';
+import React, { useState, useRef, ChangeEvent, JSX, useEffect } from 'react';
 import {
     Box,
     Typography,
@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { GRAPHQL_ENDPOINT } from '../config/env';
 import { UPDATE_USER } from '../graphql/mutations/userMutation';
+import { FETCH_USER } from '../graphql/queries/userQueries';
 
 
 async function updateUserRequest(id: string, data: any) {
@@ -41,6 +42,7 @@ export function EditProfilePage(): JSX.Element {
     const { user, login } = useAuth();
     const role = user?.role;
     const [username, setUsername] = useState(user?.name);
+    const [userInfo, setUserInfo] = useState<any>(null);
     const [email, setEmail] = useState(user?.email);
     const [biography, setBiography] = useState(user?.description ?? '');
     const [isEditing, setIsEditing] = useState(false);
@@ -69,6 +71,33 @@ export function EditProfilePage(): JSX.Element {
     const bannerInputRef = useRef<HTMLInputElement | null>(null);
 
     const bannerImage = bannerPreview || bannerUrl || '/banner-placeholder.png';
+
+    useEffect(() => {
+                async function fetchUser() {
+                    console.log(user);
+                    try {
+                        const response = await fetch(GRAPHQL_ENDPOINT, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                query: FETCH_USER,
+                                variables: {
+                                    id: Number(user?.id),
+                                },
+                            }),
+                        });
+        
+                        const result = await response.json();
+                        console.log(result);
+                        setUserInfo(result.data.user);
+                    } catch (error) {
+                        console.error('Failed to fetch user:', error);
+                    }
+                }
+                if (user?.email) fetchUser();
+    }, [user]);   
 
 
     async function handleAvatarChange(e: ChangeEvent<HTMLInputElement>) {
