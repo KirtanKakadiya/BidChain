@@ -25,7 +25,7 @@ export function MarketplacePage(): JSX.Element {
                 setLoading(true);
                 setError(null);
                 const fetched = await nftQueries.getAllNFTs();
-                console.log(fetched);   
+                // console.log(fetched);   
                 setNfts(fetched);
             } catch (e) {
                 console.error(e);

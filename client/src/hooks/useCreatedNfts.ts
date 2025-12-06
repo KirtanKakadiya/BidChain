@@ -19,7 +19,7 @@ type InputNFT = {
 };
 
 function mapApiNftToCardNft(apiNft: InputNFT): NFT {
-  console.log(apiNft);
+  // console.log(apiNft);s
   return {
     id: String(apiNft.id),
     name: apiNft.title,
@@ -43,7 +43,7 @@ export function useCreatedNfts(userId: number | null) {
     if (!userId) return;
     setLoading(true);
 
-    console.log(userId);
+    // console.log(userId);
 
     try {
       const res = await fetch(GRAPHQL_ENDPOINT, {
@@ -56,7 +56,7 @@ export function useCreatedNfts(userId: number | null) {
       });
 
       const json = await res.json();
-      console.log(json);
+      // console.log(json);
       if (json.errors?.length) {
         throw new Error(json.errors[0].message);
       }

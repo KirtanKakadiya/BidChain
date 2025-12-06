@@ -74,7 +74,6 @@ export function EditProfilePage(): JSX.Element {
 
     useEffect(() => {
                 async function fetchUser() {
-                    console.log(user);
                     try {
                         const response = await fetch(GRAPHQL_ENDPOINT, {
                             method: 'POST',
@@ -90,7 +89,7 @@ export function EditProfilePage(): JSX.Element {
                         });
         
                         const result = await response.json();
-                        console.log(result);
+                        // console.log(result);
                         setUserInfo(result.data.user);
                     } catch (error) {
                         console.error('Failed to fetch user:', error);

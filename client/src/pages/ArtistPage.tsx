@@ -36,7 +36,6 @@ export function ArtistPage(): JSX.Element {
                         },
                     }),
                 });
-                console.log(response);
                 const result = await response.json();
                 setUserInfo(result.data.user);
             } catch (error) {

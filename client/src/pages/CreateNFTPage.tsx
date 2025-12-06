@@ -34,7 +34,7 @@ type CategoryType = (typeof VALID_CATEGORIES)[number];
 export function CreateNFTPage(): JSX.Element {
   const [nftName, setNftName] = useState('');
   const [price, setPrice] = useState('');
-  const [auctionDuration, setAuctionDuration] = useState('1 day');
+  const [auctionDuration, setAuctionDuration] = useState('1 hour');
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -103,15 +103,15 @@ export function CreateNFTPage(): JSX.Element {
 
       // Calculate auction duration in milliseconds
       const durationMap: { [key: string]: number } = {
-        '1 day': 1,
-        '3 days': 3,
-        '1 week': 7,
-        '2 weeks': 14,
+        '1 hour': 1,
+        '4 hours': 4,
+        '8 hours': 8,
+        '12 hours': 12,
       };
 
-      const days = durationMap[auctionDuration] || 1;
+      const hours = durationMap[auctionDuration] || 1;
       const now = new Date();
-      const endTime = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+      const endTime = new Date(now.getTime() + hours * 60 * 60 * 1000);
 
       // Create auction for the NFT
       await auctionMutations.createAuction({
@@ -322,10 +322,10 @@ export function CreateNFTPage(): JSX.Element {
                 },
               }}
             >
-              <MenuItem value="1 day">1 day</MenuItem>
-              <MenuItem value="3 days">3 days</MenuItem>
-              <MenuItem value="1 week">1 week</MenuItem>
-              <MenuItem value="2 weeks">2 weeks</MenuItem>
+              <MenuItem value="1 hour">1 hour</MenuItem>
+              <MenuItem value="4 hours">4 hours</MenuItem>
+              <MenuItem value="8 hours">8 hours</MenuItem>
+              <MenuItem value="12 hours">12 hours</MenuItem>
             </Select>
           </Box>
 

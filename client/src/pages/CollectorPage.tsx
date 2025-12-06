@@ -22,7 +22,6 @@ export function CollectorPage(): JSX.Element {
     
         useEffect(() => {
             async function fetchUser() {
-                console.log(user);
                 try {
                     const response = await fetch(GRAPHQL_ENDPOINT, {
                         method: 'POST',
@@ -38,7 +37,6 @@ export function CollectorPage(): JSX.Element {
                     });
     
                     const result = await response.json();
-                    console.log(result);
                     setUserInfo(result.data.user);
                 } catch (error) {
                     toast.error(`Failed to fetch user: ${error}`);
